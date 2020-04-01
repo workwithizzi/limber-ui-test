@@ -1,11 +1,4 @@
-import { Layout } from '../components/Layout'
-import { Textfield } from '../components/forms/Textfield'
-import { Radio } from '../components/forms/Radio'
-import { Textarea } from '../components/forms/Textarea'
-import { Checkbox } from '../components/forms/Checkbox'
-import { Toggle } from '../components/forms/Toggle'
-import { Numberfield } from '../components/forms/Numberfield'
-import { Select } from '../components/forms/Select'
+import { Layout, Textfield, Radio, Textarea, Checkbox, Toggle, Numberfield, Select, Form } from '../components'
 
 
 const _testOptions=[{
@@ -27,7 +20,7 @@ export default function SettingsPage() {
 			subtitle="Settings here affect the entire site."
 		>
 
-			<form className="pure-form pure-form-stacked">
+			<Form title="Testing Settings">
 
 				<Select
 					name="selectTest"
@@ -102,7 +95,7 @@ export default function SettingsPage() {
 					hint="this is a hint"
 				/>
 
-			</form>
+			</Form>
 
 		</Layout>
 	)

@@ -15,10 +15,10 @@
 
 import { useRouter } from 'next/router'
 
-import { Layout } from '../components/Layout'
+import { Layout } from '../components'
 
 // Temp data for testing
-import data from "../db/limber"
+import data from "../db/limber.json"
 
 
 export default function TypesPage() {

@@ -2,7 +2,7 @@
 
 import fetch from 'isomorphic-unfetch'
 
-import { Layout } from '../../components/Layout'
+import { Layout } from '../../components'
 
 
 export default function Post({show}) {

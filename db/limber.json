@@ -1,0 +1,30 @@
+{
+	"site_url": "example.com",
+	"config_path": "limber",
+	"status": "published",
+	"site_title": "Example Web Site",
+	"groups": [
+		{
+			"label": "Pages",
+			"path": "pages",
+			"description": "Description of the group. Displayed on the Group page in the UI."
+		},
+		{
+			"label": "Posts",
+			"path": "posts"
+		},
+		{
+			"label": "Globals",
+			"path": "globals",
+			"description": "This is could be for reusable content types. Like 'site-footer', 'header', 'nav', etc."
+		}
+	],
+	"custom": [
+		{
+			"name": "favicon",
+			"label": "Site Favicon",
+			"type": "string",
+			"default": "images/favicon.png"
+		}
+	]
+}

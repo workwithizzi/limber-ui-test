@@ -9,7 +9,7 @@
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { camelCase } from "../../utils/strings"
+import { camelCase } from "../../utils"
 
 
 export function Select({

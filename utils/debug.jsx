@@ -8,7 +8,7 @@ import React from "react";
 // TODO: Find out if there's a way to include default props/states
 
 
-const debug = (ctx) => {
+export function debug(ctx) {
 	return (
 		<pre style={{background:"#333", color:"white"}}>
 			<strong style={{color:"#cc0066"}}>Props </strong>
@@ -19,9 +19,6 @@ const debug = (ctx) => {
 		</pre>
 	)
 }
-
-export { debug }
-
 
 
 // import { debug } from "content-designer/utils";

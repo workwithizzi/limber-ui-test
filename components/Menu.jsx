@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 // Temp data for testing
-import data from "../db/limber"
+import data from "../db/limber.json"
 
 
 export function Menu() {

@@ -7,8 +7,7 @@
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { camelCase } from "../../utils/strings"
-import { debug } from "../../utils/debug"
+import { debug, camelCase } from "../../utils"
 
 
 // Disabling this temporarily
