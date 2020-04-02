@@ -1,4 +1,4 @@
-import { Layout, Textfield, Radio, Textarea, Checkbox, Toggle, Numberfield, Select, Form } from '../components'
+import { Layout, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Numberfield, Button } from '../components'
 
 
 const _testOptions=[{
@@ -11,7 +11,6 @@ const _testOptions=[{
 		value: "hamster",
 		label: "Hamster"
 }]
-
 
 export default function SettingsPage() {
 	return (
@@ -29,7 +28,26 @@ export default function SettingsPage() {
 					options={_testOptions}
 				/>
 
+				<Button>Child Text</Button>
+				<Button label="Default" />
+				<Button label="Active" active />
+				<Button label="Primary" primary />
+				<Button label="Default Block" block />
+				<Button label="Primary Block" primary block />
+				<Button label="Disabled" disabled/>
+				<Button label="Primary Disabled" primary disabled/>
+				<Button label="Caution" caution />
+
+				<br />
+				<br />
+
 				<hr />
+				<Toggle
+					id="toggle2"
+					label="Toggle 2 with hint"
+					hint="this is a hint"
+				/>
+
 				<Checkbox
 					id="opt1"
 					label="Option 1"
@@ -43,11 +61,6 @@ export default function SettingsPage() {
 				/>
 				<hr />
 
-				<Toggle
-					id="toggle2"
-					label="Toggle 2 with hint"
-					hint="this is a hint"
-				/>
 
 				<hr />
 				<Radio

@@ -1,5 +1,6 @@
 export { Layout } from './Layout'
 export { Menu } from './Menu'
+export { Button } from './Button'
 
 export { Toggle } from './forms/Toggle'
 export { Textfield } from './forms/Textfield'
