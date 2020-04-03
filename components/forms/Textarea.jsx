@@ -17,7 +17,7 @@ import { debug, camelCase } from "../../utils"
 
 export class Textarea extends React.Component {
 	static defaultProps = {
-		value: "",
+		value: ``,
 	};
 
 	state = {
@@ -25,10 +25,10 @@ export class Textarea extends React.Component {
 	};
 
 	_handleChange = event => {
-		this.setState({value: event.target.value});
+		this.setState({value: event.target.value})
 		// If onChange is passed
 		if (this.props.onChange) {
-			this.props.onChange();
+			this.props.onChange()
 		}
 	}
 
@@ -57,7 +57,7 @@ export class Textarea extends React.Component {
 
 				{hint && <span className="pure-form-message">{hint}</span>}
 			</>
-		);
+		)
 	}
 }
 
@@ -81,7 +81,7 @@ Textarea.propTypes = {
 	style      : stylePT,
 	tabIndex   : PT.number,
 	value      : PT.string,
-	wrap       : PT.oneOf(["hard", "soft"]),
+	wrap       : PT.oneOf([`hard`, `soft`]),
 	// Hint Text Props
 	hint       : PT.string,
-};
+}

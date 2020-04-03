@@ -9,7 +9,7 @@ export default function Post({show}) {
 	return (
 		<Layout>
 			<h1>{show.name}</h1>
-			<p>{show.summary.replace(/<[/]?[pb]>/g, '')}</p>
+			<p>{show.summary.replace(/<[/]?[pb]>/g, ``)}</p>
 			{show.image ? <img src={show.image.medium} /> : null}
 		</Layout>
 	)

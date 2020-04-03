@@ -10,8 +10,8 @@ export function Menu() {
 		<>
 			{/* Menu toggle */}
 			<a href="#menu" id="menuLink" className="menu-link">
-			{/* Hamburger icon */}
-			<span></span>
+				{/* Hamburger icon */}
+				<span></span>
 			</a>
 
 			<div id="menu">
@@ -36,9 +36,9 @@ export function Menu() {
 
 						{/* Menu Items from groups array */}
 						{data.groups.map(group => {
-							let liClass="pure-menu-item"
+							let liClass=`pure-menu-item`
 							if (item === 1) {
-								liClass="pure-menu-item menu-item-divided"
+								liClass=`pure-menu-item menu-item-divided`
 							}
 							item++
 							return (

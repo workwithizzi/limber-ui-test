@@ -37,7 +37,7 @@ export default function TypesPage() {
 							{page.description && <p>{page.description}</p>}
 						</Layout>
 					)
-			}})}
+				}})}
 
 		</>
 	)

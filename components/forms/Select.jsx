@@ -38,15 +38,15 @@ export function Select({
 					type  = "radio"
 					{...props}
 				>
-				{children}
+					{children}
 
-				{options && (
-					options.map(op => {
-						return (
-							<option key={op.value} value={op.value}>{op.label}</option>
-						)
-					})
-				)}
+					{options && (
+						options.map(op => {
+							return (
+								<option key={op.value} value={op.value}>{op.label}</option>
+							)
+						})
+					)}
 				</select>
 
 			</label>

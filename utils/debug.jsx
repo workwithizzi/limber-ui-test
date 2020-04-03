@@ -1,7 +1,7 @@
 // Basic debug function
 // Can be used in a Component to print props to the screen
 
-import React from "react";
+import React from "react"
 
 
 // TODO: Find out if there's a way to also use this same component for stateless components
@@ -10,11 +10,11 @@ import React from "react";
 
 export function debug(ctx) {
 	return (
-		<pre style={{background:"#333", color:"white"}}>
-			<strong style={{color:"#cc0066"}}>Props </strong>
+		<pre style={{background:`#333`, color:`white`}}>
+			<strong style={{color:`#cc0066`}}>Props </strong>
 			{JSON.stringify(ctx.props, null, 2)}
 			<br />
-			<strong style={{color:"#2be8ff"}}>State </strong>
+			<strong style={{color:`#2be8ff`}}>State </strong>
 			{JSON.stringify(ctx.state, null, 2)}
 		</pre>
 	)
@@ -33,11 +33,11 @@ export function withDebug(WrappedComponent) {
 					<WrappedComponent {...this.props} />
 					{debug(this)}
 				</>
-			);
+			)
 		}
-	};
+	}
 
-	return functionToClass;
+	return functionToClass
 }
 
 

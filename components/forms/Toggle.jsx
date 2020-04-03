@@ -37,7 +37,7 @@ export class Toggle extends React.Component {
 					form      = {form}
 					htmlFor   = {id || camelCase(label)}
 				>
-					<div className={this.state.checked ? "toggle isOn" : "toggle"}>
+					<div className={this.state.checked ? `toggle isOn` : `toggle`}>
 						<input
 							defaultChecked = {this.state.checked}
 							className = "toggle__control"

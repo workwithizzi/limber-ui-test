@@ -2,14 +2,14 @@ import { Layout, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Num
 
 
 const _testOptions=[{
-	value: "dog",
-	label: "Dog"
-	},{
-		value: "cat",
-		label: "Cat"
-	},{
-		value: "hamster",
-		label: "Hamster"
+	value: `dog`,
+	label: `Dog`,
+},{
+	value: `cat`,
+	label: `Cat`,
+},{
+	value: `hamster`,
+	label: `Hamster`,
 }]
 
 export default function SettingsPage() {
@@ -52,7 +52,7 @@ export default function SettingsPage() {
 					id="opt1"
 					label="Option 1"
 					value="opt1"
-					/>
+				/>
 				<Checkbox
 					id="opt2"
 					label="Option 2 with hint"

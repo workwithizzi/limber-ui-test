@@ -1,18 +1,23 @@
 {
-  "name": "limber-ui-test",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "isomorphic-unfetch": "^3.0.0",
-    "next": "9.3.2",
-    "prop-types": "^15.7.2",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-style-proptype": "^3.2.2"
-  }
+	"name": "limber-ui-test",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint ./",
+		"lint:fix": "eslint ./ --fix"
+	},
+	"dependencies": {
+		"isomorphic-unfetch": "^3.0.0",
+		"next": "9.3.2",
+		"prop-types": "^15.7.2",
+		"react": "16.13.1",
+		"react-dom": "16.13.1",
+		"react-style-proptype": "^3.2.2"
+	},
+	"devDependencies": {
+		"@workwithizzi/eslint-config-react": "^0.0.2"
+	}
 }

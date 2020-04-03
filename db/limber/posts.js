@@ -12,11 +12,11 @@ module.exports = {
 		label: `Title`,
 		name: `title`,
 		widget: `string`,
-		required: `true`
+		required: `true`,
 	}, {
 		label: `Slug`,
 		name: `slug`,
 		widget: `string`,
-		required: `true`
-	}]
+		required: `true`,
+	}],
 }

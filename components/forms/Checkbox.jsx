@@ -45,7 +45,7 @@ export class Checkbox extends React.Component {
 						name     = {name}
 						onChange = {this._handleChange}
 						type     = "checkbox"
-						style    = {{marginRight:"10px"}}
+						style    = {{marginRight:`10px`}}
 						{...props}
 					/>
 					{label}
