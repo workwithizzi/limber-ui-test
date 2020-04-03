@@ -1,0 +1,7 @@
+/* Overrides to PureCss until we design our own UI */
+
+/* Add another button color for dangerous interaction */
+.override-button-caution {
+  background: rgb(202, 60, 60);
+  color: #fff;
+}

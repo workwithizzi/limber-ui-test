@@ -23,27 +23,31 @@ export function Button({
 }) {
 	// Classes
 	let bClass = `pure-button`
-	if (primary) {
-		bClass = `${bClass} pure-button-primary`
-	}
 	if (active) {
 		bClass = `${bClass} pure-button-active`
 	}
+	if (primary) {
+		bClass = `${bClass} pure-button-primary`
+	} else if (caution) {
+		bClass = `${bClass} override-button-caution`
+	}
+
+
 	// Styles
 	const bStyle = props.style ? props.style : {}
 	if (block) {
-		bStyle.display = "block"
-		bStyle.width = "100%"
+		bStyle.display = `block`
+		bStyle.width = `100%`
 	}
-	if (caution) {
-		bStyle.background = "rgb(202, 60, 60)"
-		bStyle.color = "#fff"
-	}
+	// if (caution) {
+	// 	bStyle.background = `rgb(202, 60, 60)`
+	// 	bStyle.color = `#fff`
+	// }
 
 	return (
 		<button
 			className={bClass}
-			type={props.type || "button"}
+			type={props.type || `button`}
 			style={bStyle}
 			{...props}
 		>
@@ -65,23 +69,23 @@ Button.propTypes = {
 	name        : PT.string,
 	onClick     : PT.func,
 	style       : stylePT,
-	type        : PT.oneOf(["button", "submit", "reset"]),
+	type        : PT.oneOf([`button`, `submit`, `reset`]),
 	value       : PT.string,
 	// Submit-Button props
 	formAction  : PT.string,
 	formEncType : PT.oneOf([
-		"application/x-www-form-urlencoded",
-		"multipart/form-data",
-		"text/plain",
+		`application/x-www-form-urlencoded`,
+		`multipart/form-data`,
+		`text/plain`,
 	]),
-	formMethod    : PT.oneOf(["get", "post"]),
+	formMethod    : PT.oneOf([`get`, `post`]),
 	formNoValidate: PT.bool,
 	formTarget    : PT.oneOf([
-		"_blank",
-		"_self",
-		"_parent",
-		"_top",
-		"framename",
+		`_blank`,
+		`_self`,
+		`_parent`,
+		`_top`,
+		`framename`,
 	]),
 	// Custom props
 	active : PT.bool,
@@ -89,4 +93,4 @@ Button.propTypes = {
 	caution: PT.bool,
 	label  : PT.string,
 	primary: PT.bool,
-};
+}
