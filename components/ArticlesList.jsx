@@ -1,5 +1,6 @@
 // Creates a list of articles for a specific content-group
 
+import '../styles/ArticlesList.scss'
 
 export function ArticlesList({data}) {
 	return (

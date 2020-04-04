@@ -12,6 +12,9 @@
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
 
+import '../styles/Button.scss'
+
+
 export function Button({
 	block,
 	primary,
@@ -39,10 +42,6 @@ export function Button({
 		bStyle.display = `block`
 		bStyle.width = `100%`
 	}
-	// if (caution) {
-	// 	bStyle.background = `rgb(202, 60, 60)`
-	// 	bStyle.color = `#fff`
-	// }
 
 	return (
 		<button

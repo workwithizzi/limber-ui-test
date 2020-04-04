@@ -1,0 +1,32 @@
+// Override horizontal menu styles for an "Add New" menu in Groups
+.override.pure-menu-horizontal {
+  text-align: right;
+}
+
+.override {
+	.pure-menu-list {
+		background: #0078e7;
+	}
+
+	.pure-menu-selected > .pure-menu-link,
+	.pure-menu-selected > .pure-menu-link:visited {
+		color: white;
+	}
+
+	.pure-menu-link {
+		color: white;
+	}
+
+	.pure-menu-link:hover {
+		background: #0078e7;
+		background-image: linear-gradient(
+			transparent,
+			rgba(0, 0, 0, 0.05) 40%,
+			rgba(0, 0, 0, 0.1)
+		);
+	}
+
+	.pure-menu-children {
+		background: #0078e7;
+	}
+}

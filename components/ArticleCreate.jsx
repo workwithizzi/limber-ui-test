@@ -1,5 +1,6 @@
 // Adds the functionality to create new articles to a group page
 
+import '../styles/ArticleCreate.scss'
 
 export function ArticleCreate({data}) {
 	return (

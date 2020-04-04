@@ -1,3 +1,4 @@
+export { SiteMeta } from './SiteMeta'
 export { Layout } from './Layout'
 export { Menu } from './Menu'
 export { Button } from './Button'

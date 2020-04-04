@@ -1,0 +1,12 @@
+// Overrides to PureCss until we design our own UI
+
+// Make the sub-title (page description) a little smaller
+.header h2 {
+  font-size: 1.2em;
+  color: #7b7b7b;
+}
+
+// Add a little space to the header
+.override.header {
+  margin-bottom: 30px;
+}
