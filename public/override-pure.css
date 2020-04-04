@@ -5,3 +5,87 @@
   background: rgb(202, 60, 60);
   color: #fff;
 }
+
+/* Make the sub-title (page description) a little smaller */
+.header h2 {
+  font-size: 1.2em;
+  color: #7b7b7b;
+}
+
+/* Add a little space to the header */
+.override.header {
+  margin-bottom: 30px;
+}
+
+/* Override horizontal menu styles for an "Add New" menu in Groups */
+.override.pure-menu-horizontal {
+  text-align: right;
+}
+
+.override .pure-menu-list {
+  background: #0078e7;
+}
+
+.override .pure-menu-selected > .pure-menu-link,
+.override .pure-menu-selected > .pure-menu-link:visited {
+  color: white;
+}
+
+.override .pure-menu-link {
+  color: white;
+}
+
+.override .pure-menu-link:hover {
+  background: #0078e7;
+  background-image: linear-gradient(
+    transparent,
+    rgba(0, 0, 0, 0.05) 40%,
+    rgba(0, 0, 0, 0.1)
+  );
+}
+
+.override .pure-menu-children {
+  background: #0078e7;
+}
+
+/* Article List and Cards used on Group Page */
+.article-grid-header {
+  border: 2px solid #ddd;
+  padding: 4px 24px;
+  font-size: 80%;
+  margin-top: 20px;
+}
+
+ul.article-grid {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.article-card {
+  border: 2px solid #ddd;
+  margin: 20px 0;
+}
+
+.article-card a {
+  padding: 16px 24px;
+  text-decoration: none;
+}
+
+.article-card a:hover {
+  background: #ddd;
+}
+
+a .card-title {
+  color: #444;
+  font-size: 120%;
+}
+
+a .card-meta {
+  text-align: right;
+  color: #969696;
+}
+
+.card-meta {
+  text-align: right;
+}

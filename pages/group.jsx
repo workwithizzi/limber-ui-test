@@ -11,30 +11,35 @@
 // group and use a page query to return just those types?
 // - Or it might be better to use the dynamic page [id].js like
 // I was doing with 'pages/tv.jsx'?
-
+//- -----------------------------------------------------------------
 
 import { useRouter } from 'next/router'
-
-import { Layout } from '../components'
+import { Layout, ArticleCreate, ArticlesList } from '../components'
 
 // Temp data for testing
-import data from "../db/limber.json"
+import settings from '../db/limber.yaml'
+import demo from '../db/demo/pages.yaml'
 
 
-export default function TypesPage() {
+export default function GroupsPage() {
 	const router = useRouter()
 
 	return (
 		<>
-			{data.groups.map(page => {
-				if (page.path === router.query.group) {
+			{settings.groups.map(page => {
+				if (page.label === router.query.group) {
 					return (
 						<Layout
-							key={page.path}
+							key={page.label}
 							title={page.label}
-							subtitle="groups query page"
+							subtitle={page.description}
 						>
-							{page.description && <p>{page.description}</p>}
+							{/* Add new article button */}
+							<ArticleCreate data={demo} />
+
+							{/* List all articles in Group */}
+							<ArticlesList data={demo} />
+
 						</Layout>
 					)
 				}})}

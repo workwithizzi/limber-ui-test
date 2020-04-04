@@ -1,0 +1,43 @@
+content_types:
+  - label: Home Page
+    name: index
+  - label: Default Page
+    name: default-page
+  - label: Contact Page
+    name: contact-page
+  - label: Blog Page
+    name: blog-index-page
+
+articles:
+  - title: Home
+    content_type: Home Page
+    status: Published
+    date: 03/25/20
+    path: \#
+  - title: About Us
+    content_type: Default Page
+    status: Published
+    date: 03/22/20
+    path: \#
+  - title: About Us
+    content_type: Default Page
+    status: Draft
+    date: 03/20/20
+    path: \#
+  - title: Contact
+    content_type: Contact Page
+    status: Published
+    date: 03/22/20
+    path: \#
+  - title: Terms & Conditions
+    content_type: Default Page
+    status: Draft
+    date: 03/18/20
+    path: \#
+  - title: Blog
+    content_type: Blog Page
+    status: Published
+    date: 03/22/20
+    path: \#
+
+test:

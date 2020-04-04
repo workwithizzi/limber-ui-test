@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 // Temp data for testing
-import data from "../db/limber.json"
+import data from "../db/limber.yaml"
 
 
 export function Menu() {
@@ -42,11 +42,11 @@ export function Menu() {
 							}
 							item++
 							return (
-								<li className={liClass} key={group.path}>
+								<li className={liClass} key={group.label}>
 									{/* <Link href="/groups/[id]" as={`/groups/${group.path}`}>
 										<a className="pure-menu-link">{group.label}</a>
 									</Link> */}
-									<Link href={`/group?group=${group.path}`}>
+									<Link href={`/group?group=${group.label}`}>
 										<a className="pure-menu-link">{group.label}</a>
 									</Link>
 								</li>

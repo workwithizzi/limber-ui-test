@@ -13,3 +13,4 @@ yarn dev
 ### Reference
 
 * (PureCss)[https://purecss.io/]
+* Loading yaml files locally just for quick dev/testing. Using `js-yaml-loader` and adding it to the webpack config.

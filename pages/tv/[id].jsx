@@ -1,7 +1,6 @@
 // See 'pages/tv.jsx'
 
 import fetch from 'isomorphic-unfetch'
-
 import { Layout } from '../../components'
 
 

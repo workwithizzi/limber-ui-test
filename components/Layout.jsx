@@ -1,5 +1,4 @@
 import Head from 'next/head'
-
 import { Menu } from './Menu'
 
 
@@ -23,7 +22,7 @@ export function Layout({ title, subtitle, children }) {
 
 				<main id="main">
 
-					<div className="header">
+					<div className="override header">
 						{title && <h1>{title}</h1>}
 						{subtitle && <h2>{subtitle}</h2>}
 					</div>
