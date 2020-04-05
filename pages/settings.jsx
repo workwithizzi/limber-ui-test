@@ -1,11 +1,6 @@
 import { Header, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Numberfield, Button } from '../components'
 
 
-// Temp data for testing
-// TODO: Change this to get `settings` from API
-import settings from '../db/limber.yaml'
-
-
 const _testOptions=[{
 	value: `dog`,
 	label: `Dog`,
@@ -18,7 +13,9 @@ const _testOptions=[{
 }]
 
 
-export default function SettingsPage() {
+export default function SettingsPage(props) {
+	const { settings } = props
+
 	return (
 		<>
 			<Header
@@ -28,23 +25,26 @@ export default function SettingsPage() {
 
 			<Form title="Testing Settings">
 
-				<Textfield
-					name="site_url"
-					label="Site URL"
-					// placeholder="Write text here."
-					value={settings.site_url}
-					hint="Add the URL for your production site."
-					required
-				/>
-
-				<Textfield
-					name="site_title"
-					label="Site Title"
-					// placeholder="Write text here."
-					value={settings.site_title}
-					hint="The site title is used for things like metadata and for display purposes throughout the CMS."
-				/>
-
+				{settings.site_url &&
+					<Textfield
+						name="site_url"
+						label="Site URL"
+						// placeholder="Write text here."
+						defaultValue={settings.site_url}
+						hint="Add the URL for your production site."
+						required
+					/>
+				}
+				{settings.site_title &&
+					<Textfield
+						name="site_title"
+						label="Site Title"
+						// placeholder="Write text here."
+						defaultValue={settings.site_title}
+						hint="The site title is used for things like metadata and for display purposes throughout the CMS."
+					/>
+				}
+				{settings.logo_path &&
 				<Textfield
 					name="logo_path"
 					label="Logo"
@@ -52,7 +52,8 @@ export default function SettingsPage() {
 					defaultValue={settings.logo_path}
 					hint="Enter the path or URL to your site's logo."
 				/>
-
+				}
+				{settings.favicon_path &&
 				<Textfield
 					name="favicon_path"
 					label="Favicon"
@@ -60,6 +61,7 @@ export default function SettingsPage() {
 					defaultValue={settings.favicon_path}
 					hint="Enter the path or URL to your site's favicon."
 				/>
+				}
 
 				<br />
 				<hr />
