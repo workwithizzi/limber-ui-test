@@ -27,14 +27,20 @@ export default function GroupsPage(props) {
 
 	return (
 		<>
-			{settings.groups.map(page => {
-				if (page.label === router.query.group) {
+			{settings.groups.map(group => {
+				if (group.label === router.query.group) {
 					return (
-						<React.Fragment key={page.label}>
+						<React.Fragment key={group.label}>
 							<Header
-								title={page.label}
-								subtitle={page.description}
+								title={group.label}
+								subtitle={group.description}
 							/>
+
+							{group.content_types.map(type => {
+								return (
+									<p key={type.label}>{type.label}</p>
+								)
+							})}
 
 							{/* Add new article button */}
 							<ArticleCreate data={demo} />
