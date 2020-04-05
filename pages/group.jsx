@@ -14,35 +14,38 @@
 //- -----------------------------------------------------------------
 
 import { useRouter } from 'next/router'
-import { Layout, ArticleCreate, ArticlesList } from '../components'
+import { Header, ArticleCreate, ArticlesList } from '../components'
 
 // Temp data for testing
-import settings from '../db/limber.yaml'
+// import settings from '../db/limber.yaml'
 import demo from '../db/demo/pages.yaml'
 
 
-export default function GroupsPage() {
+export default function GroupsPage(props) {
 	const router = useRouter()
+	const { settings } = props
 
 	return (
 		<>
 			{settings.groups.map(page => {
 				if (page.label === router.query.group) {
 					return (
-						<Layout
-							key={page.label}
-							title={page.label}
-							subtitle={page.description}
-						>
+						<React.Fragment key={page.label}>
+							<Header
+								title={page.label}
+								subtitle={page.description}
+							/>
+
 							{/* Add new article button */}
 							<ArticleCreate data={demo} />
 
 							{/* List all articles in Group */}
 							<ArticlesList data={demo} />
 
-						</Layout>
+						</React.Fragment>
 					)
-				}})}
+				}
+			})}
 
 		</>
 	)

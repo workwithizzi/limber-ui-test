@@ -34,6 +34,13 @@ export function Menu({settings}) {
 							</Link>
 						</li>
 
+						{/* Temp Page */}
+						<li className="pure-menu-item">
+							<Link href="/tv">
+								<a className="pure-menu-link">Batman</a>
+							</Link>
+						</li>
+
 						{/* Menu Items from groups array */}
 						{settings.groups.map(group => {
 							let liClass=`pure-menu-item`

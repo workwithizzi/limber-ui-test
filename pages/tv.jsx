@@ -3,13 +3,14 @@
 
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
-import { Layout } from '../components'
+import { Header } from '../components'
 
 
 export default function TvPage({shows}) {
 	return (
-		<Layout>
-			<h1>Batman TV Shows</h1>
+		<>
+			<Header title="Batman TV Shows" />
+
 			<ul>
 				{shows.map(show => (
 					<li key={show.id}>
@@ -19,7 +20,7 @@ export default function TvPage({shows}) {
 					</li>
 				))}
 			</ul>
-		</Layout>
+		</>
 	)
 }
 

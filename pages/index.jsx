@@ -1,28 +1,14 @@
-import { Layout } from '../components'
-import { getSettings, parseYaml } from '../utils'
+import { Header } from '../components'
 
 
-export default function DashboardPage({settings}) {
-	const data = parseYaml(settings)
-	console.log(data)
+export default function DashboardPage() {
 	return (
-		<Layout
-			title="Dashboard"
-			subtitle="Dashboard is empty"
-			settings={data}
-		>
-		</Layout>
+		<>
+			<Header
+				title="Dashboard"
+				subtitle="This is a subtitle"
+			/>
+			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
+		</>
 	)
-}
-
-
-
-// GET "limber/settings.yml" file
-DashboardPage.getInitialProps = async() => {
-	const response = await getSettings({
-		auth: {
-			username: process.env.GITHUB_PRIVATE_TOKEN,
-		},
-	})
-	return { settings: response }
 }

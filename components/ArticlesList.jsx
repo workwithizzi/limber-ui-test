@@ -3,6 +3,7 @@
 import '../styles/ArticlesList.scss'
 
 export function ArticlesList({data}) {
+	let key = Math.random(100) + 1
 	return (
 		<>
 			{(data.articles) ? (
@@ -16,8 +17,9 @@ export function ArticlesList({data}) {
 
 					<ul className="article-grid">
 						{data.articles.map(i => {
+							key++
 							return (
-								<li key={i.path} className="article-card">
+								<li key={key} className="article-card">
 									<a className="pure-g" href={i.path}>
 										<span className="card-title pure-u-2-5">{i.title}</span>
 										<span className="card-meta pure-u-1-5">{i.content_type}</span>

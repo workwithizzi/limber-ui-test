@@ -1,26 +1,23 @@
 import Head from 'next/head'
 import { SiteMeta } from './SiteMeta'
 import { Menu } from './Menu'
+import { Header } from './Header'
 
+// import settings from "../db/limber.yaml"
 
-export function Layout({ title, subtitle, children, settings }) {
+export function Layout({ settings, children }) {
 	return (
 		<>
 			<Head>
 				<SiteMeta />
 
-				<title>UI Test {title && `| `+title} </title>
+				<title>Limber UI Test</title>
 			</Head>
 			<div id="layout">
 				<Menu settings={settings} />
 
 
 				<main id="main">
-
-					<div className="override header">
-						{title && <h1>{title}</h1>}
-						{subtitle && <h2>{subtitle}</h2>}
-					</div>
 
 					<div className="content">
 						{children}
