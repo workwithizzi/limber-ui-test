@@ -4,7 +4,7 @@ import Link from "next/link"
 import data from "../db/limber.yaml"
 
 
-export function Menu() {
+export function Menu({settings}) {
 	let item=1
 	return (
 		<>
@@ -35,7 +35,7 @@ export function Menu() {
 						</li>
 
 						{/* Menu Items from groups array */}
-						{data.groups.map(group => {
+						{settings.groups.map(group => {
 							let liClass=`pure-menu-item`
 							if (item === 1) {
 								liClass=`pure-menu-item menu-item-divided`

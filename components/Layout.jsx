@@ -3,7 +3,7 @@ import { SiteMeta } from './SiteMeta'
 import { Menu } from './Menu'
 
 
-export function Layout({ title, subtitle, children }) {
+export function Layout({ title, subtitle, children, settings }) {
 	return (
 		<>
 			<Head>
@@ -12,7 +12,7 @@ export function Layout({ title, subtitle, children }) {
 				<title>UI Test {title && `| `+title} </title>
 			</Head>
 			<div id="layout">
-				<Menu />
+				<Menu settings={settings} />
 
 
 				<main id="main">

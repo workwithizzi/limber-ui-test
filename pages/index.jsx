@@ -1,26 +1,16 @@
-import jsyaml from 'js-yaml'
 import { Layout } from '../components'
-import { getSettings } from '../utils'
-
-
-function _parseYaml(file) {
-	const fileContent = file.content
-	const fromBase64ToString = window.atob(fileContent)
-	return jsyaml.load(fromBase64ToString)
-}
+import { getSettings, parseYaml } from '../utils'
 
 
 export default function DashboardPage({settings}) {
-	// const data = _parseYaml(settings)
-	// console.log(`Start Data`)
-	// console.log(data)
-	// console.log(`End Data`)
+	const data = parseYaml(settings)
+	console.log(data)
 	return (
 		<Layout
 			title="Dashboard"
 			subtitle="Dashboard is empty"
+			settings={data}
 		>
-			{/* <p>{data.site_url}</p> */}
 		</Layout>
 	)
 }
