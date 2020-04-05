@@ -1,12 +1,14 @@
 import { repo, request } from '.'
 
+// This data will eventually come from DB
+import { fakeMongo } from '../fakeMongo'
 
 export function getRepoSettings() {
 	return request({
-		url:    `/repos/${repo.GITHUB_REPO_OWNER}/${repo.GITHUB_REPO}/contents/${repo.GITHUB_LIMBER_SETTINGS_PATH}`,
+		url:    `/repos/${fakeMongo.GITHUB_REPO_OWNER}/${fakeMongo.GITHUB_REPO}/contents/${repo.GITHUB_LIMBER_SETTINGS_PATH}`,
 		method: `GET`,
 		auth: {
-			username: process.env.GITHUB_PRIVATE_TOKEN,
+			username: fakeMongo.GITHUB_AUTH_TOKEN,
 		},
 	})
 }
