@@ -1,3 +1,7 @@
+export { repo } from './constants'
+export { request } from './request'
+export { getSettings } from './getSettings'
+
 export { debug, withDebug } from './debug'
 
 export {
