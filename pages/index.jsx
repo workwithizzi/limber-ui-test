@@ -13,28 +13,30 @@ const array2 = {
 	name: `fileTwo`,
 }
 
+
 // TODO: Need to replace this with the 'config_dir from settings
 const replaceThisConst = `limber/`
 
-export default function DashboardPage({fileList, props}) {
+export default function DashboardPage({ allFiles }) {
 	const data = []
-	async function _parseContentTypes(pram) {
+	async function _parseContentTypes(fileName) {
 		// Get the data from a content-type's file
-		const rawData = await getRepo(`${replaceThisConst}${pram}`)
-		// Convert data to yaml, and add to 'data' array
+		const rawData = await getRepo(`${replaceThisConst}${fileName}`)
+		// Decode data to yaml, and add to 'data' array
 		data.push(parseYaml(rawData))
 	}
 
 	// For each file in config directory
-	fileList.map(file => {
-		_parseContentTypes(file)
+	allFiles.map(file => {
+		_parseContentTypes(file.name)
 	})
 
 	// TODO: The array is printing to the console, but I'm not able to pull an individual key/value from it.
-	console.log(data)
-	const mapData = data.map(x => x.name)
-	console.log(mapData)
+	// console.log(data)
+	// const mapData = data.map(x => x.name)
+	// console.log(mapData)
 
+	// Test Stuff
 	// const arrayData = []
 	// arrayData.push(array1)
 	// arrayData.push(array2)
@@ -64,10 +66,5 @@ export default function DashboardPage({fileList, props}) {
 DashboardPage.getInitialProps = async() => {
 	// Create an array using each config file's name
 	const allFiles = await getRepo(replaceThisConst)
-	const fileList = []
-	allFiles.map(singleFile => {
-		fileList.push(singleFile.name)
-
-	})
-	return { fileList }
+	return { allFiles }
 }
