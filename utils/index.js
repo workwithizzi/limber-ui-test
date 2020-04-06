@@ -1,6 +1,6 @@
 export { repo } from './constants'
 export { request } from './request'
-export { getRepoSettings } from './getRepoSettings'
+export { getRepo } from './getRepo'
 export { parseYaml } from './parseYaml'
 
 export { debug, withDebug } from './debug'

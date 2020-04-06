@@ -1,20 +1,6 @@
 import { Header } from '../components'
-import { repo, request, parseYaml } from '../utils'
+import { parseYaml, getRepo } from '../utils'
 
-// This data will eventually come from DB
-import { fakeMongo } from '../fakeMongo'
-
-
-// TODO: Move this to utils once it's working properly
-function _getContentTypeFile(file) {
-	return request({
-		url: `/repos/${fakeMongo.GITHUB_REPO_OWNER}/${fakeMongo.GITHUB_REPO}/contents/limber/${file}`,
-		method: `GET`,
-		auth: {
-			username: fakeMongo.GITHUB_AUTH_TOKEN,
-		},
-	})
-}
 
 
 // Demo Arrays
@@ -27,17 +13,24 @@ const array2 = {
 	name: `fileTwo`,
 }
 
+// TODO: Need to replace this with the 'config_dir from settings
+const replaceThisConst = `limber/`
 
-export default function DashboardPage({fileList}) {
+export default function DashboardPage({fileList, props}) {
 	const data = []
 	async function _parseContentTypes(pram) {
-		const rawData = await _getContentTypeFile(pram)
+		// Get the data from a content-type's file
+		const rawData = await getRepo(`${replaceThisConst}${pram}`)
+		// Convert data to yaml, and add to 'data' array
 		data.push(parseYaml(rawData))
 	}
 
+	// For each file in config directory
 	fileList.map(file => {
 		_parseContentTypes(file)
 	})
+
+	// TODO: The array is printing to the console, but I'm not able to pull an individual key/value from it.
 	console.log(data)
 	const mapData = data.map(x => x.name)
 	console.log(mapData)
@@ -66,25 +59,11 @@ export default function DashboardPage({fileList}) {
 	)
 }
 
-//- -----------------------------------------------------------------
-//- -----------------------------------------------------------------
-
-// TODO: Move this to utils once it's working properly
-function _getAllContentTypeFiles() {
-	return request({
-		url: `/repos/${fakeMongo.GITHUB_REPO_OWNER}/${fakeMongo.GITHUB_REPO}/contents/limber/`,
-		method: `GET`,
-		auth: {
-			username: fakeMongo.GITHUB_AUTH_TOKEN,
-		},
-	})
-}
-
 
 // GET "list of files in limber config directory"
 DashboardPage.getInitialProps = async() => {
-	// Create an array with from config filenames
-	const allFiles = await _getAllContentTypeFiles()
+	// Create an array using each config file's name
+	const allFiles = await getRepo(replaceThisConst)
 	const fileList = []
 	allFiles.map(singleFile => {
 		fileList.push(singleFile.name)

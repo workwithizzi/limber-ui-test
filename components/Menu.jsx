@@ -1,8 +1,5 @@
 import Link from "next/link"
 
-// Temp data for testing
-import data from "../db/limber.yaml"
-
 
 export function Menu({settings}) {
 	let item=1
