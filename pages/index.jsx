@@ -1,16 +1,54 @@
 import { Header } from '../components'
 import { repo, request, parseYaml } from '../utils'
 
+// This data will eventually come from DB
+import { fakeMongo } from '../fakeMongo'
 
-// TODO: Take the array from 'files' and map them with a request so that each file is parsed.
+
+// TODO: Move this to utils once it's working properly
+function _getContentTypeFile(file) {
+	return request({
+		url: `/repos/${fakeMongo.GITHUB_REPO_OWNER}/${fakeMongo.GITHUB_REPO}/contents/limber/${file}`,
+		method: `GET`,
+		auth: {
+			username: fakeMongo.GITHUB_AUTH_TOKEN,
+		},
+	})
+}
 
 
-export default function DashboardPage({files}) {
-	// console.log(data)
-	// data.map(type => {
+// Demo Arrays
+const array1 = {
+	name: `fileOne`,
+	path: `content/one`,
+}
+const array2 = {
+	path: `content/two`,
+	name: `fileTwo`,
+}
 
-	// 	console.log(type.name)
-	// })
+
+export default function DashboardPage({fileList}) {
+	const data = []
+	async function _parseContentTypes(pram) {
+		const rawData = await _getContentTypeFile(pram)
+		data.push(parseYaml(rawData))
+	}
+
+	fileList.map(file => {
+		_parseContentTypes(file)
+	})
+	console.log(data)
+	const mapData = data.map(x => x.name)
+	console.log(mapData)
+
+	// const arrayData = []
+	// arrayData.push(array1)
+	// arrayData.push(array2)
+	// console.log(arrayData)
+	// const mapArrayData = arrayData.map(x => x.name)
+	// console.log(mapArrayData)
+
 	return (
 		<>
 			<Header
@@ -18,18 +56,21 @@ export default function DashboardPage({files}) {
 				subtitle="This is a subtitle"
 			/>
 			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
+			{data.map(type => {
+				return (
+					<p key={type.label}>{type.label}</p>
+				)
+			})}
 
 		</>
 	)
 }
 
+//- -----------------------------------------------------------------
+//- -----------------------------------------------------------------
 
-// This data will eventually come from DB
-import { fakeMongo } from '../fakeMongo'
-
-
-
-function _getContentTypes() {
+// TODO: Move this to utils once it's working properly
+function _getAllContentTypeFiles() {
 	return request({
 		url: `/repos/${fakeMongo.GITHUB_REPO_OWNER}/${fakeMongo.GITHUB_REPO}/contents/limber/`,
 		method: `GET`,
@@ -40,16 +81,14 @@ function _getContentTypes() {
 }
 
 
-
 // GET "list of files in limber config directory"
 DashboardPage.getInitialProps = async() => {
-	const response = await _getContentTypes()
+	// Create an array with from config filenames
+	const allFiles = await _getAllContentTypeFiles()
+	const fileList = []
+	allFiles.map(singleFile => {
+		fileList.push(singleFile.name)
 
-	const files = []
-	response.map(type => {
-		files.push(type.name)
-		// console.log(type.name)
 	})
-	// console.log(files)
-	return { files }
+	return { fileList }
 }
