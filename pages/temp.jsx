@@ -1,25 +1,36 @@
 import { Header } from '../components'
-import { parseYaml, getRepo } from '../utils'
+import { parseYaml, getRepo, SimpleDebug } from '../utils'
+import React, { useState, useEffect } from 'react'
+
 
 // TODO: Replace w/ 'config_dir' from settings
 const replaceThisConst = `limber/`
 
 
-export default function TempPage({ allFiles }) {
-	const data = []
-	async function _parseContentTypes(fileName) {
-		// Get the data from a content-type's file
-		const rawData = await getRepo(`${replaceThisConst}${fileName}`)
-		// Add decoded data to 'data' array
-		data.push(parseYaml(rawData))
+export default function DashboardPage({ _filesList }) {
+	const [content, setContent] = useState([])
+	const _tempArray = []
+
+	useEffect(() => {
+		_getData()
+	}, [])
+
+	async function _getData() {
+		return Promise.all(
+			// Loop through list of files in config directory
+			_filesList.map(async file => {
+				// GET the encoded data for each file
+				const _encodedData = await getRepo(`${replaceThisConst}${file.name}`)
+				return new Promise(resolve => {
+					// Decode data + add data to the array
+					resolve(_tempArray.push(parseYaml(_encodedData)))
+				})
+			})
+		).finally(() => {
+			setContent(_tempArray)
+		})
 	}
 
-	// For each file in config directory
-	allFiles.map(file => {
-		_parseContentTypes(file.name)
-	})
-
-	// console.log(data)
 
 	return (
 		<>
@@ -28,20 +39,23 @@ export default function TempPage({ allFiles }) {
 				subtitle="This is a subtitle"
 			/>
 			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
-			{data.map(type => {
+			{/* Just testing here. */}
+			{content.map(type => {
 				return (
 					<p key={type.label}>{type.label}</p>
 				)
 			})}
-
+			{
+				<SimpleDebug>{content}</SimpleDebug>
+			}
 		</>
 	)
 }
 
 
-// GET "list of files in limber config directory"
-TempPage.getInitialProps = async() => {
-	// Create an array using each config file's name
-	const allFiles = await getRepo(replaceThisConst)
-	return { allFiles }
+// GET list of files in limber config directory
+// and add them to the 'allFiles' array to be used by page component
+DashboardPage.getInitialProps = async() => {
+	const _filesList = await getRepo(replaceThisConst)
+	return { _filesList }
 }
