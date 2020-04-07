@@ -10,32 +10,26 @@ const replaceThisConst = `limber/`
 export default function DashboardPage({ allFiles }) {
 	const [content, setContent] = useState([])
 
+	// Make the finished 'data' array available
+	// to component as 'content' array
 	useEffect(() => {
-		// executed only when there's a FULLFILLED RESULT from
-		// the async function _parseContentTypes
 		_getData()
 			.finally(() => {
-				const mapData = data.map(x => x.name)
-				setContent(mapData)
+				setContent(data)
 			})
 	}, [])
 
 	const data = []
 
+	// Get data from a single config file, decode it, add to 'data' array
 	async function _parseContentTypes(fileName) {
 		const rawData = await getRepo(`${replaceThisConst}${fileName}`)
-		// as far as we are AWAITING the rawData, we need to RESOLVE a promise off of it
 		return new Promise(resolve => {
-			// inside of a promise we can perform ASYNC operations
-			// as far as rawData is a Promise we should handle
-			// data.push(parseYaml(rawData)) accordingly
-
-			// Add decoded data to 'data' array
 			resolve(data.push(parseYaml(rawData)))
 		})
 	}
 
-	// async function that resolves the promises from the allFiles.map()
+	// Resolves promise from the allFiles.map(),
 	// and returns data if ALL promises returned data
 	const _getData = async() => {
 		return Promise.all(
@@ -44,6 +38,11 @@ export default function DashboardPage({ allFiles }) {
 			})
 		)
 	}
+
+	// Test finished array
+	const testArray = content.map(x => x.label)
+	console.log(`--Labels--`)
+	console.log(testArray)
 
 	return (
 		<>
@@ -65,9 +64,9 @@ export default function DashboardPage({ allFiles }) {
 }
 
 
-// GET "list of files in limber config directory"
+// GET list of files in limber config directory
+// and add them to the 'allFiles' array to be used by page component
 DashboardPage.getInitialProps = async() => {
-	// Create an array using each config file's name
 	const allFiles = await getRepo(replaceThisConst)
 	return { allFiles }
 }
