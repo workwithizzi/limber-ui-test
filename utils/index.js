@@ -3,7 +3,7 @@ export { request } from './request'
 export { getRepo } from './getRepo'
 export { parseYaml } from './parseYaml'
 
-export { debug, withDebug } from './debug'
+export { SimpleDebug, debug, withDebug } from './debug'
 
 export {
 	lowerCase,
