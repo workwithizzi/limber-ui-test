@@ -17,8 +17,6 @@ export function request(options) {
 	// Handle Success
 	const onSuccess = function(response) {
 		// console.debug(`Request Successful!`, response)
-		console.debug(`Request Successful!`)
-		// console.debug(response)
 		return response.data
 	}
 

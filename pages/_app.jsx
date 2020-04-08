@@ -1,7 +1,7 @@
 import React from 'react'
 import App from 'next/app'
 import { Layout } from '../components'
-import { repo, getRepo, parseYaml } from '../utils'
+import { repo, getRepoData } from '../utils'
 
 
 // Global styles
@@ -16,7 +16,7 @@ export default class MyApp extends App {
 			pageProps = await Component.getInitialProps(ctx)
 		}
 		// Get project settings from Github repo using API
-		const _settings = await getRepo(repo.GITHUB_LIMBER_SETTINGS_PATH)
+		const _settings = await getRepoData(repo.GITHUB_LIMBER_SETTINGS_PATH, `parse`)
 
 		return {
 			pageProps,
@@ -31,18 +31,15 @@ export default class MyApp extends App {
 			_settings,
 		} = this.props
 
-		// Convert repo settings from yaml into js object
-		const _parsedSettings = parseYaml(_settings)
-
 		return (
 			<Layout
-				// Pass _parsedSettings through 'Layout' to 'Menu'
-				settings={_parsedSettings}
+				// Pass _settings through 'Layout' to 'Menu'
+				settings={_settings}
 				{...pageProps}
 			>
 				<Component
-					// Make _parsedSettings available to pages
-					settings={_parsedSettings}
+					// Make _settings available to pages
+					settings={_settings}
 					{...pageProps}
 				/>
 			</Layout>

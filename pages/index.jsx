@@ -1,10 +1,10 @@
 import { Header } from '../components'
-import { parseYaml, getRepo, SimpleDebug } from '../utils'
+import { getRepoData, SimpleDebug } from '../utils'
 import React, { useState, useEffect } from 'react'
 
 
 // TODO: Replace w/ 'config_dir' from settings
-const replaceThisConst = ``
+const replaceThisConst = `/limber`
 
 
 export default function DashboardPage({ _filesList }) {
@@ -12,37 +12,24 @@ export default function DashboardPage({ _filesList }) {
 	const _tempArray = []
 
 	useEffect(() => {
-		_getData()
+		_combineContentTypesData()
 	}, [])
 
-	async function _getData() {
+	async function _combineContentTypesData() {
 		return Promise.all(
 			// Loop through list of files in config directory
 			_filesList.map(async file => {
 				// GET the encoded data for each file
-				const _encodedData = await getRepo(`/limber/${file.name}`)
+				const _encodedData = await getRepoData(`${replaceThisConst}/${file.name}`, `parse`)
 				return new Promise(resolve => {
 					// Decode data + add data to the array
-					resolve(_tempArray.push(parseYaml(_encodedData)))
+					resolve(_tempArray.push(_encodedData))
 				})
 			})
 		).finally(() => {
 			setContent(_tempArray)
 		})
-		// ALTERNATIVE: Christian's Idea using concat
-		// return Promise.all(
-		// 	// Loop through list of files in config directory
-		// 	_filesList.map(async file => {
-		// 		// GET the encoded data for each file
-		// 		const _encodedData = await getRepo(`${replaceThisConst}${file.name}`)
-		// 		return new Promise(resolve => {
-		// 			setContent(content.concat(parseYaml(_encodedData)))
-		// 		})
-		// 	})
-		// )
 	}
-
-	console.log(_filesList)
 
 	return (
 		<>
@@ -68,6 +55,22 @@ export default function DashboardPage({ _filesList }) {
 // GET list of files in limber config directory
 // and add them to the 'allFiles' array to be used by page component
 DashboardPage.getInitialProps = async() => {
-	const _filesList = await getRepo(`/limber`)
+	const _filesList = await getRepoData(replaceThisConst)
 	return { _filesList }
 }
+
+
+//- -----------------------------------------------------------------
+//- -----------------------------------------------------------------
+
+// ALTERNATIVE: Christian's Idea using concat
+// return Promise.all(
+// 	// Loop through list of files in config directory
+// 	_filesList.map(async file => {
+// 		// GET the encoded data for each file
+// 		const _encodedData = await getRepo(`${replaceThisConst}${file.name}`)
+// 		return new Promise(resolve => {
+// 			setContent(content.concat(parseYaml(_encodedData)))
+// 		})
+// 	})
+// )

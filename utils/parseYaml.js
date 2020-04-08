@@ -1,10 +1,19 @@
 import jsyaml from 'js-yaml'
 import { atob } from 'abab'
 
+// Original way that I was parsing
+// export function parseYaml(file) {
+// 	const fromBase64ToString = atob(file.content)
+// 	return jsyaml.load(fromBase64ToString)
+// }
+
 
 export function parseYaml(file) {
-	const fileContent = file.content
-	// const fromBase64ToString = window.atob(fileContent)
-	const fromBase64ToString = atob(fileContent)
+	if (!file.content) {
+		console.warn(`The content wasn't provided.`)
+		return {}
+	}
+	const buff = Buffer.from(file.content, `base64`)
+	const fromBase64ToString = buff.toString(`ascii`)
 	return jsyaml.load(fromBase64ToString)
 }
