@@ -1,48 +1,48 @@
 import { Header } from '../components'
-import { parseYaml, getRepo } from '../utils'
+import { parseYaml, getRepo, SimpleDebug } from '../utils'
 import React, { useState, useEffect } from 'react'
 
 
 // TODO: Replace w/ 'config_dir' from settings
-const replaceThisConst = `limber/`
+const replaceThisConst = ``
 
 
-export default function DashboardPage({ allFiles }) {
+export default function DashboardPage({ _filesList }) {
 	const [content, setContent] = useState([])
+	const _tempArray = []
 
-	// Make the finished 'data' array available
-	// to component as 'content' array
 	useEffect(() => {
 		_getData()
-			.finally(() => {
-				setContent(data)
-			})
 	}, [])
 
-	const data = []
-
-	// Get data from a single config file, decode it, add to 'data' array
-	async function _parseContentTypes(fileName) {
-		const rawData = await getRepo(`${replaceThisConst}${fileName}`)
-		return new Promise(resolve => {
-			resolve(data.push(parseYaml(rawData)))
-		})
-	}
-
-	// Resolves promise from the allFiles.map(),
-	// and returns data if ALL promises returned data
-	const _getData = async() => {
+	async function _getData() {
 		return Promise.all(
-			allFiles.map(async file => {
-				await _parseContentTypes(file.name)
+			// Loop through list of files in config directory
+			_filesList.map(async file => {
+				// GET the encoded data for each file
+				const _encodedData = await getRepo(`/limber/${file.name}`)
+				return new Promise(resolve => {
+					// Decode data + add data to the array
+					resolve(_tempArray.push(parseYaml(_encodedData)))
+				})
 			})
-		)
+		).finally(() => {
+			setContent(_tempArray)
+		})
+		// ALTERNATIVE: Christian's Idea using concat
+		// return Promise.all(
+		// 	// Loop through list of files in config directory
+		// 	_filesList.map(async file => {
+		// 		// GET the encoded data for each file
+		// 		const _encodedData = await getRepo(`${replaceThisConst}${file.name}`)
+		// 		return new Promise(resolve => {
+		// 			setContent(content.concat(parseYaml(_encodedData)))
+		// 		})
+		// 	})
+		// )
 	}
 
-	// Test finished array
-	const testArray = content.map(x => x.label)
-	console.log(`--Labels--`)
-	console.log(testArray)
+	console.log(_filesList)
 
 	return (
 		<>
@@ -51,13 +51,14 @@ export default function DashboardPage({ allFiles }) {
 				subtitle="This is a subtitle"
 			/>
 			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
-			{data.map(type => {
+			{/* Just testing here. */}
+			{content.map(type => {
 				return (
 					<p key={type.label}>{type.label}</p>
 				)
 			})}
 			{
-				<pre>{JSON.stringify(content)}</pre>
+				<SimpleDebug>{content}</SimpleDebug>
 			}
 		</>
 	)
@@ -67,6 +68,6 @@ export default function DashboardPage({ allFiles }) {
 // GET list of files in limber config directory
 // and add them to the 'allFiles' array to be used by page component
 DashboardPage.getInitialProps = async() => {
-	const allFiles = await getRepo(replaceThisConst)
-	return { allFiles }
+	const _filesList = await getRepo(`/limber`)
+	return { _filesList }
 }

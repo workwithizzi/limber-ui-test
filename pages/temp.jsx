@@ -4,50 +4,21 @@ import React, { useState, useEffect } from 'react'
 
 
 // TODO: Replace w/ 'config_dir' from settings
-const replaceThisConst = `limber/`
+const replaceThisConst = ``
 
 
-export default function DashboardPage({ _filesList }) {
-	const [content, setContent] = useState([])
-	const _tempArray = []
+export default function TempPage({ _data }) {
 
-	useEffect(() => {
-		_getData()
-	}, [])
-
-	async function _getData() {
-		return Promise.all(
-			// Loop through list of files in config directory
-			_filesList.map(async file => {
-				// GET the encoded data for each file
-				const _encodedData = await getRepo(`${replaceThisConst}${file.name}`)
-				return new Promise(resolve => {
-					// Decode data + add data to the array
-					resolve(_tempArray.push(parseYaml(_encodedData)))
-				})
-			})
-		).finally(() => {
-			setContent(_tempArray)
-		})
-	}
-
+	console.log(_data)
 
 	return (
 		<>
 			<Header
-				title="Dashboard"
-				subtitle="This is a subtitle"
+				title="TempPage"
+				subtitle="This is a testing page"
 			/>
-			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
-			{/* Just testing here. */}
-			{content.map(type => {
-				return (
-					<p key={type.label}>{type.label}</p>
-				)
-			})}
-			{
-				<SimpleDebug>{content}</SimpleDebug>
-			}
+			<pre>This is the page content.</pre>
+			<SimpleDebug>{_data}</SimpleDebug>
 		</>
 	)
 }
@@ -55,7 +26,7 @@ export default function DashboardPage({ _filesList }) {
 
 // GET list of files in limber config directory
 // and add them to the 'allFiles' array to be used by page component
-DashboardPage.getInitialProps = async() => {
-	const _filesList = await getRepo(replaceThisConst)
-	return { _filesList }
+TempPage.getInitialProps = async() => {
+	const _data = await getRepo(`/limber`)
+	return { _data }
 }

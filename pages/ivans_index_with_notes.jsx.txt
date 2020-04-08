@@ -15,7 +15,7 @@ const array2 = {
 
 
 // TODO: Replace w/ 'config_dir' from settings
-const replaceThisConst = `limber/`
+const replaceThisConst = `/limber`
 
 export default function DashboardPage({ allFiles }) {
 

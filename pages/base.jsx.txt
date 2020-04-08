@@ -1,0 +1,8 @@
+
+export default function BasePage() {
+	return (
+		<>
+			<pre>This is a temporary page with nothing special to use for testing.</pre>
+		</>
+	)
+}
