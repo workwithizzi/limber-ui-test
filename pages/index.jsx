@@ -6,29 +6,34 @@ import React, { useState, useEffect } from 'react'
 const replaceThisConst = `/limber`
 
 
-export default function DashboardPage({ contentTypes }) {
-	const [content, setContent] = useState([])
-	const _tempArray = []
+export default function DashboardPage({ content }) {
 
-	useEffect(() => {
-		_combineContentTypesData()
-	}, [])
+	/**
+	 * MOVED to the `_app.jsx`
+	 */
 
-	async function _combineContentTypesData() {
-		return Promise.all(
-			// Loop through list of files in config directory
-			contentTypes.map(async file => {
-				// GET the encoded data for each file
-				const _encodedData = await getRepoData(`${replaceThisConst}/${file.name}`, `parse`)
-				return new Promise(resolve => {
-					// Decode data + add data to the array
-					resolve(_tempArray.push(_encodedData))
-				})
-			})
-		).finally(() => {
-			setContent(_tempArray)
-		})
-	}
+	// const [content, setContent] = useState([])
+	// const _tempArray = []
+
+	// useEffect(() => {
+	// 	_combineContentTypesData()
+	// }, [])
+
+	// async function _combineContentTypesData() {
+	// 	return Promise.all(
+	// 		// Loop through list of files in config directory
+	// 		contentTypes.map(async file => {
+	// 			// GET the encoded data for each file
+	// 			const _encodedData = await getRepoData(`${replaceThisConst}/${file.name}`, `parse`)
+	// 			return new Promise(resolve => {
+	// 				// Decode data + add data to the array
+	// 				resolve(_tempArray.push(_encodedData))
+	// 			})
+	// 		})
+	// 	).finally(() => {
+	// 		setContent(_tempArray)
+	// 	})
+	// }
 
 
 	//- ------------------------------------
