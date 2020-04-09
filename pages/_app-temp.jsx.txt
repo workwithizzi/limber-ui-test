@@ -20,24 +20,25 @@ export default class MyApp extends App {
 		// Get project settings from Github repo using API
 		const _settings = await getRepoData(repo.GITHUB_LIMBER_SETTINGS_PATH, `parse`)
 
-		// GET encoded array of contentTypes files
-		const _contentTypes = await getRepoData(replaceThisConst)
+
+		// GET list of files in limber config directory
+		const _filesList = await getRepoData(replaceThisConst)
+
 
 		return {
 			pageProps,
 			path: ctx.asPath,
 			_settings,
-			_contentTypes,
 		}
 	}
 
 	render() {
+
 		const {
 			Component,
 			pageProps,
 			path,
 			_settings,
-			_contentTypes,
 		} = this.props
 
 		return (
@@ -50,7 +51,6 @@ export default class MyApp extends App {
 				<Component
 					// Make _settings available to pages
 					settings={_settings}
-					contentTypes={_contentTypes}
 					path={path}
 					{...pageProps}
 				/>

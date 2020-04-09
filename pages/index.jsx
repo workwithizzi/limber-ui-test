@@ -1,5 +1,5 @@
 import { Header } from '../components'
-import { getRepoData, SimpleDebug } from '../utils'
+import { getRepoData, SimpleDebug, parseYaml } from '../utils'
 import React, { useState, useEffect } from 'react'
 
 
@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 const replaceThisConst = `/limber`
 
 
-export default function DashboardPage({ _filesList }) {
+export default function DashboardPage({ contentTypes }) {
 	const [content, setContent] = useState([])
 	const _tempArray = []
 
@@ -18,7 +18,7 @@ export default function DashboardPage({ _filesList }) {
 	async function _combineContentTypesData() {
 		return Promise.all(
 			// Loop through list of files in config directory
-			_filesList.map(async file => {
+			contentTypes.map(async file => {
 				// GET the encoded data for each file
 				const _encodedData = await getRepoData(`${replaceThisConst}/${file.name}`, `parse`)
 				return new Promise(resolve => {
@@ -31,6 +31,10 @@ export default function DashboardPage({ _filesList }) {
 		})
 	}
 
+	// console.log(contentTypes)
+	// const mapData = contentTypes.map(x => x.label)
+	// console.log(mapData)
+
 	return (
 		<>
 			<Header
@@ -39,25 +43,25 @@ export default function DashboardPage({ _filesList }) {
 			/>
 			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
 			{/* Just testing here. */}
-			{content.map(type => {
+			{/* {content.map(type => {
 				return (
 					<p key={type.label}>{type.label}</p>
 				)
-			})}
-			{
-				<SimpleDebug>{content}</SimpleDebug>
-			}
+			})} */}
+
+			<SimpleDebug label="content">{content}</SimpleDebug>
+
 		</>
 	)
 }
 
 
 // GET list of files in limber config directory
-// and add them to the 'allFiles' array to be used by page component
-DashboardPage.getInitialProps = async() => {
-	const _filesList = await getRepoData(replaceThisConst)
-	return { _filesList }
-}
+// and add them to the '_filesList' array to be used by page component
+// DashboardPage.getInitialProps = async() => {
+// 	const _filesList = await getRepoData(replaceThisConst)
+// 	return { _filesList }
+// }
 
 
 //- -----------------------------------------------------------------

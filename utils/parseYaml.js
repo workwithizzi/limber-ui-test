@@ -15,5 +15,5 @@ export function parseYaml(file) {
 	}
 	const buff = Buffer.from(file.content, `base64`)
 	const fromBase64ToString = buff.toString(`ascii`)
-	return jsyaml.load(fromBase64ToString)
+	return jsyaml.safeLoad(fromBase64ToString)
 }
