@@ -1,7 +1,6 @@
 import { Header } from '../components'
-import { getRepoData, SimpleDebug, parseYaml } from '../utils'
+import { getRepoData, SimpleDebug } from '../utils'
 import React, { useState, useEffect } from 'react'
-
 
 // TODO: Replace w/ 'config_dir' from settings
 const replaceThisConst = `/limber`
@@ -31,9 +30,50 @@ export default function DashboardPage({ contentTypes }) {
 		})
 	}
 
-	// console.log(contentTypes)
-	// const mapData = contentTypes.map(x => x.label)
-	// console.log(mapData)
+
+	//- ------------------------------------
+	// Just testing ideas for creating the menu/links
+
+	// Get an array of unique groups
+	const _groupsList = []
+	function _getGroupsList() {
+		content.map(i => {
+			if (i.group && !_groupsList.includes(i.group)) {
+				return _groupsList.push(i.group)
+			}
+		})
+	}
+	_getGroupsList()
+
+	// Get an array of content-types that aren't in groups
+	const _typesList = []
+	function _getTypesList() {
+		content.map(i => {
+			if (!i.group && !_typesList.includes(i.label)) {
+				return _typesList.push(i.label)
+			}
+		})
+	}
+	_getTypesList()
+
+	// Combine arrays to get the full menu display
+	const _menuItems = _groupsList.concat(_typesList)
+
+	// Get an array of content types organized  by their groups
+	const _groupTypes = []
+	function _getGroupTypes() {
+		_groupsList.map(group => {
+			const _groupChildren = []
+			content.map(type => {
+				if (group === type.group) {
+					return _groupChildren.push(type.label)
+				}
+			})
+			return _groupTypes.push(group, _groupChildren)
+		})
+	}
+	_getGroupTypes()
+
 
 	return (
 		<>
@@ -41,40 +81,16 @@ export default function DashboardPage({ contentTypes }) {
 				title="Dashboard"
 				subtitle="This is a subtitle"
 			/>
-			<pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre>
-			{/* Just testing here. */}
-			{/* {content.map(type => {
-				return (
-					<p key={type.label}>{type.label}</p>
-				)
-			})} */}
+			<SimpleDebug label="Unique Groups">{_groupsList}</SimpleDebug>
+			<SimpleDebug label="Content Types (not in a group)">{_typesList}</SimpleDebug>
+			<SimpleDebug label="Menu Items">{_menuItems}</SimpleDebug>
+			<SimpleDebug label="Content Types (in their group)">{_groupTypes}</SimpleDebug>
 
-			<SimpleDebug label="content">{content}</SimpleDebug>
+			{/* <SimpleDebug label="content">{content}</SimpleDebug> */}
 
 		</>
 	)
 }
 
 
-// GET list of files in limber config directory
-// and add them to the '_filesList' array to be used by page component
-// DashboardPage.getInitialProps = async() => {
-// 	const _filesList = await getRepoData(replaceThisConst)
-// 	return { _filesList }
-// }
-
-
-//- -----------------------------------------------------------------
-//- -----------------------------------------------------------------
-
-// ALTERNATIVE: Christian's Idea using concat
-// return Promise.all(
-// 	// Loop through list of files in config directory
-// 	_filesList.map(async file => {
-// 		// GET the encoded data for each file
-// 		const _encodedData = await getRepo(`${replaceThisConst}${file.name}`)
-// 		return new Promise(resolve => {
-// 			setContent(content.concat(parseYaml(_encodedData)))
-// 		})
-// 	})
-// )
+{/* <pre>This is where we'll eventually have some shortcuts, and maybe some analytics and other dashboard-type things.</pre> */}
