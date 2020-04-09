@@ -5,7 +5,7 @@ import { Header } from './Header'
 
 // import settings from "../db/limber.yaml"
 
-export function Layout({ settings, children }) {
+export function Layout({ repoSettings, children }) {
 	return (
 		<>
 			<Head>
@@ -14,7 +14,7 @@ export function Layout({ settings, children }) {
 				<title>Limber UI Test</title>
 			</Head>
 			<div id="layout">
-				<Menu settings={settings} />
+				<Menu repoSettings={repoSettings} />
 
 
 				<main id="main">

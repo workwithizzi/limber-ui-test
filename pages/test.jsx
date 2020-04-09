@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 const replaceThisConst = `/limber`
 
 
-export default function TempPage({ contentTypes }) {
+export default function TestPage({ allContentTypes }) {
 	const [content, setContent] = useState([])
 	const _tempArray = []
 
@@ -18,7 +18,7 @@ export default function TempPage({ contentTypes }) {
 	async function _combineContentTypesData() {
 		return Promise.all(
 			// Loop through list of files in config directory
-			contentTypes.map(async file => {
+			allContentTypes.map(async file => {
 				// GET the encoded data for each file
 				const _encodedData = await getRepoData(`${replaceThisConst}/${file.name}`, `parse`)
 				return new Promise(resolve => {

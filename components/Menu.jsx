@@ -1,8 +1,8 @@
 import Link from "next/link"
 
 
-export function Menu({settings}) {
-	let item=1
+export function Menu({repoSettings}) {
+	const item=1
 	return (
 		<>
 			{/* Menu toggle */}
@@ -39,23 +39,23 @@ export function Menu({settings}) {
 						</li>
 
 						{/* Menu Items from groups array */}
-						{settings.groups.map(group => {
+						{/* {repoSettings.groups.map(group => {
 							let liClass=`pure-menu-item`
 							if (item === 1) {
 								liClass=`pure-menu-item menu-item-divided`
 							}
 							item++
 							return (
-								<li className={liClass} key={group.label}>
-									{/* <Link href="/groups/[id]" as={`/groups/${group.path}`}>
+								<li className={liClass} key={group.label}> */}
+						{/* <Link href="/groups/[id]" as={`/groups/${group.path}`}>
 										<a className="pure-menu-link">{group.label}</a>
 									</Link> */}
-									<Link href={`/group?group=${group.label}`}>
+						{/* <Link href={`/group?group=${group.label}`}>
 										<a className="pure-menu-link">{group.label}</a>
 									</Link>
 								</li>
 							)
-						})}
+						})} */}
 					</ul>
 				</div>
 			</div>

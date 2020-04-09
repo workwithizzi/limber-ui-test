@@ -14,7 +14,7 @@ const _testOptions=[{
 
 
 export default function SettingsPage(props) {
-	const { settings } = props
+	const { repoSettings } = props
 
 	return (
 		<>
@@ -25,40 +25,40 @@ export default function SettingsPage(props) {
 
 			<Form title="Testing Settings">
 
-				{settings.site_url &&
+				{repoSettings.site_url &&
 					<Textfield
 						name="site_url"
 						label="Site URL"
 						// placeholder="Write text here."
-						defaultValue={settings.site_url}
+						defaultValue={repoSettings.site_url}
 						hint="Add the URL for your production site."
 						required
 					/>
 				}
-				{settings.site_title &&
+				{repoSettings.site_title &&
 					<Textfield
 						name="site_title"
 						label="Site Title"
 						// placeholder="Write text here."
-						defaultValue={settings.site_title}
+						defaultValue={repoSettings.site_title}
 						hint="The site title is used for things like metadata and for display purposes throughout the CMS."
 					/>
 				}
-				{settings.logo_path &&
+				{repoSettings.logo_path &&
 				<Textfield
 					name="logo_path"
 					label="Logo"
 					// placeholder="Write text here."
-					defaultValue={settings.logo_path}
+					defaultValue={repoSettings.logo_path}
 					hint="Enter the path or URL to your site's logo."
 				/>
 				}
-				{settings.favicon_path &&
+				{repoSettings.favicon_path &&
 				<Textfield
 					name="favicon_path"
 					label="Favicon"
 					// placeholder="Write text here."
-					defaultValue={settings.favicon_path}
+					defaultValue={repoSettings.favicon_path}
 					hint="Enter the path or URL to your site's favicon."
 				/>
 				}

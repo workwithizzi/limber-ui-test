@@ -17,8 +17,50 @@ import { useRouter } from 'next/router'
 import { Header, ArticleCreate, ArticlesList } from '../components'
 
 // Temp data for testing
-// import settings from '../db/limber.yaml'
-import demo from '../db/demo/pages.yaml'
+const demo = {
+	content_types: [
+		{
+			label: `Home Page`,
+			name: `index`,
+		},
+		{
+			label: `Default Page`,
+			name: `default-page`,
+		},
+		{
+			label: `Contact Page`,
+			name: `contact-page`,
+		},
+	],
+	articles: [
+		{
+			title: `Home`,
+			content_type: `Home Page`,
+			status: `Published`,
+			date: `03/25/20`,
+			path: `#`,
+		},{
+			title: `About Us`,
+			content_type: `Default Page`,
+			status: `Published`,
+			date: `03/22/20`,
+			path: `#`,
+		},{
+			title: `About Us`,
+			content_type: `Default Page`,
+			status: `Draft`,
+			date: `03/20/20`,
+			path: `#`,
+		},{
+			title: `Contact`,
+			content_type: `Contact Page`,
+			status: `Published`,
+			date: `03/22/20`,
+			path: `#`,
+		},
+	],
+}
+
 
 
 export default function GroupsPage(props) {
