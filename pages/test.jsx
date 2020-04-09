@@ -3,11 +3,7 @@ import { getRepoData, SimpleDebug, parseYaml } from '../utils'
 import React, { useState, useEffect } from 'react'
 
 
-// TODO: Replace w/ 'config_dir' from settings
-const replaceThisConst = `/limber`
-
-
-export default function TestPage({ allContentTypes }) {
+export default function TestPage({ allContentTypes, repoSettings }) {
 	const [content, setContent] = useState([])
 	const _tempArray = []
 
@@ -20,7 +16,7 @@ export default function TestPage({ allContentTypes }) {
 			// Loop through list of files in config directory
 			allContentTypes.map(async file => {
 				// GET the encoded data for each file
-				const _encodedData = await getRepoData(`${replaceThisConst}/${file.name}`, `parse`)
+				const _encodedData = await getRepoData(`/${repoSettings.config_path}/${file.name}`, `parse`)
 				return new Promise(resolve => {
 					// Decode data + add data to the array
 					resolve(_tempArray.push(_encodedData))
