@@ -58,12 +58,12 @@ export default function DashboardPage({ allContentTypes }) {
 				title="Dashboard"
 				subtitle="This is a subtitle"
 			/>
-			{/* <SimpleDebug label="Unique Groups">{_groupsList}</SimpleDebug>
+			<SimpleDebug label="Unique Groups">{_groupsList}</SimpleDebug>
 			<SimpleDebug label="Content Types (not in a group)">{_typesList}</SimpleDebug>
 			<SimpleDebug label="Menu Items">{_menuItems}</SimpleDebug>
-			<SimpleDebug label="Content Types (in their group)">{_groupTypes}</SimpleDebug> */}
+			<SimpleDebug label="Content Types (in their group)">{_groupTypes}</SimpleDebug>
 
-			<SimpleDebug label="content">{allContentTypes}</SimpleDebug>
+			{/* <SimpleDebug label="content">{allContentTypes}</SimpleDebug> */}
 
 		</>
 	)

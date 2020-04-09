@@ -1,8 +1,35 @@
 import Link from "next/link"
 
 
-export function Menu({repoSettings}) {
-	const item=1
+export function Menu({repoSettings, allContentTypes}) {
+	let groupKey = 1
+	let typesKey = 1
+
+	// Create an array of unique groups
+	const _groupsList = []
+	function _createGroupsList() {
+		allContentTypes.map(i => {
+			if (i.group && !_groupsList.includes(i.group)) {
+				return _groupsList.push(i.group)
+			}
+		})
+	}
+	_createGroupsList()
+
+	// Create an array of content-types that aren't in groups
+	const _soloTypesList = []
+	function _createSoloTypesList() {
+		allContentTypes.map(i => {
+			if (!i.group && !_soloTypesList.includes(i.label)) {
+				return _soloTypesList.push(i.label)
+			}
+		})
+	}
+	_createSoloTypesList()
+
+
+	// const mapData = allContentTypes.map(x => x.name)
+	// console.log(mapData)
 	return (
 		<>
 			{/* Menu toggle */}
@@ -31,31 +58,37 @@ export function Menu({repoSettings}) {
 							</Link>
 						</li>
 
-						{/* Temp Page */}
-						<li className="pure-menu-item">
-							<Link href="/tv">
-								<a className="pure-menu-link">Batman</a>
-							</Link>
-						</li>
-
 						{/* Menu Items from groups array */}
-						{/* {repoSettings.groups.map(group => {
+						{_groupsList.map(i => {
 							let liClass=`pure-menu-item`
-							if (item === 1) {
+							if (groupKey === 1) {
 								liClass=`pure-menu-item menu-item-divided`
 							}
-							item++
+							groupKey++
 							return (
-								<li className={liClass} key={group.label}> */}
-						{/* <Link href="/groups/[id]" as={`/groups/${group.path}`}>
-										<a className="pure-menu-link">{group.label}</a>
-									</Link> */}
-						{/* <Link href={`/group?group=${group.label}`}>
-										<a className="pure-menu-link">{group.label}</a>
+								<li className={liClass} key={i}>
+									<Link href={`/articles?group=${i}`}>
+										<a className="pure-menu-link">{i}</a>
 									</Link>
 								</li>
 							)
-						})} */}
+						})}
+
+						{/* Menu Items from solo content-types array */}
+						{_soloTypesList.map(i => {
+							let liClass=`pure-menu-item`
+							if (typesKey === 1) {
+								liClass=`pure-menu-item menu-item-divided`
+							}
+							typesKey++
+							return (
+								<li className={liClass} key={i}>
+									<Link href={`/articles?type=${i}`}>
+										<a className="pure-menu-link">{i}</a>
+									</Link>
+								</li>
+							)
+						})}
 					</ul>
 				</div>
 			</div>

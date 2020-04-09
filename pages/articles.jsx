@@ -63,38 +63,35 @@ const demo = {
 
 
 
-export default function GroupsPage(props) {
+export default function ArticlesPage({repoSettings, allContentTypes}) {
 	const router = useRouter()
-	const { settings } = props
+
+	// Just using this for testing
+	let title
+	let subtitle
+	if (router.query.group) {
+		title = router.query.group
+		subtitle = `This is the ${router.query.group} group.`
+	} else if (router.query.type) {
+		title = router.query.type
+		subtitle = `This is the ${router.query.type} content-type.`
+	}
 
 	return (
 		<>
-			{settings.groups.map(group => {
-				if (group.label === router.query.group) {
-					return (
-						<React.Fragment key={group.label}>
-							<Header
-								title={group.label}
-								subtitle={group.description}
-							/>
+			<Header
+				title={title}
+				subtitle={subtitle}
+			/>
+			{/* This 'Add New' button would show a dropdown of all content
+			types in the current group or if there's only one content-type,
+			it wouldn't be a dropdown, just a button. */}
+			<ArticleCreate data={demo} />
 
-							{group.content_types.map(type => {
-								return (
-									<p key={type.label}>{type.label}</p>
-								)
-							})}
-
-							{/* Add new article button */}
-							<ArticleCreate data={demo} />
-
-							{/* List all articles in Group */}
-							<ArticlesList data={demo} />
-
-						</React.Fragment>
-					)
-				}
-			})}
-
+			{/* This list would be created from all available articles
+			(md files) with the  current content-type, or if it's a group,
+			it would list all articles for all content-types in the group */}
+			<ArticlesList data={demo} />
 		</>
 	)
 }
