@@ -77,6 +77,55 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 		subtitle = `This is the ${router.query.type} content-type.`
 	}
 
+	// Create an array of unique groups
+	// const _groupsList = []
+	// function _createGroupsList() {
+	// 	allContentTypes.map(i => {
+	// 		if (i.group && !_groupsList.includes(i.group)) {
+	// 			return _groupsList.push(i.group)
+	// 		}
+	// 	})
+	// }
+	// _createGroupsList()
+
+	// // Get an array of content types organized  by their groups
+	// const _groupTypes = []
+	// function _createGroupTypes() {
+	// 	_groupsList.map(group => {
+	// 		const _groupChildren = []
+	// 		allContentTypes.map(type => {
+	// 			if (group === type.group) {
+	// 				return _groupChildren.push(type.label)
+	// 			}
+	// 		})
+	// 		return _groupTypes.push(group, _groupChildren)
+	// 	})
+	// }
+	// _createGroupTypes()
+
+	const _articlesList = []
+	if (router.query.group) {
+		allContentTypes.map(i => {
+			if (router.query.group === i.group) {
+				return _articlesList.push(i.path)
+			}
+		})
+	}
+	if (router.query.type) {
+		allContentTypes.map(i => {
+			if (router.query.type === i.label) {
+				return _articlesList.push(i.path)
+			}
+		})
+	}
+
+	console.log(_articlesList)
+
+	// _articlesList.map(x => {
+	// 	// return a list of files in those directories
+	// })
+
+
 	return (
 		<>
 			<Header

@@ -48,8 +48,16 @@ export default function DashboardPage({ allContentTypes }) {
 	}
 	_getGroupTypes()
 
-	// console.log(content)
-	// const mapData = content.map(x => x.label)
+
+	// const _testArray = []
+	// const mapData = allContentTypes.map(i => {
+	// 	if (!i.group && !_testArray.includes(i.label)) {
+	// 		return (
+	// 			_testArray.push(i.label),
+	// 			i.label
+	// 		)
+	// 	}
+	// })
 	// console.log(mapData)
 
 	return (
@@ -62,8 +70,6 @@ export default function DashboardPage({ allContentTypes }) {
 			<SimpleDebug label="Content Types (not in a group)">{_typesList}</SimpleDebug>
 			<SimpleDebug label="Menu Items">{_menuItems}</SimpleDebug>
 			<SimpleDebug label="Content Types (in their group)">{_groupTypes}</SimpleDebug>
-
-			{/* <SimpleDebug label="content">{allContentTypes}</SimpleDebug> */}
 
 		</>
 	)

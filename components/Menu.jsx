@@ -5,6 +5,9 @@ export function Menu({repoSettings, allContentTypes}) {
 	let groupKey = 1
 	let typesKey = 1
 
+	// Will probably abstract these functions so that they
+	// can be used in other places (like 'articles.jsx')
+
 	// Create an array of unique groups
 	const _groupsList = []
 	function _createGroupsList() {
@@ -28,8 +31,6 @@ export function Menu({repoSettings, allContentTypes}) {
 	_createSoloTypesList()
 
 
-	// const mapData = allContentTypes.map(x => x.name)
-	// console.log(mapData)
 	return (
 		<>
 			{/* Menu toggle */}
