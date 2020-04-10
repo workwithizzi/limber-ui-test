@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { SiteMeta } from './SiteMeta'
 import { Menu } from './Menu'
-import { Header } from './Header'
 
 // import settings from "../db/limber.yaml"
 

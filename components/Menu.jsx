@@ -1,35 +1,10 @@
 import Link from "next/link"
+import { getCT } from '../utils'
 
 
 export function Menu({repoSettings, allContentTypes}) {
 	let groupKey = 1
 	let typesKey = 1
-
-	// Will probably abstract these functions so that they
-	// can be used in other places (like 'articles.jsx')
-
-	// Create an array of unique groups
-	const _groupsList = []
-	function _createGroupsList() {
-		allContentTypes.map(i => {
-			if (i.group && !_groupsList.includes(i.group)) {
-				return _groupsList.push(i.group)
-			}
-		})
-	}
-	_createGroupsList()
-
-	// Create an array of content-types that aren't in groups
-	const _soloTypesList = []
-	function _createSoloTypesList() {
-		allContentTypes.map(i => {
-			if (!i.group && !_soloTypesList.includes(i.label)) {
-				return _soloTypesList.push(i.label)
-			}
-		})
-	}
-	_createSoloTypesList()
-
 
 	return (
 		<>
@@ -60,14 +35,14 @@ export function Menu({repoSettings, allContentTypes}) {
 						</li>
 
 						{/* Menu Items from groups array */}
-						{_groupsList.map(i => {
+						{getCT.groupNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
 							if (groupKey === 1) {
 								liClass=`pure-menu-item menu-item-divided`
 							}
 							groupKey++
 							return (
-								<li className={liClass} key={i}>
+								<li className={liClass} key={groupKey}>
 									<Link href={`/articles?group=${i}`}>
 										<a className="pure-menu-link">{i}</a>
 									</Link>
@@ -76,14 +51,14 @@ export function Menu({repoSettings, allContentTypes}) {
 						})}
 
 						{/* Menu Items from solo content-types array */}
-						{_soloTypesList.map(i => {
+						{getCT.soloTypesNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
 							if (typesKey === 1) {
 								liClass=`pure-menu-item menu-item-divided`
 							}
 							typesKey++
 							return (
-								<li className={liClass} key={i}>
+								<li className={liClass} key={typesKey}>
 									<Link href={`/articles?type=${i}`}>
 										<a className="pure-menu-link">{i}</a>
 									</Link>
