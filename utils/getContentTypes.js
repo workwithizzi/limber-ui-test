@@ -12,7 +12,6 @@ function groupNames(array) {
 	return result
 }
 
-
 // Return the names of all content-types that aren't in groups
 function soloTypesNames(array) {
 	const result = []
