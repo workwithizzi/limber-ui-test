@@ -1,8 +1,4 @@
-import { Layout, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Numberfield, Button } from '../components'
-
-
-// Temp data for testing
-import settings from '../db/limber.yaml'
+import { Header, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Numberfield, Button } from '../components'
 
 
 const _testOptions=[{
@@ -16,47 +12,56 @@ const _testOptions=[{
 	label: `Hamster`,
 }]
 
-export default function SettingsPage() {
+
+export default function SettingsPage(props) {
+	const { repoSettings } = props
+
 	return (
-		<Layout
-			title="Settings"
-			subtitle="Settings here affect the entire site."
-		>
+		<>
+			<Header
+				title="Settings"
+				subtitle="Settings here affect the entire site."
+			/>
 
 			<Form title="Testing Settings">
 
-				<Textfield
-					name="site_url"
-					label="Site URL"
-					// placeholder="Write text here."
-					value={settings.site_url}
-					hint="Add the URL for your production site."
-					required
-				/>
-
-				<Textfield
-					name="site_title"
-					label="Site Title"
-					// placeholder="Write text here."
-					value={settings.site_title}
-					hint="The site title is used for things like metadata and for display purposes throughout the CMS."
-				/>
-
+				{repoSettings.site_url &&
+					<Textfield
+						name="site_url"
+						label="Site URL"
+						// placeholder="Write text here."
+						defaultValue={repoSettings.site_url}
+						hint="Add the URL for your production site."
+						required
+					/>
+				}
+				{repoSettings.site_title &&
+					<Textfield
+						name="site_title"
+						label="Site Title"
+						// placeholder="Write text here."
+						defaultValue={repoSettings.site_title}
+						hint="The site title is used for things like metadata and for display purposes throughout the CMS."
+					/>
+				}
+				{repoSettings.logo_path &&
 				<Textfield
 					name="logo_path"
 					label="Logo"
 					// placeholder="Write text here."
-					value={settings.logo_path}
+					defaultValue={repoSettings.logo_path}
 					hint="Enter the path or URL to your site's logo."
 				/>
-
+				}
+				{repoSettings.favicon_path &&
 				<Textfield
 					name="favicon_path"
 					label="Favicon"
 					// placeholder="Write text here."
-					value={settings.favicon_path}
+					defaultValue={repoSettings.favicon_path}
 					hint="Enter the path or URL to your site's favicon."
 				/>
+				}
 
 				<br />
 				<hr />
@@ -167,12 +172,7 @@ export default function SettingsPage() {
 				<Button style={{"marginRight":`10px`}} label="Disabled" disabled caution />
 				<Button style={{"margin":`10px 0`}} label="Block" block caution />
 
-				<br />
-				<br />
-
-				<hr />
 			</Form>
-
-		</Layout>
+		</>
 	)
 }

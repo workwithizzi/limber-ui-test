@@ -6,6 +6,21 @@ import React from "react"
 
 // TODO: Find out if there's a way to also use this same component for stateless components
 // TODO: Find out if there's a way to include default props/states
+export function SimpleDebug({log, children, label}) {
+	if (log) {
+		console.log(`-Debug Log-`)
+		console.log(children)
+	}
+	return (
+		<pre style={{background:`#333`, color:`white`, maring:`20px`, padding:`20px`}}>
+			<strong style={{color:`#cc0066`}}>Debug: {label}</strong>
+			<br />
+			<span style={{color:`#2be8ff`}}>
+				{JSON.stringify(children, null, 2)}
+			</span>
+		</pre>
+	)
+}
 
 
 export function debug(ctx) {

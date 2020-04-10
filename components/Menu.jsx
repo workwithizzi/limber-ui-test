@@ -1,11 +1,11 @@
 import Link from "next/link"
-
-// Temp data for testing
-import data from "../db/limber.yaml"
+import { getCT } from '../utils'
 
 
-export function Menu() {
-	let item=1
+export function Menu({repoSettings, allContentTypes}) {
+	let groupKey = 1
+	let typesKey = 1
+
 	return (
 		<>
 			{/* Menu toggle */}
@@ -35,19 +35,32 @@ export function Menu() {
 						</li>
 
 						{/* Menu Items from groups array */}
-						{data.groups.map(group => {
+						{getCT.groupNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
-							if (item === 1) {
+							if (groupKey === 1) {
 								liClass=`pure-menu-item menu-item-divided`
 							}
-							item++
+							groupKey++
 							return (
-								<li className={liClass} key={group.label}>
-									{/* <Link href="/groups/[id]" as={`/groups/${group.path}`}>
-										<a className="pure-menu-link">{group.label}</a>
-									</Link> */}
-									<Link href={`/group?group=${group.label}`}>
-										<a className="pure-menu-link">{group.label}</a>
+								<li className={liClass} key={groupKey}>
+									<Link href={`/articles?group=${i}`}>
+										<a className="pure-menu-link">{i}</a>
+									</Link>
+								</li>
+							)
+						})}
+
+						{/* Menu Items from solo content-types array */}
+						{getCT.soloTypesNames(allContentTypes).map(i => {
+							let liClass=`pure-menu-item`
+							if (typesKey === 1) {
+								liClass=`pure-menu-item menu-item-divided`
+							}
+							typesKey++
+							return (
+								<li className={liClass} key={typesKey}>
+									<Link href={`/articles?type=${i}`}>
+										<a className="pure-menu-link">{i}</a>
 									</Link>
 								</li>
 							)

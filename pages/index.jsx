@@ -1,13 +1,18 @@
-import { Layout } from '../components'
+import { Header } from '../components'
+import { SimpleDebug } from '../utils'
+import React from 'react'
 
 
-export default function DashboardPage() {
+export default function DashboardPage({ allContentTypes }) {
+
+
 	return (
-		<Layout
-			title="Dashboard"
-			subtitle="Dashboard is empty"
-		>
-
-		</Layout>
+		<>
+			<Header
+				title="Dashboard"
+				subtitle="This is a subtitle"
+			/>
+			<pre>This page will eventually have "Dashboardy" things.</pre>
+		</>
 	)
 }

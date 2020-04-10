@@ -3,10 +3,12 @@
 // Make the sub-title (page description) a little smaller
 .header h2 {
   font-size: 1.2em;
-  color: #7b7b7b;
+	color: #7b7b7b;
+	margin-top: 24px;
 }
 
 // Add a little space to the header
 .override.header {
-  margin-bottom: 30px;
+	margin-bottom: 30px;
+	padding-bottom: 20px;
 }

@@ -2,25 +2,24 @@ import Head from 'next/head'
 import { SiteMeta } from './SiteMeta'
 import { Menu } from './Menu'
 
+// import settings from "../db/limber.yaml"
 
-export function Layout({ title, subtitle, children }) {
+export function Layout({ repoSettings, allContentTypes, children }) {
 	return (
 		<>
 			<Head>
 				<SiteMeta />
 
-				<title>UI Test {title && `| `+title} </title>
+				<title>Limber UI Test</title>
 			</Head>
 			<div id="layout">
-				<Menu />
+				<Menu
+					repoSettings={repoSettings}
+					allContentTypes={allContentTypes}
+				/>
 
 
 				<main id="main">
-
-					<div className="override header">
-						{title && <h1>{title}</h1>}
-						{subtitle && <h2>{subtitle}</h2>}
-					</div>
 
 					<div className="content">
 						{children}

@@ -1,16 +1,18 @@
 // See 'pages/tv.jsx'
 
 import fetch from 'isomorphic-unfetch'
-import { Layout } from '../../components'
+import { Header } from '../../components'
 
 
 export default function Post({show}) {
 	return (
-		<Layout>
-			<h1>{show.name}</h1>
+		<>
+			<Header
+				title={show.name}
+			/>
 			<p>{show.summary.replace(/<[/]?[pb]>/g, ``)}</p>
 			{show.image ? <img src={show.image.medium} /> : null}
-		</Layout>
+		</>
 	)
 }
 
