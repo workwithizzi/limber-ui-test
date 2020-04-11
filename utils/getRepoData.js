@@ -136,24 +136,24 @@ export async function getRepoData(path, parse = false) {
 //- -----------------------------------------------------------------
 // Original function. Remove if not needed
 
-// import { request } from '.'
+import { request } from '.'
 
 
-// export function getRepo(path) {
-// 	// If no path is chosen, get contents of the root directory
-// 	path = path || ``
+export function getRepo(path) {
+	// If no path is chosen, get contents of the root directory
+	path = path || ``
 
-// 	// Use the Github's default branch (master) if no other branch is selected in DB
-// 	let _branch = ``
-// 	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
-// 		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
-// 	}
+	// Use the Github's default branch (master) if no other branch is selected in DB
+	let _branch = ``
+	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
+		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
+	}
 
-// 	return request({
-// 		url: `${_APIbaseURL}${path}${_branch}`,
-// 		method: `GET`,
-// 		auth: {
-// 			username: fakeMongo.GITHUB_AUTH_TOKEN,
-// 		},
-// 	})
-// }
+	return request({
+		url: `${_APIbaseURL}${path}${_branch}`,
+		method: `GET`,
+		auth: {
+			username: fakeMongo.GITHUB_AUTH_TOKEN,
+		},
+	})
+}
