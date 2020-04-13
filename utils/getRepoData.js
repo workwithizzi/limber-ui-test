@@ -4,8 +4,8 @@
 // Pass a second param ('parse') to decode data from Github
 
 import axios from 'axios'
-import { repo, parseYaml } from '.'
-
+import { repo, parseYaml, string } from '.'
+import { atob } from 'abab'
 
 // This data will eventually come from MongoDB
 import { fakeMongo } from '../fakeMongo'
@@ -21,28 +21,56 @@ const client = axios.create({
 })
 
 
-export async function getRepoData(path, parse = false) {
-	// If no path is chosen, get contents of the root directory
+export async function getRepoData(path, decode) {
+	// Get the repo root if there's no path provided
 	path = path || ``
+	// Remove trailing '/' for the '?ref' at the end for repo branch
+	path = string.rtrim(path, `/`)
+	decode = decode || false
 
-	// Use the Github's default branch (master) if no other branch is selected in DB
+	// Fallback to Github's default (master) branch if User doesn't
+	// provide a branch in their DB settings
 	let _branch = ``
 	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
 		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
 	}
 
+
 	// Handle Success
-	// return encoded data or parsed/decoded data
-	const onSuccess = function(response) {
-		if (parse) {
-			return parseYaml(response.data)
+	// return encoded/decoded data
+	function onSuccess(response) {
+		const rawData = response.data
+
+		// Ignore 'decode' param if it's not a file
+		if (rawData.type === `file`) {
+			const extension = string.extension(rawData.name)
+			// Decode yaml and markdown files
+			if (decode) {
+				if (extension === `yml` || extension === `yaml`) {
+					return parseYaml(rawData)
+
+				} else if (extension === `md`) {
+					return atob(rawData.content)
+
+				} else {
+					// If not yaml or markdown
+					return rawData
+				}
+
+			} else {
+				// If not 'decode'
+				return rawData
+			}
+
+		// If not a file...
 		} else {
-			return response.data
+			return rawData
 		}
+
 	}
 
 	// Handle Error
-	const onError = function(error) {
+	function onError(error) {
 		console.error(`Request Failed:`, error.config)
 		if (error.response) {
 			// Request was made but server responded with something
@@ -73,87 +101,4 @@ export async function getRepoData(path, parse = false) {
 	catch (error) {
 		return onError(error)
 	}
-}
-
-
-//- -----------------------------------------------------------------
-//- -----------------------------------------------------------------
-// Non-async version of the above function. Remove if not needed
-
-// export function getRepoData(path, parse = false) {
-// 	// If no path is chosen, get contents of the root directory
-// 	path = path || ``
-
-// 	// Use the Github's default branch (master) if no other branch is selected in DB
-// 	let _branch = ``
-// 	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
-// 		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
-// 	}
-
-// 	// Handle Success
-// 	// return encoded data or parsed/decoded data
-// 	const onSuccess = function(response) {
-// 		if (parse) {
-// 			return parseYaml(response.data)
-// 		} else {
-// 			return response.data
-// 		}
-// 	}
-
-// 	// Handle Error
-// 	const onError = function(error) {
-// 		console.error(`Request Failed:`, error.config)
-// 		if (error.response) {
-// 			// Request was made but server responded with something
-// 			// other than 2xx
-// 			console.error(`Status:`,  error.response.status)
-// 			console.error(`Data:`,    error.response.data)
-// 			console.error(`Headers:`, error.response.headers)
-// 		} else {
-// 			// Something else happened while setting up the request
-// 			// triggered the error
-// 			console.error(`Error Message:`, error.message)
-// 		}
-
-// 		return Promise.reject(error.response || error.message)
-// 	}
-
-// 	// Get the data
-// 	return client({
-// 		url: `${_APIbaseURL}${path}${_branch}`,
-// 		method: `GET`,
-// 		auth: {
-// 			username: fakeMongo.GITHUB_AUTH_TOKEN,
-// 		},
-// 	})
-// 		.then(onSuccess)
-// 		.catch(onError)
-// }
-
-
-
-//- -----------------------------------------------------------------
-//- -----------------------------------------------------------------
-// Original function. Remove if not needed
-
-import { request } from '.'
-
-
-export function getRepo(path) {
-	// If no path is chosen, get contents of the root directory
-	path = path || ``
-
-	// Use the Github's default branch (master) if no other branch is selected in DB
-	let _branch = ``
-	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
-		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
-	}
-
-	return request({
-		url: `${_APIbaseURL}${path}${_branch}`,
-		method: `GET`,
-		auth: {
-			username: fakeMongo.GITHUB_AUTH_TOKEN,
-		},
-	})
 }

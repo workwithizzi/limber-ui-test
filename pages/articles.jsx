@@ -2,11 +2,9 @@
 //- -----------------------------------------------------------------
 
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
-import { atob } from 'abab'
 
 import { Header, ArticleCreate, ArticlesList } from '../components'
-import { repo, SimpleDebug, getRepoData, parseYaml } from '../utils'
+import { SimpleDebug } from '../utils'
 
 // Temp data for testing
 const demo = {
@@ -38,28 +36,7 @@ const demo = {
 }
 
 
-export default function ArticlesPage({data, repoSettings, allContentTypes}) {
-	const [content, setContent] = useState([])
-	useEffect(() => {
-		// setContent(window.atob(data))
-		// setContent(atob(data))
-		// console.log(window.atob(data))
-	}, [])
-
-	//- ------------------------------------
-	//- Testing bringing in data from single markdown file
-	//- before mapping/bringing in multiple files
-	//- ------------------------------------
-	// // raw-encoded data
-	console.log(data)
-	// // Using standalone 'atob'
-	// console.log(atob(data))
-	// // using useEffect
-	// console.log(content)
-
-	//- ------------------------------------
-
-
+export default function ArticlesPage({repoSettings, allContentTypes}) {
 	const router = useRouter()
 	let title
 
@@ -144,23 +121,4 @@ export default function ArticlesPage({data, repoSettings, allContentTypes}) {
 
 		</>
 	)
-}
-
-import { getRepo } from '../utils/getRepoData'
-
-
-ArticlesPage.getInitialProps = async function() {
-	// The file path is static here just for testing
-
-	// New function that includes the ability to also parseYaml
-	// const data = await getRepoData(`/content/pages/home.md`)
-
-	// getRepo is the original (simpler) GET function
-	// I'm just using it to make sure it's not an issue with the other function
-	const data = await getRepo(`/content/pages/home.md`)
-
-	// const data = await getRepo(repo.GITHUB_LIMBER_SETTINGS_PATH, `parse`)
-	return {
-		data,
-	}
 }

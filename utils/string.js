@@ -445,7 +445,6 @@ export function abbreviate(str) {
 /**
  * Sanitize ID fields
  */
-
 export function sanitize(str) {
 	// Replaces spaces to underscores
 	str = str.replace(/\s/, `_`).toLowerCase()

@@ -1,5 +1,5 @@
 import { Header } from '../components'
-import { getRepoData, SimpleDebug, parseYaml } from '../utils'
+import { getRepoData, SimpleDebug } from '../utils'
 import React, { useState, useEffect } from 'react'
 
 
