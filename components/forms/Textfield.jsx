@@ -1,7 +1,7 @@
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { camelCase } from "../../utils"
+import { string } from "../../utils"
 
 
 export function Textfield({
@@ -16,14 +16,14 @@ export function Textfield({
 		<>
 			<label
 				form    = {form}
-				htmlFor = {id || camelCase(label)}
+				htmlFor = {id || string.camelCase(label)}
 			>
 				{label}
 				<input
 					className = "pure-input-1"
 					form      = {form}
-					id        = {id || camelCase(label)}
-					name      = {name || camelCase(label)}
+					id        = {id || string.camelCase(label)}
+					name      = {name || string.camelCase(label)}
 					type      = "text"
 					{...props}
 				/>

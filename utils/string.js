@@ -2,6 +2,7 @@
 
 // Exported Functions:
 //
+//  extension
 //  lowerCase
 //  upperCase
 //  replaceAccents
@@ -36,6 +37,21 @@
 //  sanitize
 //- -----------------------------------------------------------------
 
+
+/**
+ * Get file extension from string
+ */
+export function extension(str){
+	return str.split(`.`).pop()
+}
+
+/**
+ * Get file extension from string
+ */
+export function extensionIs(str, match){
+	return str.split(`.`).pop() === match
+
+}
 
 /**
  * String.toLowerCase()
@@ -438,4 +454,44 @@ export function sanitize(str) {
 	// First char cannot be underscore
 	str = str.replace(/^\_/, ``)
 	return str
+}
+
+
+//- ------------------------------------
+
+export const string = {
+	extensionIs,
+	extension,
+	lowerCase,
+	upperCase,
+	replaceAccents,
+	removeNonWord,
+	camelCase,
+	unCamelCase,
+	titleCase,
+	pascalCase,
+	sentenceCase,
+	slugify,
+	hyphenate,
+	unhyphenate,
+	underscore,
+	normalizeLineBreaks,
+	contains,
+	crop,
+	escapeRegExp,
+	escapeHtml,
+	unescapeHtml,
+	escapeUnicode,
+	stripHtmlTags,
+	removeNonASCII,
+	interpolate,
+	rpad,
+	lpad,
+	repeat,
+	truncate,
+	ltrim,
+	rtrim,
+	trim,
+	abbreviate,
+	sanitize,
 }

@@ -9,7 +9,7 @@
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { camelCase } from "../../utils"
+import { string } from "../../utils"
 
 
 export function Select({
@@ -27,13 +27,13 @@ export function Select({
 		<>
 			<label
 				form      = {form}
-				htmlFor   = {id || camelCase(label)}
+				htmlFor   = {id || string.camelCase(label)}
 			>
 				{label}
 
 				<select
 					form  = {form}
-					id    = {id || camelCase(label)}
+					id    = {id || string.camelCase(label)}
 					name  = {name}
 					type  = "radio"
 					{...props}

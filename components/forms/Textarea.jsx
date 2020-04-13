@@ -12,7 +12,7 @@ import React from "react"
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { debug, camelCase } from "../../utils"
+import { debug, string } from "../../utils"
 
 
 export class Textarea extends React.Component {
@@ -39,14 +39,14 @@ export class Textarea extends React.Component {
 			<>
 				<label
 					form      = {form}
-					htmlFor   = {id || camelCase(label)}
+					htmlFor   = {id || string.camelCase(label)}
 				>
 					{label}
 					<textarea
 						className   = "pure-input-1"
 						form        = {form}
-						id          = {id || camelCase(label)}
-						name        = {name || camelCase(label)}
+						id          = {id || string.camelCase(label)}
+						name        = {name || string.camelCase(label)}
 						onChange    = {this._handleChange}
 						{...props}
 					/>

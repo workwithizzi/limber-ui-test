@@ -7,7 +7,7 @@
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { camelCase } from "../../utils"
+import { string } from "../../utils"
 
 
 export function Radio({
@@ -26,11 +26,11 @@ export function Radio({
 			<label
 				className = "pure-radio"
 				form      = {form}
-				htmlFor   = {id || camelCase(label)}
+				htmlFor   = {id || string.camelCase(label)}
 			>
 				<input
 					form  = {form}
-					id    = {id || camelCase(label)}
+					id    = {id || string.camelCase(label)}
 					name  = {name}
 					style = {style || {marginRight:`10px`} }
 					type  = "radio"
