@@ -102,3 +102,31 @@ export async function getRepoData(path, decode) {
 		return onError(error)
 	}
 }
+
+
+//- ------------------------------------
+//- Adding the simple one back in for temporary testing
+//- ------------------------------------
+
+import { request } from '.'
+
+export function testGetRepo(path) {
+	// Get the repo root if there's no path provided
+	path = path || ``
+	// Remove trailing '/' for the '?ref' at the end for repo branch
+	path = string.rtrim(path, `/`)
+
+	// Use the Github's default branch (master) if no other branch is selected in DB
+	let _branch = ``
+	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
+		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
+	}
+
+	return request({
+		url: `${_APIbaseURL}${path}${_branch}`,
+		method: `GET`,
+		auth: {
+			username: fakeMongo.GITHUB_AUTH_TOKEN,
+		},
+	})
+}

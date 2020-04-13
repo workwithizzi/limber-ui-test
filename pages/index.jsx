@@ -1,20 +1,19 @@
 import { Header } from '../components'
 import { SimpleDebug, getRepoData, string} from '../utils'
 import React from 'react'
+import { parseYaml } from '.'
+import { atob } from 'abab'
 
 export default function DashboardPage({ data, allContentTypes }) {
 
-	// const testString = ``
-	// console.log(testString)
-	// console.log(string.rtrim(testString, `/`))
-
-	console.log(data)
 	return (
 		<>
 			<SimpleDebug>{data}</SimpleDebug>
 		</>
 	)
 }
+
+import { testGetRepo } from '../utils/getRepoData'
 
 
 DashboardPage.getInitialProps = async function() {
@@ -25,9 +24,11 @@ DashboardPage.getInitialProps = async function() {
 
 	// getRepo is the original (simpler) GET function
 	// I'm just using it to make sure it's not an issue with the other function
-	// const data = await getRepoData(`limber.yml`, `decode`)
-	const data = await getRepoData(`/content/pages/home.md`, `decode`)
+	const data = await getRepoData(`limber.yml`, `decode`)
+	// const data = await getRepoData(`/content/package.json`)
 	// const data = await getRepoData(`/content/pages`)
+
+	// const data = await testGetRepo(`/package.json`)
 	return {
 		data,
 	}
