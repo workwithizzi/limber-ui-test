@@ -16,7 +16,7 @@ export default function TestPage({ allContentTypes, repoSettings }) {
 			// Loop through list of files in config directory
 			allContentTypes.map(async file => {
 				// GET the encoded data for each file
-				const _encodedData = await getRepoData(`/${repoSettings.config_path}/${file.name}`, `parse`)
+				const _encodedData = await getRepoData(`/${repoSettings.config_path}/${file.name}`)
 				return new Promise(resolve => {
 					// Decode data + add data to the array
 					resolve(_tempArray.push(_encodedData))

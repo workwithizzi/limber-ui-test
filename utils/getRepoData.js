@@ -4,8 +4,7 @@
 // Pass a second param ('parse') to decode data from Github
 
 import axios from 'axios'
-import { repo, parseYaml, string } from '.'
-import { atob } from 'abab'
+import { repo, decode, string } from '.'
 
 // This data will eventually come from MongoDB
 import { fakeMongo } from '../fakeMongo'
@@ -21,12 +20,11 @@ const client = axios.create({
 })
 
 
-export async function getRepoData(path, decode) {
+export async function getRepoData(path, leaveEncoded) {
 	// Get the repo root if there's no path provided
 	path = path || ``
 	// Remove trailing '/' for the '?ref' at the end for repo branch
 	path = string.rtrim(path, `/`)
-	decode = decode || false
 
 	// Fallback to Github's default (master) branch if User doesn't
 	// provide a branch in their DB settings
@@ -39,33 +37,9 @@ export async function getRepoData(path, decode) {
 	// Handle Success
 	// return encoded/decoded data
 	function onSuccess(response) {
-		const rawData = response.data
 
-		// Ignore 'decode' param if it's not a file
-		if (rawData.type === `file`) {
-			const extension = string.extension(rawData.name)
-			// Decode yaml and markdown files
-			if (decode) {
-				if (extension === `yml` || extension === `yaml`) {
-					return parseYaml(rawData)
-
-				} else if (extension === `md`) {
-					return atob(rawData.content)
-
-				} else {
-					// If not yaml or markdown
-					return rawData
-				}
-
-			} else {
-				// If not 'decode'
-				return rawData
-			}
-
-		// If not a file...
-		} else {
-			return rawData
-		}
+		// Parse/decode data if it can be decoded
+		return decode(response, leaveEncoded)
 
 	}
 
@@ -108,25 +82,25 @@ export async function getRepoData(path, decode) {
 //- Adding the simple one back in for temporary testing
 //- ------------------------------------
 
-import { request } from '.'
+// import { request } from '.'
 
-export function testGetRepo(path) {
-	// Get the repo root if there's no path provided
-	path = path || ``
-	// Remove trailing '/' for the '?ref' at the end for repo branch
-	path = string.rtrim(path, `/`)
+// export function testGetRepo(path) {
+// 	// Get the repo root if there's no path provided
+// 	path = path || ``
+// 	// Remove trailing '/' for the '?ref' at the end for repo branch
+// 	path = string.rtrim(path, `/`)
 
-	// Use the Github's default branch (master) if no other branch is selected in DB
-	let _branch = ``
-	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
-		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
-	}
+// 	// Use the Github's default branch (master) if no other branch is selected in DB
+// 	let _branch = ``
+// 	if (fakeMongo.GITHUB_REPO_BRANCH != null && fakeMongo.GITHUB_REPO_BRANCH.length > 1) {
+// 		_branch = `?ref=${fakeMongo.GITHUB_REPO_BRANCH}`
+// 	}
 
-	return request({
-		url: `${_APIbaseURL}${path}${_branch}`,
-		method: `GET`,
-		auth: {
-			username: fakeMongo.GITHUB_AUTH_TOKEN,
-		},
-	})
-}
+// 	return request({
+// 		url: `${_APIbaseURL}${path}${_branch}`,
+// 		method: `GET`,
+// 		auth: {
+// 			username: fakeMongo.GITHUB_AUTH_TOKEN,
+// 		},
+// 	})
+// }

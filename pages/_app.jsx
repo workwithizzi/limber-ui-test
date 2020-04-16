@@ -18,7 +18,7 @@ export default class MyApp extends App {
 			pageProps = await Component.getInitialProps(ctx)
 		}
 		// Get project settings from repo and decode
-		const repoSettings = await getRepoData(repo.GITHUB_LIMBER_SETTINGS_PATH, `decode`)
+		const repoSettings = await getRepoData(repo.GITHUB_LIMBER_SETTINGS_PATH)
 
 		// GET encoded array of contentTypes files
 		const _encodedCtData = await getRepoData(`/${repoSettings.config_path}`)
@@ -31,7 +31,7 @@ export default class MyApp extends App {
 		const compileDecodedCtDataToArray = Promise.all(
 			_encodedCtData.map(async file => {
 				// GET the encoded data for each file and parse/decode it
-				const _getAndDecodeFileData = await getRepoData(`/${repoSettings.config_path}/${file.name}`, `decode`)
+				const _getAndDecodeFileData = await getRepoData(`/${repoSettings.config_path}/${file.name}`)
 				return new Promise(resolve => {
 					// Add decoded data to array
 					resolve(allContentTypesData.push(_getAndDecodeFileData))
