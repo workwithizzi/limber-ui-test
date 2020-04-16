@@ -1,10 +1,10 @@
 // - List all articles related to queried group or content-type
 //- -----------------------------------------------------------------
-
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { Header, ArticleCreate, ArticlesList } from '../components'
-import { SimpleDebug } from '../utils'
+import { SimpleDebug, getRepoData } from '../utils'
 
 // Temp data for testing
 const demo = {
@@ -38,59 +38,49 @@ const demo = {
 
 export default function ArticlesPage({repoSettings, allContentTypes}) {
 	const router = useRouter()
-	let title
+	const [content, setContent] = useState([])
+	const title = router.query.group || router.query.type
 
-	//- ------------------------------------
-	// Option 1: Returning all Data to the `_relatedTypesData` arrray
-	let _relatedTypesData
-	if (router.query.group) {
-		title = router.query.group
-		// Return array of all data for all related CT's
-		_relatedTypesData = allContentTypes.filter(function(i){
+	useEffect(() => {
+		_tempGetFilesData()
+	}, [])
+
+	// Get all the config data for ALL related CT's into a single array
+	const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
+		if (router.query.group) {
 			return router.query.group === i.group
-		})
-	}
-
-	if (router.query.type) {
-		title = router.query.type
-		// Return array of all data for the CT
-		_relatedTypesData = allContentTypes.filter(function(i){
+		} else {
 			return router.query.type === i.label
-		})
-	}
-
-	//- ------------------------------------
-
-	// Option 2: Returning only the paths from related CT's to use
-	// in GET request
-	const _relatedTypesPaths = []
-	let _GroupData
-	if (router.query.group) {
-		title = router.query.group
-		// Return array of all data for all related CT's
-		_GroupData = allContentTypes.filter(function(i){
-			return router.query.group === i.group
-		})
-	}
-
-	if (router.query.type) {
-		title = router.query.type
-		// Return array of all data for the CT
-		_GroupData = allContentTypes.filter(function(i){
-			return router.query.type === i.label
-		})
-	}
-
-	// Return only a list of the content-paths from related CT's
-	_GroupData.map(i => {
-		if (i.path && !_relatedTypesPaths.includes(i.path)) {
-			return _relatedTypesPaths.push(i.path)
 		}
 	})
 
+	// Return a list of only the content directories from the config array
+	const _articlesLocationsList = []
+	_relatedCTConfigDataArray.map(i => {
+		if (i.path && !_articlesLocationsList.includes(i.path)) {
+			return _articlesLocationsList.push(i.path)
+			// eg: [ "content/pages", "content/default-pages" ]
+		}
+	})
 
-
-	//- ------------------------------------
+	// Map through the list of of 'paths' and GET all
+	// files in each of those directories
+	const _tempGetFilesDataArray = []
+	async function _tempGetFilesData() {
+		return Promise.all(
+			// Loop through list of files in config directory
+			_articlesLocationsList.map(async dir => {
+				// GET the encoded data for each file
+				const _fileData = await getRepoData(dir)
+				return new Promise(resolve => {
+					// Decode data + add data to the array
+					resolve(_tempGetFilesDataArray.push(_fileData))
+				})
+			})
+		).finally(() => {
+			setContent(_tempGetFilesDataArray)
+		})
+	}
 
 	return (
 		<>
@@ -98,25 +88,20 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 				title={title}
 				subtitle="All related articles are listed on this page"
 			/>
-
-			{/* This 'Add New' button would show a dropdown of all content
-			types in the current group or if there's only one content-type,
-			it wouldn't be a dropdown, just a button. */}
-			<ArticleCreate data={demo} />
-
-			{/* This list would be created from all available articles
-			(md files) with the  current content-type, or if it's a group,
-			it would list all articles for all content-types in the group */}
-			<ArticlesList data={demo} />
+			{/* <SimpleDebug
+				label="_relatedCTConfigDataArray">
+				{_relatedCTConfigDataArray}
+			</SimpleDebug> */}
 
 			<SimpleDebug
-				label="Option 1: Related Types Data">
-				{_relatedTypesData}
+				label="_articlesLocationsList">
+				{_articlesLocationsList}
 			</SimpleDebug>
 
+
 			<SimpleDebug
-				label="Option 2: Related Types Paths">
-				{_relatedTypesPaths}
+				label="Content (data)">
+				{content}
 			</SimpleDebug>
 
 		</>
