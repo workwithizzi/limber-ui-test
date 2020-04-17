@@ -2,16 +2,29 @@ import { Header } from '../components'
 import { SimpleDebug, getRepoData, string} from '../utils'
 import React from 'react'
 import { atob } from 'abab'
+import matter from 'gray-matter'
+
 
 export default function DashboardPage({ data, allContentTypes }) {
-	console.log(data)
-	// console.log(parseYaml(data))
-	// const decoded = atob(data.content)
-	// console.log(decoded)
-	// console.log(decoded.name)
+	const page = {}
+
+	// console.log(data)
+	const file = matter(data)
+	page[`content`] = file.content
+	page[`data`] = file.data
+	console.log(page)
+
 	return (
 		<>
-			<SimpleDebug>{data}</SimpleDebug>
+			<h1>{page.data.title}</h1>
+			<pre>{page.data.status}</pre>
+			{/* <pre>{temp.content}</pre> */}
+			<SimpleDebug label="page">{page}</SimpleDebug>
+			{/* <SimpleDebug label="temp.data">{file.data}</SimpleDebug> */}
+			{/* <SimpleDebug label="temp.content">{file.content}</SimpleDebug> */}
+			{/* <SimpleDebug label="temp.data">{file}</SimpleDebug> */}
+			{/* {temp.content} */}
+			{/* <div>{data}</div> */}
 		</>
 	)
 }
@@ -29,7 +42,7 @@ DashboardPage.getInitialProps = async function() {
 
 
 {/* <Header
-				title="Dashboard"
-				subtitle="This is a subtitle"
-			/>
-			<pre>This page will eventually have "Dashboardy" things.</pre> */}
+title="Dashboard"
+subtitle="This is a subtitle"
+/>
+<pre>This page will eventually have "Dashboardy" things.</pre> */}
