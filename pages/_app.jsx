@@ -10,7 +10,6 @@ import '../styles/main.scss'
 
 export default class MyApp extends App {
 
-	// NEXT's SSR
 	static async getInitialProps({ Component, ctx }) {
 		let pageProps = {}
 

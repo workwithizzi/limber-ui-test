@@ -1,3 +1,5 @@
+// Handles all the site-meta stuff just so the <Layout>
+// component is easier to read.
 
 export function SiteMeta() {
 	return (

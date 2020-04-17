@@ -1,9 +1,9 @@
 
-// Return the names of content-type Group
-function groupNames(array) {
+// Return a list of CTs in a Group
+function groupNames(allCTDataArray) {
 	const result = []
 
-	array.map(i => {
+	allCTDataArray.map(i => {
 		if (i.group && !result.includes(i.group)) {
 			return result.push(i.group)
 		}
@@ -12,11 +12,11 @@ function groupNames(array) {
 	return result
 }
 
-// Return the names of all content-types that aren't in groups
-function soloTypesNames(array) {
+// Return a list of ALL Cts that aren't in groups
+function soloTypesNames(allCTDataArray) {
 	const result = []
 
-	array.map(i => {
+	allCTDataArray.map(i => {
 		if (!i.group && !result.includes(i.label)) {
 			return result.push(i.label)
 		}

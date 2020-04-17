@@ -1,7 +1,9 @@
-// 'GET' data from Github repo. Default gets all files in root.
+// 'GET' data from Github repo.
+// By default, gets all files in root.
 // Catch errors
-// Pass a path param to look at additional file/directory
-// Pass a second param ('parse') to decode data from Github
+// Pass a path param to look for specific file/directory
+// Pass a second param to tell the function not to decode data from Github
+// If getting a directory, it will not try to decode the data
 
 import axios from 'axios'
 import { repo, decode, string } from '.'

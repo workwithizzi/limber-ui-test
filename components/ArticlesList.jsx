@@ -1,4 +1,5 @@
-// Creates a list of articles for a specific content-group
+// Creates a list of articles for a CT or Group of CTs
+// Used on `articles.jsx`
 
 import '../styles/ArticlesList.scss'
 

@@ -1,14 +1,18 @@
+// Main menu in the app.
+// The dynamic menu-items are created based on Groups/Labels from
+// the CT config files
+
 import Link from "next/link"
 import { getCT } from '../utils'
 
-
 export function Menu({repoSettings, allContentTypes}) {
+	// These are for the key value when looping through items
 	let groupKey = 1
 	let typesKey = 1
 
 	return (
 		<>
-			{/* Menu toggle */}
+			{/* Mobile Menu toggle Button */}
 			<a href="#menu" id="menuLink" className="menu-link">
 				{/* Hamburger icon */}
 				<span></span>
@@ -16,13 +20,13 @@ export function Menu({repoSettings, allContentTypes}) {
 
 			<div id="menu">
 				<div className="pure-menu">
+					{/* --- Static Menu Items --- */}
 					{/* Logo */}
 					<Link href="/">
 						<a className="pure-menu-heading">Limber</a>
 					</Link>
 
 					<ul className="pure-menu-list">
-						{/* Static Menu Items */}
 						<li className="pure-menu-item">
 							<Link href="/">
 								<a className="pure-menu-link">Dashboard</a>
@@ -34,7 +38,9 @@ export function Menu({repoSettings, allContentTypes}) {
 							</Link>
 						</li>
 
-						{/* Menu Items from groups array */}
+						{/* --- Dynamic Menu Items --- */}
+
+						{/* From groups array */}
 						{getCT.groupNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
 							if (groupKey === 1) {
@@ -50,7 +56,7 @@ export function Menu({repoSettings, allContentTypes}) {
 							)
 						})}
 
-						{/* Menu Items from solo content-types array */}
+						{/* From "solo" content-types array --CT's that aren't in a Group */}
 						{getCT.soloTypesNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
 							if (typesKey === 1) {
@@ -65,6 +71,7 @@ export function Menu({repoSettings, allContentTypes}) {
 								</li>
 							)
 						})}
+
 					</ul>
 				</div>
 			</div>

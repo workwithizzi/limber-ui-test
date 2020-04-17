@@ -1,6 +1,13 @@
 /* eslint no-useless-escape: 0 */
 
-// Exported Functions:
+// String manipulation functions.
+// Each one is exported individually, but can also be
+// used as a method on string.
+// ex: string.lowercase(`This Is a String`)
+
+//- ------------------------------------
+
+// Functions:
 //
 //  extension
 //  lowerCase
@@ -35,6 +42,7 @@
 //  trim
 //  abbreviate
 //  sanitize
+
 //- -----------------------------------------------------------------
 
 

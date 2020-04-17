@@ -1,12 +1,24 @@
-// - List all articles related to queried group or content-type
-//- -----------------------------------------------------------------
+// Articles Page
+// Presents a list of all articles (content/md) files related to the
+// current content-type (CT) or group of CTs based on the URL query.
+// User will be able to add/edit/delete based on the CT's config
+//
+// Queries:
+//   group: looks for a matching `group` key in the CTs config files
+//   type: looks for a matching `label` key in the CTs config files
+//
+// TODO: Fetch decoded data for each article in the CT/Group
+// TODO: Use data in <ArticlesList>
+// TODO: Use CT's in <ArticleCreate> for creating new articles
+
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { Header, ArticleCreate, ArticlesList } from '../components'
 import { SimpleDebug, getRepoData } from '../utils'
 
-// Temp data for testing
+// Temp data for testing components: ArticleCreate & ArticlesList
+// This can be removed once we are bringing in the real data
 const demo = {
 	content_types: [
 		{
@@ -36,17 +48,19 @@ const demo = {
 }
 
 
-export default function ArticlesPage({repoSettings, allContentTypes}) {
+export default function ArticlesPage({ allContentTypes }) {
 	const router = useRouter()
 	const [content, setContent] = useState([])
+	// Title used for <Header> title
 	const title = router.query.group || router.query.type
 
 	const _allArticlesRawData = []
-	const _allArticlesDecodedData = []
 
 	useEffect(() => {
 		async function _fetchData() {
-			// const _allArticles = await getRepoData(`/content`)
+
+			// Just testing an idea of getting ALL articles and filtering
+			// to show only the ones relate to the current page.
 
 			const _allContentDirRaw = await getRepoData(`/content`)
 			// console.log(_allContentDirRaw)
@@ -55,7 +69,6 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 					// GET the encoded data for each file and parse/decode it
 					// const _decodedFileData = await getRepoData(`/content/${file.name}`)
 					const _getData = await getRepoData(file.path)
-					// console.log(_getData)
 					return new Promise(resolve => {
 						// Add decoded data to array
 						resolve(_allArticlesRawData.push(_getData))
@@ -66,139 +79,32 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 			await _getAllContentSubDirRaw
 			const _flattenRawData = _allArticlesRawData.flat()
 
-
 			setContent(_flattenRawData)
 
 		}
 		_fetchData()
 	}, [router.query])
 
-	// const cleaned = [].concat.apply([], _allArticlesData)
-	// const flattened = _allArticlesData => [].concat(..._allArticlesData)
-	// console.log(_allArticlesData.flat())
-	// console.log(flatData)
 	//- ------------------------------------
 
-	// Get all the config data for ALL related CT's
+	// Returns array of all decoded config data for ALL related CT's
 	const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
 		if (router.query.group) {
 			return router.query.group === i.group
 		} else {
 			return router.query.type === i.label
 		}
+		// eg: {label: "Posts", id: "posts", path: "content/posts", ...}
 	})
-	// Return a list of only the content directories from the config array
+
+	// Returns a list of only the content directories ('path') from the config array
 	const _articlesLocationsList = []
 	_relatedCTConfigDataArray.map(i => {
 		if (i.path && !_articlesLocationsList.includes(i.path)) {
 			return _articlesLocationsList.push(i.path)
+			// eg: ["content/posts"]
 		}
 	})
-
-	// Return a list of only the CT ids from the config array
-	const _relatedCTid = []
-	_relatedCTConfigDataArray.map(i => {
-		if (i.id && !_relatedCTid.includes(i.id)) {
-			return _relatedCTid.push(i.id)
-		}
-	})
-
-	// const _allArticles = getRepoData(`/content`)
-	// async function _getAllArticles() {
-	// 	return Promise.all(
-	// 		await getRepoData(`/content`)
-	// 	)
-	// }
-
-	// console.log(_getAllArticles())
-
-	// console.log(_relatedCTid)
-
-
-	// function _getDirectoryFiles() {
-	// 	return Promise.all(
-	// 		_articlesLocationsList.map(async dir => {
-	// 			return await getRepoData(dir)
-	// 		})
-	// 	)
-	// }
-
-
-	// Moved this directly into useEffect
-	// async function _getArticles() {
-	// 	return Promise.all(
-	// 		await getRepoData(`/content/pages/home.md`)
-	// 	)
-	// }
-
-	const _TESTsourceArray = [
-		`red`,
-		`green`,
-		`blue`,
-	]
-	const _TESTtargetArray = [
-		{
-			"name": `item one`,
-			"id": `one`,
-			"color": `purple`,
-		},
-		{
-			"name": `item two`,
-			"id": `two`,
-			"color": `red`,
-		},
-		{
-			"name": `item three`,
-			"id": `three`,
-			"color": `blue`,
-		},
-	]
-	// const _TEST1find = _TESTsourceArray.some(v => _TESTtargetArray.includes(v))
-
-	const _TEST2find = _TESTtargetArray.filter(function(i){
-		return `red` === i.color
-	})
-
-
-	function _TEST3find() {
-		const _result = []
-		_TESTsourceArray.map(type => {
-			_TESTtargetArray.filter(function(i){
-				return type === i.color
-			})
-		})
-	}
-
-	const _TESTresultArray = []
-	_TESTsourceArray.map(i => {
-		return _TESTresultArray.push(i.path)
-	})
-
-	function _TEST4find() {
-		const _result = []
-		// return _TESTsourceArray.map(type => type)
-		return _TESTsourceArray.map(type => {
-			return _TESTtargetArray.map(i => {
-				// const match = type === i.color
-				if (type === i.color && !_result.includes(i.name)) {
-					// return i.name
-					_result.push(i.name)
-				}
-				return _result
-			})
-
-		})
-		// const _TEST4find = _TESTtargetArray.filter(function(i){
-		// 	if (router.query.group) {
-		// 		return router.query.group === i.group
-		// 	} else {
-		// 		return router.query.type === i.label
-		// 	}
-		// })
-	}
-
-	// console.log(_TEST4find())
-
 
 	return (
 		<>
@@ -207,14 +113,17 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 				subtitle="All related articles are listed on this page"
 			/>
 
-			{/* <SimpleDebug>{content}</SimpleDebug> */}
+			{/* This creates an 'Add New' button/dropdown. It would show a dropdown of all CTs
+			in the current group and take the user to a page for adding a new article (using editor.jsx page).
+			If there's only one content-type, it wouldn't be a dropdown, just a button. */}
+			<ArticleCreate data={demo} />
 
-			{/* <SimpleDebug
-				label="_TESTrelatedCTConfigDataArray">
-				{_TESTrelatedCTConfigDataArray}
-			</SimpleDebug> */}
+			{/* This creates a list from ALL articles in the current CT, or if it's a group,
+			it would list ALL articles for ALL CTs in the Group */}
+			<ArticlesList data={demo} />
 
-			{/* <SimpleDebug
+
+			<SimpleDebug
 				label="_articlesLocationsList">
 				{_articlesLocationsList}
 			</SimpleDebug>
@@ -222,12 +131,6 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 			<SimpleDebug
 				label="_relatedCTConfigDataArray">
 				{_relatedCTConfigDataArray}
-			</SimpleDebug> */}
-
-
-			<SimpleDebug
-				label="Content (data)">
-				{content}
 			</SimpleDebug>
 
 		</>
@@ -263,16 +166,3 @@ export default function ArticlesPage({repoSettings, allContentTypes}) {
 // 			label="Option 1: Related Types Data">
 // 			{_relatedTypesData}
 // 		</SimpleDebug>
-
-
-//- ------------------------------------
-//- ------------------------------------
-// This 'Add New' button would show a dropdown of all content
-// types in the current group or if there's only one content-type,
-// it wouldn't be a dropdown, just a button.
-// <ArticleCreate data={demo} />
-
-// This list would be created from all available articles
-// (md files) with the  current content-type, or if it's a group,
-// it would list all articles for all content-types in the group
-// <ArticlesList data={demo} />

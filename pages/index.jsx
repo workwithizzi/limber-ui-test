@@ -1,48 +1,26 @@
+// App Dashboard Page
+
 import { Header } from '../components'
-import { SimpleDebug, getRepoData, string} from '../utils'
-import React from 'react'
-import { atob } from 'abab'
-import matter from 'gray-matter'
+// import { SimpleDebug, getRepoData, string} from '../utils'
 
 
-export default function DashboardPage({ data, allContentTypes }) {
-	const page = {}
-
-	// console.log(data)
-	const file = matter(data)
-	page[`content`] = file.content
-	page[`data`] = file.data
-	console.log(page)
+export default function DashboardPage(props) {
+	// const { repoSettings, allContentTypes } = props
 
 	return (
 		<>
-			<h1>{page.data.title}</h1>
-			<pre>{page.data.status}</pre>
-			{/* <pre>{temp.content}</pre> */}
-			<SimpleDebug label="page">{page}</SimpleDebug>
-			{/* <SimpleDebug label="temp.data">{file.data}</SimpleDebug> */}
-			{/* <SimpleDebug label="temp.content">{file.content}</SimpleDebug> */}
-			{/* <SimpleDebug label="temp.data">{file}</SimpleDebug> */}
-			{/* {temp.content} */}
-			{/* <div>{data}</div> */}
+
+			<Header
+				title="Dashboard"
+				subtitle="This is a subtitle"
+			/>
+
+			<p>
+				This page is just a placeholder for now, but at some point in the future,
+				this page will eventually have "Dashboard" things. Like:
+				Google Analytics, Charts, Shortcuts, or Recent Activity.
+			</p>
+
 		</>
 	)
 }
-
-
-
-DashboardPage.getInitialProps = async function() {
-	// The file path is static here just for testing
-	const data = await getRepoData(`/content/pages/home.md`)
-	return {
-		data,
-	}
-}
-
-
-
-{/* <Header
-title="Dashboard"
-subtitle="This is a subtitle"
-/>
-<pre>This page will eventually have "Dashboardy" things.</pre> */}
