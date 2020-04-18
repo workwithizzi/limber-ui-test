@@ -11,6 +11,8 @@
 // TODO: Use data in <ArticlesList>
 // TODO: Use CT's in <ArticleCreate> for creating new articles
 
+// NOTE: if I  WRITE STUFF uppercased, those are the things, I would like to empasize on, I am not yelling. haha :)
+
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
@@ -54,8 +56,23 @@ export default function ArticlesPage({ allContentTypes }) {
 	// Title used for <Header> title
 	const title = router.query.group || router.query.type
 
-	const _allArticlesRawData = []
+	/**
+ * NOTE-YG
+ * REFACTORING of the _allArticlesRawData
+ * 
+ * Please have a look at the possible improvements that could be made.
+ * 
+ */
 
+	// REF: 1
+	// Here you have an initialization of the empty array.
+	// Later on you use it to push the files there.
+	// In fact, you do not need this array.
+	// I will explain WHY below.
+	// const _allArticlesRawData = []
+
+
+	// CURRENTLY this `useEffect` HAS NO effect to the `articles.jsx` component, as we DO NOT USE the `content` state
 	useEffect(() => {
 		async function _fetchData() {
 
@@ -71,12 +88,31 @@ export default function ArticlesPage({ allContentTypes }) {
 					const _getData = await getRepoData(file.path)
 					return new Promise(resolve => {
 						// Add decoded data to array
-						resolve(_allArticlesRawData.push(_getData))
+
+						// REF: 2
+						// so, here you supposed to push the `_getData` into the `_allArticlesRawData` array, which was initialized above at the `global` scope.
+						// but in fact, you can use just the `_getData` itself, as far, as the `map` method RETURNS an array, based on the RESOLVED values.
+						// I mean, the `map` is a method, after execution of each, the result is an array.
+						// resolve(_allArticlesRawData.push(_getData))
+
+						// So, what I mean, is that you can simply pass the resolved value of `_getData` to the `map`, and `map` will return a NEW array FILLED with the `_getData`
+						resolve(_getData)
 					})
 				})
 			)
 			// awaiting for allContentTypesData array to be finished
-			await _getAllContentSubDirRaw
+			// await _getAllContentSubDirRaw
+
+			// REF: 3
+			// so, above, you have just avaiting when the `_allArticlesRawData` is filled, when you can await for the `map` method to return an array
+			// Like here, you are assigning the RETURN from a `map` method to a `__data` varable.
+			// at the end, the result after execution 
+			const _allArticlesRawData = await _getAllContentSubDirRaw
+			// Check out, the result is absolutely identical to the `_allArticlesRawData`
+			// BUT the approach is simpler, and straightforward, also, you are not FILLING the REACT MEMORY with additional data
+			console.log(_allArticlesRawData)
+			// then you can flattern the resultant data as well
+			// const _flattenRawData = _allArticlesRawData.flat()
 			const _flattenRawData = _allArticlesRawData.flat()
 
 			setContent(_flattenRawData)
@@ -99,7 +135,8 @@ export default function ArticlesPage({ allContentTypes }) {
 
 	// Returns a list of only the content directories ('path') from the config array
 	const _articlesLocationsList = []
-	_relatedCTConfigDataArray.map(i => {
+	// CHANGED `map` to `forEach`, as `forEach` doesn't return anything after the execution.
+	_relatedCTConfigDataArray.forEach(i => {
 		if (i.path && !_articlesLocationsList.includes(i.path)) {
 			return _articlesLocationsList.push(i.path)
 			// eg: ["content/posts"]

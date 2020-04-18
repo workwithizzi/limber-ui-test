@@ -63,6 +63,10 @@ export async function getRepoData(path, leaveEncoded) {
 		return Promise.reject(error.response || error.message)
 	}
 
+	// NOTE-YG
+	// That's OK to use the the only `getRepoData` if you ONLY doing GET requests, and that's OK for now
+	// BUT, how would you handle the others PUT, DELETE requests which we will have in the future, keeping in mind the DRY approach? :)
+
 	// Get the data
 	try {
 		const response = await client({
