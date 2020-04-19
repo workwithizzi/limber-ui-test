@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { SiteMeta } from './SiteMeta'
 import { Menu } from './Menu'
 
-// import settings from "../db/limber.yaml"
 
 export function Layout({ repoSettings, allContentTypes, children }) {
 	return (
@@ -10,14 +9,13 @@ export function Layout({ repoSettings, allContentTypes, children }) {
 			<Head>
 				<SiteMeta />
 
-				<title>Limber UI Test</title>
+				<title>Limber</title>
 			</Head>
 			<div id="layout">
 				<Menu
-					repoSettings={repoSettings}
-					allContentTypes={allContentTypes}
+					repoSettings={repoSettings} // not currently used
+					allContentTypes={allContentTypes} // Used to create menu
 				/>
-
 
 				<main id="main">
 
@@ -28,6 +26,7 @@ export function Layout({ repoSettings, allContentTypes, children }) {
 				</main>
 			</div> {/* layout */}
 
+			{/* For purecss */}
 			<script src="/ui.js"></script>
 
 		</>

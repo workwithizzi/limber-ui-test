@@ -1,42 +1,9 @@
-export { repo } from './constants'
-export { request } from './request'
+export { repo } from './repo'
+// export { request } from './request'
 export { getRepoData } from './getRepoData'
 export { getCT } from './getContentTypes'
-export { parseYaml } from './parseYaml'
+export { decode } from './decode'
 
 export { SimpleDebug, debug, withDebug } from './debug'
 
-export {
-	lowerCase,
-	upperCase,
-	replaceAccents,
-	removeNonWord,
-	camelCase,
-	unCamelCase,
-	titleCase,
-	pascalCase,
-	sentenceCase,
-	slugify,
-	hyphenate,
-	unhyphenate,
-	underscore,
-	normalizeLineBreaks,
-	contains,
-	crop,
-	escapeRegExp,
-	escapeHtml,
-	unescapeHtml,
-	escapeUnicode,
-	stripHtmlTags,
-	removeNonASCII,
-	interpolate,
-	rpad,
-	lpad,
-	repeat,
-	truncate,
-	ltrim,
-	rtrim,
-	trim,
-	abbreviate,
-	sanitize,
-} from './strings'
+export { string } from './string'

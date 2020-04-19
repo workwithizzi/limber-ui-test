@@ -1,7 +1,15 @@
 /* eslint no-useless-escape: 0 */
 
-// Exported Functions:
+// String manipulation functions.
+// Each one is exported individually, but can also be
+// used as a method on string.
+// ex: string.lowercase(`This Is a String`)
+
+//- ------------------------------------
+
+// Functions:
 //
+//  extension
 //  lowerCase
 //  upperCase
 //  replaceAccents
@@ -34,8 +42,24 @@
 //  trim
 //  abbreviate
 //  sanitize
+
 //- -----------------------------------------------------------------
 
+
+/**
+ * Get file extension from string
+ */
+export function extension(str){
+	return str.split(`.`).pop()
+}
+
+/**
+ * Get file extension from string
+ */
+export function extensionIs(str, match){
+	return str.split(`.`).pop() === match
+
+}
 
 /**
  * String.toLowerCase()
@@ -429,7 +453,6 @@ export function abbreviate(str) {
 /**
  * Sanitize ID fields
  */
-
 export function sanitize(str) {
 	// Replaces spaces to underscores
 	str = str.replace(/\s/, `_`).toLowerCase()
@@ -438,4 +461,44 @@ export function sanitize(str) {
 	// First char cannot be underscore
 	str = str.replace(/^\_/, ``)
 	return str
+}
+
+
+//- ------------------------------------
+
+export const string = {
+	extensionIs,
+	extension,
+	lowerCase,
+	upperCase,
+	replaceAccents,
+	removeNonWord,
+	camelCase,
+	unCamelCase,
+	titleCase,
+	pascalCase,
+	sentenceCase,
+	slugify,
+	hyphenate,
+	unhyphenate,
+	underscore,
+	normalizeLineBreaks,
+	contains,
+	crop,
+	escapeRegExp,
+	escapeHtml,
+	unescapeHtml,
+	escapeUnicode,
+	stripHtmlTags,
+	removeNonASCII,
+	interpolate,
+	rpad,
+	lpad,
+	repeat,
+	truncate,
+	ltrim,
+	rtrim,
+	trim,
+	abbreviate,
+	sanitize,
 }

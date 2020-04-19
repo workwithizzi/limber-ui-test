@@ -1,3 +1,5 @@
+// Left for reference. Can be removed if not needed.
+
 // Creates Axios Client and Requests data from
 // repo with error handling
 

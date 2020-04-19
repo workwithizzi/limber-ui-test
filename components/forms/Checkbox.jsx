@@ -8,7 +8,7 @@ import React from "react"
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { debug, camelCase } from "../../utils"
+import { debug, string } from "../../utils"
 
 
 export class Checkbox extends React.Component {
@@ -36,12 +36,12 @@ export class Checkbox extends React.Component {
 				<label
 					className = "pure-checkbox"
 					form      = {form}
-					htmlFor   = {id || camelCase(label)}
+					htmlFor   = {id || string.camelCase(label)}
 				>
 					<input
 						defaultChecked = {this.state.checked}
 						form     = {form}
-						id       = {id || camelCase(label)}
+						id       = {id || string.camelCase(label)}
 						name     = {name}
 						onChange = {this._handleChange}
 						type     = "checkbox"

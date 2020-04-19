@@ -1,3 +1,4 @@
+// Header component. Brought in each on individual page
 
 export function Header({title, subtitle}) {
 	return (

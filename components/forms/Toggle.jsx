@@ -7,7 +7,7 @@ import React from "react"
 import PT from "prop-types"
 import stylePT from "react-style-proptype"
 
-import { debug, camelCase } from "../../utils"
+import { debug, string } from "../../utils"
 
 
 export class Toggle extends React.Component {
@@ -35,14 +35,14 @@ export class Toggle extends React.Component {
 				<label
 					className = "toggle__label"
 					form      = {form}
-					htmlFor   = {id || camelCase(label)}
+					htmlFor   = {id || string.camelCase(label)}
 				>
 					<div className={this.state.checked ? `toggle isOn` : `toggle`}>
 						<input
 							defaultChecked = {this.state.checked}
 							className = "toggle__control"
 							form      = {form}
-							id        = {id || camelCase(label)}
+							id        = {id || string.camelCase(label)}
 							name      = {name}
 							onChange  = {this._handleChange}
 							type      = "checkbox"

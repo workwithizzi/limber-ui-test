@@ -1,6 +1,15 @@
+// Settings file
+// Data here is currently from the projects 'limber.yml' file.
+// Once we integrate with a MongoDB, we will probably pull some data
+// from the User's DB.
+//
+// TODO: Add ability to change settings in User's repo 'limber.yml'
+// TODO: Integrate with MongoDB and add ability to modify User's settings
+
 import { Header, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Numberfield, Button } from '../components'
 
 
+// Demo array for example <Select> component
 const _testOptions=[{
 	value: `dog`,
 	label: `Dog`,
@@ -20,7 +29,7 @@ export default function SettingsPage(props) {
 		<>
 			<Header
 				title="Settings"
-				subtitle="Settings here affect the entire site."
+				subtitle="Settings here are from the 'limber.yml' file & affect the entire site."
 			/>
 
 			<Form title="Testing Settings">
@@ -63,11 +72,11 @@ export default function SettingsPage(props) {
 				/>
 				}
 
-				<br />
-				<hr />
-				<hr />
-				<br />
-				<h3>The rest of these are just examples of inputs</h3>
+			</Form>
+
+			<br /><br /><hr /><br /><br />
+
+			<Form title="Examples of Form Components from 'components/forms/'">
 
 				<Select
 					name="selectArray"
