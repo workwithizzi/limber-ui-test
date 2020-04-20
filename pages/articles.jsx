@@ -15,9 +15,10 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import * as matter from 'gray-matter'
 
 import { Header, ArticleCreate, ArticlesList } from '../components'
-import { SimpleDebug, getRepoData } from '../utils'
+import { SimpleDebug, getRepoData, ContentTypes as CT } from '../utils'
 
 // Temp data for testing components: ArticleCreate & ArticlesList
 // This can be removed once we are bringing in the real data
@@ -53,47 +54,51 @@ const demo = {
 export default function ArticlesPage({ allContentTypes }) {
 	const router = useRouter()
 	const [content, setContent] = useState([])
+	const [markdownContent, setMarkdownContent] = useState([])
 	// Title used for <Header> title
 	const title = router.query.group || router.query.type
 
 	// CURRENTLY this `useEffect` HAS NO effect to the `articles.jsx` component, as we DO NOT USE the `content` state
 	useEffect(() => {
-		async function _fetchData() {
-
-			// Just testing an idea of getting ALL articles and filtering
-			// to show only the ones relate to the current page.
-
-			const _allContentDirRaw = await getRepoData(`/content`)
-
-			const _getAllContentSubDirRaw = Promise.all(
-				// `map` method RETURNS an array, based on the RESOLVED values
-				_allContentDirRaw.map(async file => {
-					// GET the encoded data for each file and parse/decode it
-					// const _decodedFileData = await getRepoData(`/content/${file.name}`)
-					const _getData = await getRepoData(file.path)
-					return new Promise(resolve => {
-						// Add decoded data to array
-
-						// PASS the resolved value of `_getData` to the `map`, and `map` will return a NEW array FILLED with the `_getData`
-						resolve(_getData)
-					})
-				})
-			)
-
-			// AWAITING for _getAllContentSubDirRaw to be finished, e.g. await for the `map` method to return an array
-			// Assigning the RETURN from a `map` method to a `_allArticlesRawData` varable.
-			const _allArticlesRawData = await _getAllContentSubDirRaw
-
-			// Flattern the resultant data as well
-			const _flattenRawData = _allArticlesRawData.flat()
-
-			setContent(_flattenRawData)
-
-		}
-		_fetchData()
+		// _fetchContentFolder()
+		_fetchMarkdownFiles()
 	}, [router.query])
 
 	//- ------------------------------------
+
+	async function _fetchContentFolder() {
+
+		// Just testing an idea of getting ALL articles and filtering
+		// to show only the ones relate to the current page.
+
+		const _allContentDirRaw = await getRepoData(`/content`)
+
+		const _getAllContentSubDirRaw = Promise.all(
+			// `map` method RETURNS an array, based on the RESOLVED values
+			_allContentDirRaw.map(async file => {
+				// GET the encoded data for each file and parse/decode it
+				// const _decodedFileData = await getRepoData(`/content/${file.name}`)
+				const _getData = await getRepoData(file.path)
+				return new Promise(resolve => {
+					// Add decoded data to array
+
+					// PASS the resolved value of `_getData` to the `map`, and `map` will return a NEW array FILLED with the `_getData`
+					resolve(_getData)
+				})
+			})
+		)
+
+		// AWAITING for _getAllContentSubDirRaw to be finished, e.g. await for the `map` method to return an array
+		// Assigning the RETURN from a `map` method to a `_allArticlesRawData` varable.
+		const _allArticlesRawData = await _getAllContentSubDirRaw
+
+		// Flattern the resultant data as well
+		const _flattenRawData = _allArticlesRawData.flat()
+
+		setContent(_flattenRawData)
+	}
+
+	// NOTE that the _relatedCTConfigDataArray and _articlesLocationsList are executed 2 times if they are not placed into the `useEffect`
 
 	// Returns array of all decoded config data for ALL related CT's
 	const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
@@ -105,6 +110,7 @@ export default function ArticlesPage({ allContentTypes }) {
 		// eg: {label: "Posts", id: "posts", path: "content/posts", ...}
 	})
 
+	/*
 	// Returns a list of only the content directories ('path') from the config array
 	const _articlesLocationsList = []
 	// CHANGED `map` to `forEach`, as `forEach` doesn't return anything after the execution.
@@ -114,6 +120,46 @@ export default function ArticlesPage({ allContentTypes }) {
 			// eg: ["content/posts"]
 		}
 	})
+	*/
+	// Replaced above code with the class ContentTypes and getPaths method
+	// Returns a list of only the content directories ('path') from the config array
+	const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
+
+
+	async function _fetchMarkdownFiles() {
+		// Returns array of all decoded config data for ALL related CT's
+		const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
+			if (router.query.group) {
+				return router.query.group === i.group
+			} else {
+				return router.query.type === i.label
+			}
+		// eg: {label: "Posts", id: "posts", path: "content/posts", ...}
+		})
+		// Returns a list of only the content directories ('path') from the config array
+		const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
+		// fetch all the files from the directories mentioned in `_articlesLocationsList`
+		const markdownFilesList = await Promise.all(
+			_articlesLocationsList.map(async item => {
+				return await await getRepoData(`/${item}`)
+			})
+		)
+		// flattern the output with the list of md files from the directory
+		const markdownFilesListFormatted = markdownFilesList.flat()
+
+		// Get the content from the md file
+		const markdownFilesContent = await Promise.all(
+			markdownFilesListFormatted.map(async item => {
+				return await await getRepoData(`/${item.path}`)
+			})
+		)
+		// format md file content into the object
+		const formattedMarkdownFilesContent = markdownFilesContent.map(content => 
+			matter(content)
+		)
+		console.log(formattedMarkdownFilesContent)
+		setMarkdownContent(formattedMarkdownFilesContent)
+	}
 
 	return (
 		<>
