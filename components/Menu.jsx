@@ -3,12 +3,50 @@
 // the CT config files
 
 import Link from "next/link"
-import { getCT } from '../utils'
+import { getCT, ContentTypes as CT } from '../utils'
 
 export function Menu({ allContentTypes }) {
 	// These are for the key value when looping through items
 	let groupKey = 1
 	let typesKey = 1
+
+	// Define a Class Object with the passed in data
+	const ContentTypes = new CT(allContentTypes)
+
+	function _renderFromGroups() {
+		// Use a class ContentTypes to return an array of non-duplicated group names
+		return ContentTypes.getGroupNames().map(i => {
+			let liClass=`pure-menu-item`
+			if (groupKey === 1) {
+				liClass=`pure-menu-item menu-item-divided`
+			}
+			groupKey++
+			return (
+				<li className={liClass} key={groupKey}>
+					<Link href={`/articles?group=${i}`}>
+						<a className="pure-menu-link">{i}</a>
+					</Link>
+				</li>
+			)
+		})
+	}
+
+	function _renderFromSoloTypes() {
+		return ContentTypes.getSoloTypesNames().map(i => {
+			let liClass=`pure-menu-item`
+			if (typesKey === 1) {
+				liClass=`pure-menu-item menu-item-divided`
+			}
+			typesKey++
+			return (
+				<li className={liClass} key={typesKey}>
+					<Link href={`/articles?type=${i}`}>
+						<a className="pure-menu-link">{i}</a>
+					</Link>
+				</li>
+			)
+		})
+	}
 
 	return (
 		<>
@@ -41,7 +79,7 @@ export function Menu({ allContentTypes }) {
 						{/* --- Dynamic Menu Items --- */}
 
 						{/* From groups array */}
-						{getCT.groupNames(allContentTypes).map(i => {
+						{/* {getCT.groupNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
 							if (groupKey === 1) {
 								liClass=`pure-menu-item menu-item-divided`
@@ -54,10 +92,13 @@ export function Menu({ allContentTypes }) {
 									</Link>
 								</li>
 							)
-						})}
+						})} */}
+
+						{/* Converted above into a function */}
+						{_renderFromGroups()}
 
 						{/* From "solo" content-types array --CT's that aren't in a Group */}
-						{getCT.soloTypesNames(allContentTypes).map(i => {
+						{/* {getCT.soloTypesNames(allContentTypes).map(i => {
 							let liClass=`pure-menu-item`
 							if (typesKey === 1) {
 								liClass=`pure-menu-item menu-item-divided`
@@ -70,8 +111,10 @@ export function Menu({ allContentTypes }) {
 									</Link>
 								</li>
 							)
-						})}
+						})} */}
 
+						{/* Converted above into a function */}
+						{_renderFromSoloTypes()}
 					</ul>
 				</div>
 			</div>
