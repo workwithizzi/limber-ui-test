@@ -5,7 +5,7 @@
 import Link from "next/link"
 import { getCT } from '../utils'
 
-export function Menu({repoSettings, allContentTypes}) {
+export function Menu({ allContentTypes }) {
 	// These are for the key value when looping through items
 	let groupKey = 1
 	let typesKey = 1
