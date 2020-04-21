@@ -16,6 +16,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
+import axios from "axios"
 
 import { Header, ArticleCreate, ArticlesList } from '../components'
 import { SimpleDebug, getRepoData, ContentTypes as CT } from '../utils'
@@ -60,8 +61,12 @@ export default function ArticlesPage({ allContentTypes }) {
 
 	// CURRENTLY this `useEffect` HAS NO effect to the `articles.jsx` component, as we DO NOT USE the `content` state
 	useEffect(() => {
+		const abortController = new AbortController()
 		// _fetchContentFolder()
 		_fetchMarkdownFiles()
+		return () => {
+			abortController.abort(`Api is being canceled`)
+		}
 	}, [router.query])
 
 	//- ------------------------------------
