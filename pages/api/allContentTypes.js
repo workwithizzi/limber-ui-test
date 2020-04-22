@@ -1,76 +1,59 @@
+import axios from "axios"
 import { repo, getRepoData } from '../../utils'
 
 export default async(req, res) => {
-	console.log(`------------------------------------------`)
-	console.log(`1`)
-	console.log(`------------------------------------------`)
-	// Get project settings from repo and decode
-	const repoSettings = await getRepoData(repo.GITHUB_LIMBER_SETTINGS_PATH)
-	console.log(repoSettings)
-	console.log(`+++++++++++++++++++++++++++++++++++++++++=`)
 
-	console.log(`------------------------------------------`)
-	console.log(`2`)
-	console.log(`------------------------------------------`)
-	// GET encoded array of contentTypes files
-	const _encodedCtData = await getRepoData(`/${repoSettings.config_path}`)
-	console.log(_encodedCtData)
-	console.log(`+++++++++++++++++++++++++++++++++++++++++=`)
+	function series(items, fn) {
+		const result = []
+		return items.reduce((acc, item) => {
+			acc = acc.then(() => {
+				return fn(item).then(res => {
+					return result.push(res)
+				})
+			})
+			return acc
+		}, Promise.resolve())
+			.then(() => result)
+	}
 
-	// NOTE-YG
+	function all(items, fn) {
+		const promises = items.map(item => fn(item))
+		return Promise.all(promises)
+	}
 
-	/**
-		 * Here you have an initialization of the empty array.
-		 * Later on you use it to push the files there from a `map` method.
-		 * In fact, you do not need this array.
-		 * Because `map` RETURNS an array of RESOLVED values anyway here, and it makes `allContentTypesData` redundant
-		 */
+	function splitToChunks(items, chunkSize = 50) {
+		const result = []
+		for (let i = 0; i < items.length; i+= chunkSize) {
+			result.push(items.slice(i, i + chunkSize))
+		}
+		return result
+	}
+	
+	function chunks(items, fn, chunkSize = 50) {
+		let result = []
+		const chunks = splitToChunks(items, chunkSize)
+		return series(chunks, async chunk => {
+			const res = await all(chunk, fn)
+			return result = result.concat(res)
+		})
+			.then(() => result)
+	}
 
-	// Initiate an empty array to use for decoded content-types
-	// const allContentTypesData = []
+	try {
+		const fetchFile = file => {
+			const url = `/${repoSettings.config_path}/${file.name}`
+			return getRepoData(url)
+				.then(res => res)
+		}
+		// Get project settings from repo and decode
+		const repoSettings = await getRepoData(repo.GITHUB_LIMBER_SETTINGS_PATH)
 
-	// For each file in repo's content-types (config) directory:
-	// Decode the file + add data to array so that it can be used
-	console.log(`------------------------------------------`)
-	console.log(`3`)
-	console.log(`------------------------------------------`)
-	// const compileDecodedCtDataToArray = Promise.all(
-	// 	_encodedCtData.map(async file => {
-	// 		// GET the encoded data for each file and parse/decode it
-	// 		console.log(`EACH FILE`)
-	// 		console.log(file)
-	// 		const _getAndDecodeFileData = await getRepoData(`/${repoSettings.config_path}/${file.name}`)
-	// 		return new Promise(resolve => {
-	// 			// Add decoded data to array
-
-	// 			// so, here you supposed to push the `_getAndDecodeFileData` into the `allContentTypesData` array, which was initialized above.
-	// 			// but in fact, you can use just the `_getAndDecodeFileData` itself, as far, as the `map` method RETURNS an array, based on the RESOLVED values from the PROMISE.
-	// 			// I mean, the `map` is a method, after execution of each, the output result is an array.
-	// 			// resolve(allContentTypesData.push(_getAndDecodeFileData))
-
-	// 			// So, instead of pushing to the array ON RESOLVE, you just RETURN the value to `map`, and `map` returns an ARRAY that has RETURNED VALUE from the PROMISE
-	// 			resolve(_getAndDecodeFileData)
-	// 		})
-	// 	})
-	// )
-	console.log(`+++++++++++++++++++++++++++++++++++++++++=`)
-	// awaiting for allContentTypesData array to be finished
-	// once the AWAIT is FULLFILLED, the `allContentTypesData` will have values of the `_getAndDecodeFileData`
-	// const allContentTypesData = await compileDecodedCtDataToArray
-	// compileDecodedCtDataToArray.then(data => {
-	// 	console.log(data)
-	// })
-	// console.log(compileDecodedCtDataToArray)
-	const arr = []
-
-	const x = _encodedCtData.map(async file => {
-		// GET the encoded data for each file and parse/decode it
-		return await getRepoData(`/${repoSettings.config_path}/${file.name}`)
-
-	})
-
-	const allContentTypesData = await Promise.all(x)
-
-	console.log(`------------------------------------------`)
-	res.status(200).send({ repoSettings, allContentTypesData })
+		// GET encoded array of contentTypes files
+		const _encodedCtData = await getRepoData(`/${repoSettings.config_path}`)
+		const allContentTypesData = await chunks(_encodedCtData, fetchFile)
+		console.log(`done`)
+		return res.status(200).send({ repoSettings, allContentTypesData })
+	} catch (error) {
+		return res.status(500).send()
+	}
 }

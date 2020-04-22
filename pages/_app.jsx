@@ -94,13 +94,23 @@ export default class MyApp extends App {
 		// // console.log(res)
 		// const repoSettings = res.data.repoSettings
 		// const allContentTypesData = res.data.allContentTypesData
-		
+
+		// try {
+		// 	const res = await axios.get(`http://localhost:3000/api/allContentTypes`)
+		// 	// console.log(res)
+		// 	const repoSettings = res.data.repoSettings
+		// 	const allContentTypesData = res.data.allContentTypesData
+			
 		return {
 			pageProps,
 			// path: ctx.asPath,
 			// repoSettings,
 			// allContentTypesData,
 		}
+		// } catch(err) {
+		// 	console.log(err)
+		// }
+		
 	}
 
 	componentDidMount() {
@@ -148,6 +158,8 @@ export default class MyApp extends App {
 								// Make data available to Layout & child components
 								repoSettings={this.state.repoSettings}
 								allContentTypes={this.state.allContentTypesData}
+								// repoSettings={repoSettings}
+								// allContentTypes={allContentTypesData}
 								// path={path}
 								{...pageProps}
 							>
@@ -155,6 +167,8 @@ export default class MyApp extends App {
 									// Make data available to all page components
 									repoSettings={this.state.repoSettings}
 									allContentTypes={this.state.allContentTypesData}
+									// repoSettings={repoSettings}
+									// allContentTypes={allContentTypesData}
 									// path={path}
 									{...pageProps}
 								/>
