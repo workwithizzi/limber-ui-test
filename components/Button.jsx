@@ -11,6 +11,7 @@
 
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
+import { Debug } from '.'
 
 import '../styles/Button.scss'
 
@@ -22,8 +23,10 @@ export function Button({
 	label,
 	caution,
 	children,
+	debug,
 	...props
 }) {
+
 	// Classes
 	let bClass = `pure-button`
 	if (active) {
@@ -35,7 +38,6 @@ export function Button({
 		bClass = `${bClass} override-button-caution`
 	}
 
-
 	// Styles
 	const bStyle = props.style ? props.style : {}
 	if (block) {
@@ -44,15 +46,28 @@ export function Button({
 	}
 
 	return (
-		<button
-			className={bClass}
-			type={props.type || `button`}
-			style={bStyle}
-			{...props}
-		>
-			{label}
-			{children}
-		</button>
+		<>
+			<button
+				className={bClass}
+				type={props.type || `button`}
+				style={bStyle}
+				{...props}
+			>
+				{label}
+				{children}
+			</button>
+
+			{debug && (
+				<Debug
+					debug = {debug}
+					info  = '<Button> Component - Props'
+					label = {label || children}
+					type  = {props.type || `button`}
+					{...props}
+				/>
+			)}
+
+		</>
 	)
 }
 
