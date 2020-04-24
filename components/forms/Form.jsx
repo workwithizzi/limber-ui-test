@@ -14,7 +14,7 @@ export function Form({
 	...props
 }) {
 	return (
-		<form className="pure-form pure-form-stacked" {...props}>
+		<form className='pure-form pure-form-stacked' {...props}>
 			<fieldset>
 				{title && <legend>{title}</legend>}
 				{children}

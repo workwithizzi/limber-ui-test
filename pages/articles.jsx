@@ -18,8 +18,8 @@ import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
 import axios from "axios"
 
-import { Header, ArticleCreate, ArticlesList } from '../components'
-import { SimpleDebug, getRepoData, ContentTypes as CT } from '../utils'
+import { Header, Debug, ArticleCreate, ArticlesList } from '../components'
+import { getRepoData, ContentTypes as CT } from '../utils'
 
 // Temp data for testing components: ArticleCreate & ArticlesList
 // This can be removed once we are bringing in the real data
@@ -159,10 +159,10 @@ export default function ArticlesPage({ allContentTypes }) {
 			})
 		)
 		// format md file content into the object
-		const formattedMarkdownFilesContent = markdownFilesContent.map(content => 
+		const formattedMarkdownFilesContent = markdownFilesContent.map(content =>
 			matter(content)
 		)
-		console.log(formattedMarkdownFilesContent)
+		// console.log(formattedMarkdownFilesContent)
 		setMarkdownContent(formattedMarkdownFilesContent)
 	}
 
@@ -183,15 +183,13 @@ export default function ArticlesPage({ allContentTypes }) {
 			<ArticlesList data={demo} />
 
 
-			<SimpleDebug
-				label="_articlesLocationsList">
+			<Debug info="_articlesLocationsList">
 				{_articlesLocationsList}
-			</SimpleDebug>
+			</Debug>
 
-			<SimpleDebug
-				label="_relatedCTConfigDataArray">
+			<Debug info="_relatedCTConfigDataArray">
 				{_relatedCTConfigDataArray}
-			</SimpleDebug>
+			</Debug>
 
 		</>
 	)
@@ -222,7 +220,6 @@ export default function ArticlesPage({ allContentTypes }) {
 // }
 
 // In the return of the component:
-// <SimpleDebug
-// 			label="Option 1: Related Types Data">
-// 			{_relatedTypesData}
-// 		</SimpleDebug>
+// <Debug label="Option 1: Related Types Data">
+//  {_relatedTypesData}
+// </Debug>
