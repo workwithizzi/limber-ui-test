@@ -28,10 +28,15 @@ export function Debug({debug, info, children, ...props}) {
 	const printInfo = debug !== `log`
 
 	const logTitle = info ? `-- Debug: ${info} --` : `-- Debug --`
+	// Check whether `props` were passed into the component
+	const arePropsEmpty = Object.keys(props).length === 0 && props.constructor === Object
+
 	logInfo && (
 		console.log(logTitle),
 		children && console.log(children),
-		console.log(props ? props : `No Props.`)
+		// props are coming into the `Debug` component as an object, so it is needed to check whether the Object is empty or not,
+		// as otherwise the check `props ? props : `No Props.` will result `true` as even if there're no properties passed into the debug, the `props` is an empty Object.
+		console.log(arePropsEmpty ? `No Props.` : props)
 	)
 
 	// Make sure there are properties (from spread)
