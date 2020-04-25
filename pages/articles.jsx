@@ -16,7 +16,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
-import axios from "axios"
 
 import { Header, Debug, ArticleCreate, ArticlesList } from '../components'
 import { getRepoData, ContentTypes as CT } from '../utils'
@@ -56,6 +55,7 @@ export default function ArticlesPage({ allContentTypes }) {
 	const router = useRouter()
 	const [content, setContent] = useState([])
 	const [markdownContent, setMarkdownContent] = useState([])
+
 	// Title used for <Header> title
 	const title = router.query.group || router.query.type
 
@@ -70,38 +70,6 @@ export default function ArticlesPage({ allContentTypes }) {
 	}, [router.query])
 
 	//- ------------------------------------
-
-	async function _fetchContentFolder() {
-
-		// Just testing an idea of getting ALL articles and filtering
-		// to show only the ones relate to the current page.
-
-		const _allContentDirRaw = await getRepoData(`/content`)
-
-		const _getAllContentSubDirRaw = Promise.all(
-			// `map` method RETURNS an array, based on the RESOLVED values
-			_allContentDirRaw.map(async file => {
-				// GET the encoded data for each file and parse/decode it
-				// const _decodedFileData = await getRepoData(`/content/${file.name}`)
-				const _getData = await getRepoData(file.path)
-				return new Promise(resolve => {
-					// Add decoded data to array
-
-					// PASS the resolved value of `_getData` to the `map`, and `map` will return a NEW array FILLED with the `_getData`
-					resolve(_getData)
-				})
-			})
-		)
-
-		// AWAITING for _getAllContentSubDirRaw to be finished, e.g. await for the `map` method to return an array
-		// Assigning the RETURN from a `map` method to a `_allArticlesRawData` varable.
-		const _allArticlesRawData = await _getAllContentSubDirRaw
-
-		// Flattern the resultant data as well
-		const _flattenRawData = _allArticlesRawData.flat()
-
-		setContent(_flattenRawData)
-	}
 
 	// NOTE that the _relatedCTConfigDataArray and _articlesLocationsList are executed 2 times if they are not placed into the `useEffect`
 
@@ -223,3 +191,38 @@ export default function ArticlesPage({ allContentTypes }) {
 // <Debug label="Option 1: Related Types Data">
 //  {_relatedTypesData}
 // </Debug>
+
+
+// Fetch all the files in the `content` folder
+
+// async function _fetchContentFolder() {
+
+// 	// Just testing an idea of getting ALL articles and filtering
+// 	// to show only the ones relate to the current page.
+
+// 	const _allContentDirRaw = await getRepoData(`/content`)
+
+// 	const _getAllContentSubDirRaw = Promise.all(
+// 		// `map` method RETURNS an array, based on the RESOLVED values
+// 		_allContentDirRaw.map(async file => {
+// 			// GET the encoded data for each file and parse/decode it
+// 			// const _decodedFileData = await getRepoData(`/content/${file.name}`)
+// 			const _getData = await getRepoData(file.path)
+// 			return new Promise(resolve => {
+// 				// Add decoded data to array
+
+// 				// PASS the resolved value of `_getData` to the `map`, and `map` will return a NEW array FILLED with the `_getData`
+// 				resolve(_getData)
+// 			})
+// 		})
+// 	)
+
+// 	// AWAITING for _getAllContentSubDirRaw to be finished, e.g. await for the `map` method to return an array
+// 	// Assigning the RETURN from a `map` method to a `_allArticlesRawData` varable.
+// 	const _allArticlesRawData = await _getAllContentSubDirRaw
+
+// 	// Flattern the resultant data as well
+// 	const _flattenRawData = _allArticlesRawData.flat()
+
+// 	setContent(_flattenRawData)
+// }
