@@ -16,6 +16,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
+import axios from 'axios'
 
 import { Header, Debug, ArticleCreate, ArticlesList } from '../components'
 import { getRepoData, ContentTypes as CT } from '../utils'
@@ -52,6 +53,13 @@ const demo = {
 
 
 export default function ArticlesPage({ allContentTypes }) {
+	/**
+	 * Cancel Axios request
+	 * 
+	 * Generate the Token, which will be used in case of the component being unmounted with the pending request.
+	 */
+	const signal = axios.CancelToken.source()
+
 	const router = useRouter()
 	const [content, setContent] = useState([])
 	const [markdownContent, setMarkdownContent] = useState([])
@@ -61,11 +69,13 @@ export default function ArticlesPage({ allContentTypes }) {
 
 	// CURRENTLY this `useEffect` HAS NO effect to the `articles.jsx` component, as we DO NOT USE the `content` state
 	useEffect(() => {
-		const abortController = new AbortController()
+		// this is to make sure that we are able operate on the `allContentTypes` as it is also being fetched at the component mount time
+		if (allContentTypes.length > 1) {
+			_fetchMarkdownFiles(signal)
+		}
 		// _fetchContentFolder()
-		_fetchMarkdownFiles()
 		return () => {
-			abortController.abort(`Api is being canceled`)
+			signal.cancel(`API call in the "articles.jsx" is being cancelled`)
 		}
 	}, [router.query])
 
@@ -99,7 +109,7 @@ export default function ArticlesPage({ allContentTypes }) {
 	const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
 
 
-	async function _fetchMarkdownFiles() {
+	async function _fetchMarkdownFiles(signal) {
 		// Returns array of all decoded config data for ALL related CT's
 		const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
 			if (router.query.group) {
@@ -114,7 +124,7 @@ export default function ArticlesPage({ allContentTypes }) {
 		// fetch all the files from the directories mentioned in `_articlesLocationsList`
 		const markdownFilesList = await Promise.all(
 			_articlesLocationsList.map(async item => {
-				return await await getRepoData(`/${item}`)
+				return await await getRepoData(`/${item}`, false, signal)
 			})
 		)
 		// flattern the output with the list of md files from the directory
@@ -123,14 +133,14 @@ export default function ArticlesPage({ allContentTypes }) {
 		// Get the content from the md file
 		const markdownFilesContent = await Promise.all(
 			markdownFilesListFormatted.map(async item => {
-				return await await getRepoData(`/${item.path}`)
+				return await await getRepoData(`/${item.path}`, false, signal)
 			})
 		)
 		// format md file content into the object
 		const formattedMarkdownFilesContent = markdownFilesContent.map(content =>
 			matter(content)
 		)
-		// console.log(formattedMarkdownFilesContent)
+
 		setMarkdownContent(formattedMarkdownFilesContent)
 	}
 

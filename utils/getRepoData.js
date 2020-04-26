@@ -22,7 +22,7 @@ const client = axios.create({
 })
 
 
-export async function getRepoData(path, leaveEncoded) {
+export async function getRepoData(path, leaveEncoded, signal) {
 	// Get the repo root if there's no path provided
 	path = path || ``
 	// Remove trailing '/' for the '?ref' at the end for repo branch
@@ -68,6 +68,7 @@ export async function getRepoData(path, leaveEncoded) {
 	// BUT, how would you handle the others PUT, DELETE requests which we will have in the future, keeping in mind the DRY approach? :)
 
 	// Get the data
+	
 	try {
 		const response = await client({
 			url: `${_APIbaseURL}${path}${_branch}`,
@@ -75,11 +76,16 @@ export async function getRepoData(path, leaveEncoded) {
 			auth: {
 				username: fakeMongo.GITHUB_AUTH_TOKEN,
 			},
+			cancelToken: signal ? signal.token : null, // pass signal's cancel token to the request, so it can detect a needed request to cancel on the Component unmount
 		})
 		return onSuccess(response)
 	}
 	catch (error) {
-		return onError(error)
+		if (axios.isCancel(error)) {
+			console.log(`Error: ${error.message}`)
+		} else {
+			return onError(error)
+		}
 	}
 }
 
