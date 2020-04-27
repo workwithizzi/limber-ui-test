@@ -12,13 +12,15 @@ export function ArticleCreate({data}) {
 			<ul className="pure-menu-list">
 
 				{/* If there are a group of CTs, show them in a list */}
-				{(data.content_types.length > 1) ? (
+				{data && (data.length > 1) ? (
 					<li className="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
 						<a href="#" id="menuLink1" className="pure-menu-link">Add New</a>
 						<ul className="pure-menu-children">
-							{data.content_types.map(i => {
+							{data.map(i => {
 								return (
-									<li key={i.label} className="pure-menu-item"><a href="#" className="pure-menu-link">{i.label}</a></li>
+									// TODO: replace `data.title` with `data.content_type` once `md` file will have it set correctly in the frontmatter part
+									// Also, most likely, it's needed to check whether the `content_type` is not repeated, as some CT's might be duplicated and have different titles
+									<li key={i.data.title} className="pure-menu-item"><a href="#" className="pure-menu-link">{i.data.title}</a></li>
 								)
 							})}
 						</ul>

@@ -155,7 +155,7 @@ function ArticlesPage({ allContentTypes }) {
 			{/* This creates an 'Add New' button/dropdown. It would show a dropdown of all CTs
 			in the current group and take the user to a page for adding a new article (using editor.jsx page).
 			If there's only one content-type, it wouldn't be a dropdown, just a button. */}
-			<ArticleCreate data={demo} />
+			<ArticleCreate data={markdownContent} />
 
 			{/* This creates a list from ALL articles in the current CT, or if it's a group,
 			it would list ALL articles for ALL CTs in the Group */}
