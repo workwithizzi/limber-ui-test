@@ -17,6 +17,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
 import axios from 'axios'
+import PT from 'prop-types'
 
 import { Header, Debug, ArticleCreate, ArticlesList } from '../components'
 import { getRepoData, ContentTypes as CT } from '../utils'
@@ -52,7 +53,7 @@ const demo = {
 }
 
 
-export default function ArticlesPage({ allContentTypes }) {
+function ArticlesPage({ allContentTypes }) {
 	/**
 	 * Cancel Axios request
 	 * 
@@ -123,7 +124,7 @@ export default function ArticlesPage({ allContentTypes }) {
 		const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
 		// fetch all the files from the directories mentioned in `_articlesLocationsList`
 		const markdownFilesList = await Promise.all(
-			_articlesLocationsList.map(async item => {
+			_articlesLocationsList && _articlesLocationsList.map(async item => {
 				return await await getRepoData(`/${item}`, false, signal)
 			})
 		)
@@ -132,7 +133,7 @@ export default function ArticlesPage({ allContentTypes }) {
 
 		// Get the content from the md file
 		const markdownFilesContent = await Promise.all(
-			markdownFilesListFormatted.map(async item => {
+			markdownFilesListFormatted && markdownFilesListFormatted.map(async item => {
 				return await await getRepoData(`/${item.path}`, false, signal)
 			})
 		)
@@ -158,7 +159,7 @@ export default function ArticlesPage({ allContentTypes }) {
 
 			{/* This creates a list from ALL articles in the current CT, or if it's a group,
 			it would list ALL articles for ALL CTs in the Group */}
-			<ArticlesList data={demo} />
+			<ArticlesList data={markdownContent} />
 
 
 			<Debug info="_articlesLocationsList">
@@ -173,6 +174,11 @@ export default function ArticlesPage({ allContentTypes }) {
 	)
 }
 
+ArticlesPage.PT = {
+	allContentTypes: PT.arrayOf(PT.object).isRequired,
+}
+
+export default ArticlesPage
 
 
 //- ------------------------------------
