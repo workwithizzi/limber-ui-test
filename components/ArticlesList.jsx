@@ -1,6 +1,7 @@
 // Creates a list of articles for a CT or Group of CTs
 // Used on `articles.jsx`
 
+import React from 'react'
 import moment from 'moment'
 import PT from 'prop-types'
 

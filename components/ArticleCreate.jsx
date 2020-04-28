@@ -4,7 +4,7 @@
 //
 // TODO: Add ability to take User to 'editor.jsx' based on which CT is selected
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PT from "prop-types"
 
 import '../styles/ArticleCreate.scss'
