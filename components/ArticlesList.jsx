@@ -48,6 +48,6 @@ export function ArticlesList({ data }) {
 	)
 }
 
-ArticlesList.PT = {
+ArticlesList.propTypes = {
 	data: PT.arrayOf(PT.object).isRequired,
 }

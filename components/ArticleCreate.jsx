@@ -5,6 +5,7 @@
 // TODO: Add ability to take User to 'editor.jsx' based on which CT is selected
 
 import { useEffect, useState } from 'react'
+import PT from "prop-types"
 
 import '../styles/ArticleCreate.scss'
 
@@ -51,4 +52,8 @@ export function ArticleCreate({ data }) {
 			</ul>
 		</div>
 	)
+}
+
+ArticleCreate.propTypes = {
+	data: PT.arrayOf(PT.object).isRequired,
 }
