@@ -131,8 +131,6 @@ function ArticlesPage({ allContentTypes }) {
 		// flattern the output with the list of md files from the directory
 		const markdownFilesListFormatted = markdownFilesList.flat()
 
-		console.log(markdownFilesListFormatted)
-
 		// Get the content from the md file
 		const markdownFilesContent = await Promise.all(
 			markdownFilesListFormatted && markdownFilesListFormatted.map(async item => {
@@ -163,7 +161,6 @@ function ArticlesPage({ allContentTypes }) {
 			item.data.name = fileName
 		})
 
-		console.log(formattedMarkdownFilesContent)
 		setMarkdownContent(formattedMarkdownFilesContent)
 	}
 
