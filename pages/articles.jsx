@@ -13,7 +13,7 @@
 
 // NOTE-YG: if I WRITE STUFF uppercased, those are the things, I would like to empasize on, I am not yelling. haha :)
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
 import axios from 'axios'
@@ -131,6 +131,8 @@ function ArticlesPage({ allContentTypes }) {
 		// flattern the output with the list of md files from the directory
 		const markdownFilesListFormatted = markdownFilesList.flat()
 
+		console.log(markdownFilesListFormatted)
+
 		// Get the content from the md file
 		const markdownFilesContent = await Promise.all(
 			markdownFilesListFormatted && markdownFilesListFormatted.map(async item => {
@@ -141,6 +143,11 @@ function ArticlesPage({ allContentTypes }) {
 		const formattedMarkdownFilesContent = markdownFilesContent.map(content =>
 			matter(content)
 		)
+
+		// ADD `path` property to the markdown content `formattedMarkdownFilesContent`
+		formattedMarkdownFilesContent.forEach((item, index) => {
+			item.path = markdownFilesListFormatted[index].path
+		})
 
 		setMarkdownContent(formattedMarkdownFilesContent)
 	}
