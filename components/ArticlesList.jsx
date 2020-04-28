@@ -31,8 +31,7 @@ export function ArticlesList({ data }) {
 										Currently, the href is set to `#` for everything.
 									*/}
 									<a className="pure-g" href={`#`}>
-										{/* TODO: make sure that CT frontmatter has title, i.e. make `title` compulsory property for a single `article` CT file */}
-										<span className="card-title pure-u-2-5">{i.data.title}</span>
+										<span className="card-title pure-u-2-5">{i.data.title ? i.data.title : i.data.name}</span>
 										{/* TODO: make sure that the `content-type` prop at frontmatter is written as `content_type`, because, `content-type` is not a valid property on an Object and is compulsory */}
 										<span className="card-meta pure-u-1-5">{i.data.content_type}</span>
 										{/* TODO: make sure that CT frontmatter has status, i.e. make `status` compulsory property for a single `article` CT file */}
