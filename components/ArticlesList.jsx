@@ -28,9 +28,9 @@ export function ArticlesList({ data }) {
 									{/*
 										TODO: it is needed to add `path` to the CT md file (frontmatter part),
 										as we have to do a request based on the path and handle further navigation to the needed individual CT.
-										Currently, the href is set to `1` for everything.
+										Currently, the href is set to `#` for everything.
 									*/}
-									<a className="pure-g" href={`1`}>
+									<a className="pure-g" href={`#`}>
 										{/* TODO: make sure that CT frontmatter has title, i.e. make `title` compulsory property for a single `article` CT file */}
 										<span className="card-title pure-u-2-5">{i.data.title}</span>
 										{/* TODO: make sure that the `content-type` prop at frontmatter is written as `content_type`, because, `content-type` is not a valid property on an Object and is compulsory */}
