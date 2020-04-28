@@ -26,17 +26,15 @@ export function ArticlesList({ data }) {
 							return (
 								<li key={key} className="article-card">
 									{/*
-										TODO: it is needed to add `path` to the CT md file (frontmatter part),
+										TODO: add `path` to `data` prop,
 										as we have to do a request based on the path and handle further navigation to the needed individual CT.
 										Currently, the href is set to `#` for everything.
 									*/}
 									<a className="pure-g" href={`#`}>
 										<span className="card-title pure-u-2-5">{i.data.title ? i.data.title : i.data.name}</span>
-										{/* TODO: make sure that the `content-type` prop at frontmatter is written as `content_type`, because, `content-type` is not a valid property on an Object and is compulsory */}
-										<span className="card-meta pure-u-1-5">{i.data.content_type}</span>
-										{/* TODO: make sure that CT frontmatter has status, i.e. make `status` compulsory property for a single `article` CT file */}
-										<span className="card-meta pure-u-1-5">{i.data.status}</span>
-										<span className="card-meta pure-u-1-5">{i.data.date ? moment(i.data.date).format(`LL`) : `No date`}</span>
+										<span className="card-meta pure-u-1-5">{i.data.content_type ? i.data.content_type : `Not set`}</span>
+										<span className="card-meta pure-u-1-5">{i.data.status ? i.data.status : `Not set`}</span>
+										<span className="card-meta pure-u-1-5">{i.data.date ? moment(i.data.date).format(`LL`) : `No date set`}</span>
 									</a>
 								</li>
 							)
