@@ -4,27 +4,43 @@
 //
 // TODO: Add ability to take User to 'editor.jsx' based on which CT is selected
 
+import { useEffect, useState } from 'react'
+
 import '../styles/ArticleCreate.scss'
 
-export function ArticleCreate({data}) {
-	let key = Math.random(100) + 1
+export function ArticleCreate({ data }) {
+
+	const [contentTypes, setContentTypes] = useState([])
+
+	// Create a `contentTypes` state array with unique CT items in it
+	useEffect(() => {
+		const contentTypes = []
+		if (data.length > 1) {
+			data.forEach(i => {
+				// check whether the `content_type` is not repeated, as some CT's might be duplicated and have different titles, but they still are same content types
+				if (i.data.content_type && !contentTypes.includes(i.data.content_type)) {
+					return contentTypes.push(i.data.content_type)
+				}
+			})
+		}
+		setContentTypes(contentTypes)
+	}, [data])
+
 	return (
 		<div className="override pure-menu pure-menu-horizontal">
 			<ul className="pure-menu-list">
 
 				{/* If there are a group of CTs, show them in a list */}
-				{data && (data.length > 1) ? (
+				{contentTypes && (contentTypes.length > 1) ? (
 					<li className="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
 						<a href="#" id="menuLink1" className="pure-menu-link">Add New</a>
 						<ul className="pure-menu-children">
-							{data.map(i => {
-								key++
-								return (
-									// TODO: replace `data.title` with `data.content_type` once `md` file will have it set correctly in the frontmatter part
-									// Also, most likely, it's needed to check whether the `content_type` is not repeated, as some CT's might be duplicated and have different titles
-									<li key={key} className="pure-menu-item"><a href="#" className="pure-menu-link">{i.data.title ? i.data.title : i.data.name}</a></li>
-								)
-							})}
+							{
+								contentTypes.map(contentType => {
+									return (
+										<li key={contentType} className="pure-menu-item"><a href="#" className="pure-menu-link">{contentType}</a></li>
+									)
+								})}
 						</ul>
 					</li>
 
