@@ -20,7 +20,7 @@ import axios from 'axios'
 import PT from 'prop-types'
 
 import { Header, Debug, ArticleCreate, ArticlesList } from '../components'
-import { getRepoData, ContentTypes as CT } from '../utils'
+import { getRepoData, ContentTypes as CT, string } from '../utils'
 
 // Temp data for testing components: ArticleCreate & ArticlesList
 // This can be removed once we are bringing in the real data
@@ -149,6 +149,21 @@ function ArticlesPage({ allContentTypes }) {
 			item.path = markdownFilesListFormatted[index].path
 		})
 
+		// ADD `name` property inside the `data` object
+		formattedMarkdownFilesContent.forEach((item, index) => {
+			// Delete the extension
+			let fileName = markdownFilesListFormatted[index].name.split(`.`)
+			// Delete the last item in an array (extension)
+			fileName.pop()
+			// Concatenate all the rest items in an array
+			fileName = fileName.join()
+			// Uppercase the name
+			fileName = string.titleCase(fileName)
+			// Create a `name` property at the `data`
+			item.data.name = fileName
+		})
+
+		console.log(formattedMarkdownFilesContent)
 		setMarkdownContent(formattedMarkdownFilesContent)
 	}
 
