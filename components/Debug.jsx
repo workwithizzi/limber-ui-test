@@ -3,9 +3,7 @@
 
 import React from "react"
 
-// TODO: Replace SimpleDebug, withDebug(), and debug() with the <Debug> component
 // TODO: Add better documentation for the component
-
 
 function _countProps(obj) {
 	let result = 0
@@ -69,55 +67,3 @@ export function Debug({debug, info, children, ...props}) {
 		)
 	)
 }
-
-
-//- -----------------------------------------------------------------
-
-// export function SimpleDebug({log, children, label}) {
-// 	if (log) {
-// 		console.log(`-Debug Log-`)
-// 		console.log(children)
-// 	}
-// 	return (
-// 		<pre style={{background:`#333`, color:`white`, maring:`20px`, padding:`20px`}}>
-// 			<strong style={{color:`#cc0066`}}>Debug: {label}</strong>
-// 			<br />
-// 			<span style={{color:`#2be8ff`}}>
-// 				{JSON.stringify(children, null, 2)}
-// 			</span>
-// 		</pre>
-// 	)
-// }
-
-
-// Original Function from first version of Limber
-// export function debug(ctx) {
-// 	return (
-// 		<pre style={{background:`#333`, color:`white`}}>
-// 			<strong style={{color:`#cc0066`}}>Props </strong>
-// 			{JSON.stringify(ctx.props, null, 2)}
-// 			<br />
-// 			<strong style={{color:`#2be8ff`}}>State </strong>
-// 			{JSON.stringify(ctx.state, null, 2)}
-// 		</pre>
-// 	)
-// }
-
-
-// Original Function from first version of Limber
-// export function withDebug(WrappedComponent) {
-// 	// And return a new anonymous component
-// 	// eslint-disable-next-line react/prefer-stateless-function
-// 	const functionToClass = class extends React.Component {
-// 		render() {
-// 			return (
-// 				<>
-// 					<WrappedComponent {...this.props} />
-// 					{debug(this)}
-// 				</>
-// 			)
-// 		}
-// 	}
-
-// 	return functionToClass
-// }
