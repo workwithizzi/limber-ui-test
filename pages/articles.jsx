@@ -110,6 +110,24 @@ function ArticlesPage({ allContentTypes }) {
 	const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
 
 
+	// Fetch all the files from the directories mentioned in `_articlesLocationsList`
+	async function listMarkdownFiles(data, keepEncoded, signal) {
+		return await Promise.all(
+			data.map(async item => {
+				return await await getRepoData(`/${item}`, keepEncoded, signal)
+			})
+		)
+	}
+
+	// Get the content from the md file
+	async function getMarkdownFileContent(data, keepEncoded, signal) {
+		return await Promise.all(
+			data.map(async item => {
+				return await await getRepoData(`/${item.path}`, keepEncoded, signal)
+			})
+		)
+	}
+
 	async function _fetchMarkdownFiles(signal) {
 		// Returns array of all decoded config data for ALL related CT's
 		const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
@@ -122,46 +140,48 @@ function ArticlesPage({ allContentTypes }) {
 		})
 		// Returns a list of only the content directories ('path') from the config array
 		const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
+
 		// fetch all the files from the directories mentioned in `_articlesLocationsList`
-		const markdownFilesList = await Promise.all(
-			_articlesLocationsList && _articlesLocationsList.map(async item => {
-				return await await getRepoData(`/${item}`, false, signal)
+		listMarkdownFiles(_articlesLocationsList, false, signal)
+			.then(markdownFilesList => {
+				// flattern the output with the list of md files from the directory
+				const markdownFilesListFormatted = markdownFilesList.flat()
+
+				// Get the content from the md file
+				getMarkdownFileContent(markdownFilesListFormatted, false, signal)
+					.then(markdownFilesContent => {
+						// format md file content into the object
+						const formattedMarkdownFilesContent = markdownFilesContent.map(content =>
+							content && matter(content)
+						)
+
+						// ADD `path` property to the markdown content `formattedMarkdownFilesContent`
+						formattedMarkdownFilesContent.forEach((item, index) => {
+							item.path = markdownFilesListFormatted[index].path
+						})
+
+						// ADD `name` property inside the `data` object
+						formattedMarkdownFilesContent.forEach((item, index) => {
+							// Delete the extension
+							let fileName = markdownFilesListFormatted[index].name.split(`.`)
+							// Delete the last item in an array (extension)
+							fileName.pop()
+							// Concatenate all the rest items in an array
+							fileName = fileName.join()
+							// Uppercase the name
+							fileName = string.titleCase(fileName)
+							// Create a `name` property at the `data`
+							item.data.name = fileName
+						})
+						setMarkdownContent(formattedMarkdownFilesContent)
+					})
+					.catch(error => {
+						console.log(error)
+					})
 			})
-		)
-		// flattern the output with the list of md files from the directory
-		const markdownFilesListFormatted = markdownFilesList.flat()
-
-		// Get the content from the md file
-		const markdownFilesContent = await Promise.all(
-			markdownFilesListFormatted && markdownFilesListFormatted.map(async item => {
-				return await await getRepoData(`/${item.path}`, false, signal)
+			.catch(error => {
+				console.log(error)
 			})
-		)
-		// format md file content into the object
-		const formattedMarkdownFilesContent = markdownFilesContent.map(content =>
-			matter(content)
-		)
-
-		// ADD `path` property to the markdown content `formattedMarkdownFilesContent`
-		formattedMarkdownFilesContent.forEach((item, index) => {
-			item.path = markdownFilesListFormatted[index].path
-		})
-
-		// ADD `name` property inside the `data` object
-		formattedMarkdownFilesContent.forEach((item, index) => {
-			// Delete the extension
-			let fileName = markdownFilesListFormatted[index].name.split(`.`)
-			// Delete the last item in an array (extension)
-			fileName.pop()
-			// Concatenate all the rest items in an array
-			fileName = fileName.join()
-			// Uppercase the name
-			fileName = string.titleCase(fileName)
-			// Create a `name` property at the `data`
-			item.data.name = fileName
-		})
-
-		setMarkdownContent(formattedMarkdownFilesContent)
 	}
 
 	return (
@@ -193,7 +213,7 @@ function ArticlesPage({ allContentTypes }) {
 	)
 }
 
-ArticlesPage.PT = {
+ArticlesPage.propTypes = {
 	allContentTypes: PT.arrayOf(PT.object).isRequired,
 }
 
