@@ -5,6 +5,8 @@
 // TODO: Add ability to take User to 'editor.jsx' based on which CT is selected
 
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+
 import PT from "prop-types"
 
 import '../styles/ArticleCreate.scss'
@@ -12,20 +14,22 @@ import '../styles/ArticleCreate.scss'
 export function ArticleCreate({ data }) {
 
 	const [contentTypes, setContentTypes] = useState([])
-
+	const router = useRouter()
 	// Create a `contentTypes` state array with unique CT items in it
 	useEffect(() => {
-		const contentTypes = []
 		if (data.length > 1) {
-			data.forEach(i => {
-				// check whether the `content_type` is not repeated, as some CT's might be duplicated and have different titles, but they still are same content types
-				if (i.data.content_type && !contentTypes.includes(i.data.content_type)) {
-					return contentTypes.push(i.data.content_type)
+			const _relatedCTConfigDataArray = data.filter(function(i){
+				if (router.query.group) {
+					return router.query.group === i.group
+				} else {
+					return router.query.type === i.label
 				}
 			})
+
+			const contentTypes = _relatedCTConfigDataArray.map(ct => ct.id)
+			setContentTypes(contentTypes)
 		}
-		setContentTypes(contentTypes)
-	}, [data])
+	}, [router.query])
 
 	return (
 		<div className="override pure-menu pure-menu-horizontal">
@@ -47,7 +51,7 @@ export function ArticleCreate({ data }) {
 
 				// If there's only one CT, just show the one
 				):(
-					<li className="pure-menu-item pure-menu-selected"><a href="#" className="pure-menu-link">Add New</a></li>
+					<li className="pure-menu-item pure-menu-selected"><a href="#" className="pure-menu-link" onClick={() => alert(JSON.stringify(contentTypes))}>Add New</a></li>
 				)}
 			</ul>
 		</div>

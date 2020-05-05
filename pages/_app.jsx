@@ -1,7 +1,10 @@
 import React, { Fragment } from 'react'
 import App from 'next/app'
-import { Layout } from '../components'
 import axios from "axios"
+
+
+import { Layout } from '../components'
+import { ContentTypes as CT } from '../utils'
 
 
 // Global styles
@@ -20,6 +23,7 @@ export default class MyApp extends App {
 		isLoading: false,
 		repoSettings: [],
 		allContentTypesData: [],
+		allContentTypesErrors: [],
 	}
 
 	/**
@@ -74,8 +78,101 @@ export default class MyApp extends App {
 			const repoSettings = res.data.repoSettings
 			const allContentTypesData = res.data.allContentTypesData
 
+			// Sanitize `allContentTypesData`
+			// Check for required fields: "id", "label", "path".
+
+			const _requiredFields = [`id`, `label`, `path`]
+			const _contentTypesWithAndWithoutRequiredFields = new CT(allContentTypesData).getTypesWithAndWithoutRequiredFields(_requiredFields)
+			const [_contentTypesWithRequiredFields, _contentTypesWithoutRequiredFields] = _contentTypesWithAndWithoutRequiredFields
+
+
+			// Errors messages
+			// TODO: display only errors which are related to specific Menu Item
+
+			// Set errors
+			this.setState(prevState => ({ 
+				allContentTypesErrors: [ ...prevState.allContentTypesErrors, _contentTypesWithoutRequiredFields ],
+			}))
+
+
+			// Check for duplicates, based on "id" and "label" properties.
+
+			const _contentTypesWithAndWithoutDuplicatedFields = new CT(_contentTypesWithRequiredFields)
+
+			const [_uniqueIdFields, _duplicatedIdFields] = _contentTypesWithAndWithoutDuplicatedFields.getUniqueAndDuplicatedFields(`id`)
+			const [_uniqueLabelsFields, _duplicatedLabelsFields] = _contentTypesWithAndWithoutDuplicatedFields.getUniqueAndDuplicatedFields(`label`)
+
+
+			// Create errors for future usage and references
+			// `_contentTypesDupicationErrors` will return at the end the following structure [[errors for IDs], [errors for Labels]]
+			const _contentTypesDupicationErrors = []
+
+			// Create errors for duplicated IDs
+			if (_duplicatedIdFields.length > 0) {
+				const _duplicatedIdFieldsErrors = []
+				// Create an error message for each duplicated ID field
+				_contentTypesWithRequiredFields.forEach(contentType => {
+					_duplicatedIdFields.forEach(id => {
+						if (contentType.id === id) {
+							const menuItemAffected = contentType.group ? contentType.group : contentType.label
+							_duplicatedIdFieldsErrors.push({ file_path: contentType.filePath ? contentType.filePath : null, content_type_path: contentType.path, duplicated_id: contentType.id, menu_item: menuItemAffected })
+						}
+					})
+				})
+				_contentTypesDupicationErrors.push(_duplicatedIdFieldsErrors)
+			}
+
+			// Create errors for duplicated errors
+			if (_duplicatedLabelsFields.length > 0) {
+				const _duplicatedLabelFieldsErrors = []
+				// Create an error message for each duplicated LABEL field
+				_contentTypesWithRequiredFields.forEach(contentType => {
+					_duplicatedLabelsFields.forEach(label => {
+						if (contentType.label === label) {
+							const menuItemAffected = contentType.group ? contentType.group : contentType.label
+							_duplicatedLabelFieldsErrors.push({ file_path: contentType.filePath ? contentType.filePath : null, content_type_path: contentType.path, duplicated_label: contentType.label, menu_item: menuItemAffected })
+						}
+					})
+				})
+				_contentTypesDupicationErrors.push(_duplicatedLabelFieldsErrors)
+			}
+
+			// Set errors
+			this.setState(prevState => ({ 
+				allContentTypesErrors: [ ...prevState.allContentTypesErrors, _contentTypesDupicationErrors.flat() ],
+			}))
+
+
+			// Return a new array of content types which doesn't contain duplicated items
+
+			// Return only content types with unique ID field, by filtering through the `_duplicatedIdFields` array
+			_duplicatedIdFields.forEach(id => {
+				for (let i = 0; i < _contentTypesWithRequiredFields.length; i++) {
+					if (_contentTypesWithRequiredFields[i] !== null) {
+						if (_contentTypesWithRequiredFields[i].id === id) {
+							_contentTypesWithRequiredFields[i] = null
+						}
+					}
+				}
+			})
+
+			// Return only content types with unique LABEL field, by filtering through the `_duplicatedLabelsFields` array
+			_duplicatedLabelsFields.forEach(label => {
+				for (let i = 0; i < _contentTypesWithRequiredFields.length; i++) {
+					if (_contentTypesWithRequiredFields[i] !== null) {
+						if (_contentTypesWithRequiredFields[i].label === label) {
+							_contentTypesWithRequiredFields[i] = null
+						}
+					}
+				}
+			})
+
+			// Filter and return only content types, throw away `null` values which represent duplicated ones
+			const _sanitisedContentTypes = _contentTypesWithRequiredFields.filter(ct => ct != null)
+
+
 			// Save the response data to the `state` and set the `isLoading` to `false`, it means that that API call has been successfully finished
-			this.setState({ repoSettings, allContentTypesData, isLoading: false })
+			this.setState({ repoSettings, allContentTypesData: _sanitisedContentTypes, isLoading: false })
 
 			// Log time, just for awareness
 			const endTime = new Date()
@@ -105,7 +202,7 @@ export default class MyApp extends App {
 			pageProps,
 		} = this.props
 
-		const { isLoading, repoSettings, allContentTypesData } = this.state
+		const { isLoading, repoSettings, allContentTypesData, allContentTypesErrors } = this.state
 
 		return (
 			<Fragment>
@@ -121,6 +218,7 @@ export default class MyApp extends App {
 									// Make data available to all page components
 									repoSettings={repoSettings}
 									allContentTypes={allContentTypesData}
+									allContentTypesErrors={allContentTypesErrors}
 									{...pageProps}
 								/>
 							</Layout>

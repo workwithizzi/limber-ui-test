@@ -61,10 +61,22 @@ export default async(req, res) => {
 		// GET encoded array of contentTypes files
 		const _encodedCtData = await getRepoData(`/${repoSettings.config_path}`)
 		const allContentTypesData = await resolveChunks(_encodedCtData, fetchFile, 10)
-		console.log(`API calls done`)
-		return res.status(200).send({ repoSettings, allContentTypesData })
+
+		// Check if `_encodedCtData` equals by length to `allContentTypesData`. It means all data has been fetched correctly
+		if (_encodedCtData.length === allContentTypesData.length) {
+			// Extend signle `content type` object on `allContentTypesData` with `filePath` key which equals to the file location of yaml file
+			// It is needed for a better error handling in the `articles.jsx`
+			allContentTypesData.forEach((contentType, index) => {
+				contentType.filePath = _encodedCtData[index].path
+			})
+			console.log(`API calls done`)
+			return res.status(200).send({ repoSettings, allContentTypesData })
+		} else {
+			console.log(`There was an error with fetching the data.`)
+			return res.status(500).send({ error: `There was an error with fetching the data.` })
+		}
 	} catch (error) {
-		console.log(`There was an error with fetching the data.`)
-		return res.status(500).send()
+		console.log(`There was an error with fetching the data.\n ${error}`)
+		return res.status(500).send(error)
 	}
 }

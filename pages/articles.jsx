@@ -7,37 +7,32 @@
 //   group: looks for a matching `group` key in the CTs config files
 //   type: looks for a matching `label` key in the CTs config files
 //
-// TODO: Fetch decoded data for each article in the CT/Group
-// TODO: Use data in <ArticlesList>
-// TODO: Use CT's in <ArticleCreate> for creating new articles
 
-import React, { useState, useEffect, createContext } from 'react'
+
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import * as matter from 'gray-matter'
 import axios from 'axios'
 import PT from 'prop-types'
 
 import { Header, Debug, ArticleCreate, ArticlesList } from '../components'
-import { getRepoData, ContentTypes as CT, string } from '../utils'
+import { getRepoData, ContentTypes as CT } from '../utils'
 
 
-export default function ArticlesPage({ allContentTypes }) {
+export default function ArticlesPage({ allContentTypes, allContentTypesErrors }) {
 
 	// Cancel Axios request
 	// Generate the Token, which will be used in case of the component being unmounted with the pending request.
 	const signal = axios.CancelToken.source()
 
 	const router = useRouter()
-	const [content, setContent] = useState([])
 	const [markdownContent, setMarkdownContent] = useState([])
 
-	// CURRENTLY this `useEffect` HAS NO effect to the `articles.jsx` component, as we DO NOT USE the `content` state
 	useEffect(() => {
 		// this is to make sure that we are able operate on the `allContentTypes` as it is also being fetched at the component mount time
 		if (allContentTypes.length > 1) {
-			_fetchMarkdownFiles(signal)
+			_fetchMarkdownFiles(allContentTypes, signal)
 		}
-		// _fetchContentFolder()
 		return () => {
 			signal.cancel(`API call in the "articles.jsx" is being cancelled`)
 		}
@@ -45,6 +40,7 @@ export default function ArticlesPage({ allContentTypes }) {
 
 	//- ------------------------------------
 
+	// TODO: fix the below NOTE
 	// NOTE that the _relatedCTConfigDataArray and _articlesLocationsList are executed 2 times if they are not placed into the `useEffect`
 
 	// Returns array of all decoded config data for ALL related CT's
@@ -57,18 +53,7 @@ export default function ArticlesPage({ allContentTypes }) {
 		// eg: {label: "Posts", id: "posts", path: "content/posts", ...}
 	})
 
-	/*
-	// Returns a list of only the content directories ('path') from the config array
-	const _articlesLocationsList = []
-	// CHANGED `map` to `forEach`, as `forEach` doesn't return anything after the execution.
-	_relatedCTConfigDataArray.forEach(i => {
-		if (i.path && !_articlesLocationsList.includes(i.path)) {
-			return _articlesLocationsList.push(i.path)
-			// eg: ["content/posts"]
-		}
-	})
-	*/
-	// Replaced above code with the class ContentTypes and getPaths method
+
 	// Returns a list of only the content directories ('path') from the config array
 	const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
 
@@ -91,7 +76,8 @@ export default function ArticlesPage({ allContentTypes }) {
 		)
 	}
 
-	async function _fetchMarkdownFiles(signal) {
+
+	async function _fetchMarkdownFiles(allContentTypes, signal) {
 		// Returns array of all decoded config data for ALL related CT's
 		const _relatedCTConfigDataArray = allContentTypes.filter(function(i){
 			if (router.query.group) {
@@ -101,6 +87,12 @@ export default function ArticlesPage({ allContentTypes }) {
 			}
 		// eg: {label: "Posts", id: "posts", path: "content/posts", ...}
 		})
+
+		// Take _relatedCTConfigDataArray as a reference for the CT md files
+		// Check the returned md files and display only those which content_type matches to the id
+		// Get the CTs IDs to check for
+		const _idFromCTsConfigData = _relatedCTConfigDataArray.map(ct => ct.id)
+
 		// Returns a list of only the content directories ('path') from the config array
 		const _articlesLocationsList = new CT(_relatedCTConfigDataArray).getPaths()
 
@@ -118,25 +110,35 @@ export default function ArticlesPage({ allContentTypes }) {
 							content && matter(content)
 						)
 
-						// ADD `path` property to the markdown content `formattedMarkdownFilesContent`
-						formattedMarkdownFilesContent.forEach((item, index) => {
+
+						// Check if the `id` from the ContentType yaml file matches the `content_type` in the md file
+						const articleContents = []
+						_idFromCTsConfigData.forEach(id => {
+							formattedMarkdownFilesContent.forEach(markdownContent => {
+								if (id === markdownContent.data.content_type) {
+									articleContents.push(markdownContent)
+								}
+							})
+						})
+
+
+						// ADD `path` property to the markdown content `articleContents`
+						articleContents.forEach((item, index) => {
 							item.path = markdownFilesListFormatted[index].path
 						})
 
 						// ADD `name` property inside the `data` object
-						formattedMarkdownFilesContent.forEach((item, index) => {
+						articleContents.forEach((item, index) => {
 							// Delete the extension
 							let fileName = markdownFilesListFormatted[index].name.split(`.`)
 							// Delete the last item in an array (extension)
 							fileName.pop()
 							// Concatenate all the rest items in an array
 							fileName = fileName.join()
-							// Uppercase the name
-							fileName = string.titleCase(fileName)
 							// Create a `name` property at the `data`
 							item.data.name = fileName
 						})
-						setMarkdownContent(formattedMarkdownFilesContent)
+						setMarkdownContent(articleContents)
 					})
 					.catch(error => {
 						console.log(error)
@@ -147,30 +149,60 @@ export default function ArticlesPage({ allContentTypes }) {
 			})
 	}
 
+
+	// Render errors for the user if the CT has missing REQUIRED fields
+	function _renderContentTypesErrors(contentTypesErrors) {
+		// TODO: create understandable error message `pop-up` based on the `allContentTypesErrors` for the user
+		return (
+			<div>
+				<p>There are the following errors:</p> 
+				<ul>
+					{contentTypesErrors.map(error => {
+						if (router.query.group === error.menu_item || router.query.type === error.menu_item) {
+							return (
+								<li key={Math.floor(Math.random() * Math.floor(2000))}>{JSON.stringify(error)}</li>
+							)
+						}
+					})}
+				</ul>
+			</div>
+		)
+	}
+
+
 	return (
 		<>
 			<Header
 				title={router.query.group || router.query.type}
 				subtitle="All related articles are listed on this page"
 			/>
+			<div>
 
-			{/* This creates an 'Add New' button/dropdown. It would show a dropdown of all CTs
-			in the current group and take the user to a page for adding a new article (using editor.jsx page).
-			If there's only one content-type, it wouldn't be a dropdown, just a button. */}
-			<ArticleCreate data={markdownContent} />
+				{/* Render errors */}
+				{
+					allContentTypesErrors.length > 0 && _renderContentTypesErrors(allContentTypesErrors)
+				}
 
-			{/* This creates a list from ALL articles in the current CT, or if it's a group,
-			it would list ALL articles for ALL CTs in the Group */}
-			<ArticlesList data={markdownContent} />
+				{/* This creates an 'Add New' button/dropdown. It would show a dropdown of all CTs
+								in the current group and take the user to a page for adding a new article (using editor.jsx page).
+								If there's only one content-type, it wouldn't be a dropdown, just a button. */}
+				{allContentTypes && <ArticleCreate data={allContentTypes} />}
+
+				{/* This creates a list from ALL articles in the current CT, or if it's a group,
+								it would list ALL articles for ALL CTs in the Group */}
+				<ArticlesList data={markdownContent} />
 
 
-			<Debug info="_articlesLocationsList">
-				{_articlesLocationsList}
-			</Debug>
+				<Debug info="_articlesLocationsList">
+					{_articlesLocationsList}
+				</Debug>
 
-			<Debug info="_relatedCTConfigDataArray">
-				{_relatedCTConfigDataArray}
-			</Debug>
+				<Debug info="_relatedCTConfigDataArray">
+					{_relatedCTConfigDataArray}
+				</Debug>
+
+			</div>
+
 
 		</>
 	)
@@ -178,4 +210,5 @@ export default function ArticlesPage({ allContentTypes }) {
 
 ArticlesPage.propTypes = {
 	allContentTypes: PT.arrayOf(PT.object).isRequired,
+	allContentTypesErrors: PT.arrayOf(PT.object),
 }

@@ -3,7 +3,7 @@
 // the CT config files
 
 import Link from "next/link"
-import { getCT, ContentTypes as CT } from '../utils'
+import { ContentTypes as CT } from '../utils'
 
 export function Menu({ allContentTypes }) {
 
