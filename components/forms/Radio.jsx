@@ -4,6 +4,7 @@
 //   Does not accept children
 //   For Checkbox groups, use the same prop.name
 
+import React from 'react'
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
 import { Debug } from '../'
@@ -15,7 +16,6 @@ export function Radio({
 	form,
 	id,
 	name,
-	className,
 	style,
 	hint,
 	debug,
@@ -69,13 +69,13 @@ Radio.propTypes = {
 	name          : PT.string,
 	onBlur        : PT.func,
 	onChange      : PT.func,
-	// onChange      : PT.func.isRequired,
 	readOnly      : PT.bool,
 	required      : PT.bool,
 	style         : stylePT,
 	tabIndex      : PT.number,
 	value         : PT.string,
-	// value         : PT.string.isRequired,
 	// Hint Text Props
 	hint          : PT.string,
+	// Debug Prop
+	debug         : PT.string,
 }

@@ -210,5 +210,5 @@ export default function ArticlesPage({ allContentTypes, allContentTypesErrors })
 
 ArticlesPage.propTypes = {
 	allContentTypes: PT.arrayOf(PT.object).isRequired,
-	allContentTypesErrors: PT.arrayOf(PT.object),
+	allContentTypesErrors: PT.arrayOf(PT.arrayOf(PT.object)),
 }

@@ -6,6 +6,8 @@
 // TODO: Add ability to change settings in User's repo 'limber.yml'
 // TODO: Integrate with MongoDB and add ability to modify User's settings
 
+import React from 'react'
+import PT from 'prop-types'
 import { Header, Form, Select, Checkbox, Toggle, Textfield, Radio, Textarea, Numberfield, Button } from '../components'
 
 
@@ -166,6 +168,7 @@ export default function SettingsPage(props) {
 				<hr />
 				<h3>Here are some buttons</h3>
 
+				<Button style={{"marginRight":`10px`}} label="with label">Default</Button>
 				<Button style={{"marginRight":`10px`}}>Default</Button>
 				<Button style={{"marginRight":`10px`}} label="Active" active />
 				<Button style={{"marginRight":`10px`}} label="Disabled" disabled/>
@@ -184,4 +187,8 @@ export default function SettingsPage(props) {
 			</Form>
 		</>
 	)
+}
+
+SettingsPage.propTypes = {
+	repoSettings: PT.oneOfType([PT.object, PT.array]),
 }

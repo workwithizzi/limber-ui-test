@@ -2,7 +2,7 @@
 // Can be used in a Component to print props to the screen
 
 import React from "react"
-
+import PT from 'prop-types'
 // TODO: Add better documentation for the component
 
 function _countProps(obj) {
@@ -66,4 +66,10 @@ export function Debug({debug, info, children, ...props}) {
 			</>
 		)
 	)
+}
+
+Debug.propTypes = {
+	children: PT.oneOfType([PT.string, PT.arrayOf(PT.string), PT.arrayOf(PT.object)]),
+	debug:    PT.string,
+	info:     PT.string,
 }

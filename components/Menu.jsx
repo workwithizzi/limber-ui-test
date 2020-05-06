@@ -2,8 +2,10 @@
 // The dynamic menu-items are created based on Groups/Labels from
 // the CT config files
 
+import React from 'react'
 import Link from "next/link"
 import { ContentTypes as CT } from '../utils'
+import PT from "prop-types"
 
 export function Menu({ allContentTypes }) {
 
@@ -85,4 +87,8 @@ export function Menu({ allContentTypes }) {
 			</div>
 		</>
 	)
+}
+
+Menu.propTypes = {
+	allContentTypes: PT.arrayOf(PT.object).isRequired,
 }

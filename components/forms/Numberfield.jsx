@@ -4,6 +4,7 @@
 // - Does not accept children
 // - Currently only set up for full-width text inputs
 
+import React from 'react'
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
 import { Debug } from '../'
@@ -62,6 +63,7 @@ export function Numberfield({
 Numberfield.propTypes = {
 	// Input Props
 	className   : PT.string,
+	debug       : PT.bool,
 	defaultValue: PT.string,
 	disabled    : PT.bool,
 	form        : PT.string,

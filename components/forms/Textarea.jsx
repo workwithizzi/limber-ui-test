@@ -20,6 +20,32 @@ export class Textarea extends React.Component {
 		value: ``,
 	};
 
+	static propTypes = {
+		// Textarea Props
+		cols       : PT.number,
+		disabled   : PT.bool,
+		form       : PT.string,
+		id         : PT.string,
+		label      : PT.string.isRequired,
+		maxLength  : PT.number,
+		name       : PT.string, // id is used for name if one isn't provided
+		onBlur     : PT.func,
+		onChange   : PT.func,
+		placeholder: PT.string,
+		readOnly   : PT.bool,
+		required   : PT.bool,
+		rows       : PT.number,
+		spellCheck : PT.bool,
+		style      : stylePT,
+		tabIndex   : PT.number,
+		value      : PT.string,
+		wrap       : PT.oneOf([`hard`, `soft`]),
+		// Hint Text Props
+		hint       : PT.string,
+		// Debug Prop
+		debug      : PT.bool,
+	}
+
 	state = {
 		value: this.props.value,
 	};
@@ -72,29 +98,4 @@ export class Textarea extends React.Component {
 			</>
 		)
 	}
-}
-
-
-Textarea.propTypes = {
-	// Textarea Props
-	cols       : PT.number,
-	disabled   : PT.bool,
-	form       : PT.string,
-	id         : PT.string,
-	label      : PT.string.isRequired,
-	maxLength  : PT.number,
-	name       : PT.string, // id is used for name if one isn't provided
-	onBlur     : PT.func,
-	onChange   : PT.func,
-	placeholder: PT.string,
-	readOnly   : PT.bool,
-	required   : PT.bool,
-	rows       : PT.number,
-	spellCheck : PT.bool,
-	style      : stylePT,
-	tabIndex   : PT.number,
-	value      : PT.string,
-	wrap       : PT.oneOf([`hard`, `soft`]),
-	// Hint Text Props
-	hint       : PT.string,
 }

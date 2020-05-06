@@ -15,6 +15,27 @@ export class Toggle extends React.Component {
 		checked: false,
 	}
 
+	static propTypes = {
+		// Input Props
+		checked       : PT.bool,
+		className     : PT.string,
+		disabled      : PT.bool,
+		form          : PT.string,
+		id            : PT.string,
+		label         : PT.string.isRequired,
+		name          : PT.string,
+		onChange      : PT.func,
+		readOnly      : PT.bool,
+		required      : PT.bool,
+		style         : stylePT,
+		tabIndex      : PT.number,
+		value         : PT.string,
+		// Hint Text Props
+		hint          : PT.string,
+		// Debug Prop
+		debug         : PT.bool,
+	}
+
 	state = {
 		checked: this.props.checked,
 	}
@@ -123,24 +144,4 @@ export class Toggle extends React.Component {
 			</>
 		)
 	}
-}
-
-
-Toggle.propTypes = {
-	// Input Props
-	checked       : PT.bool,
-	className     : PT.string,
-	disabled      : PT.bool,
-	form          : PT.string,
-	id            : PT.string,
-	label         : PT.string.isRequired,
-	name          : PT.string,
-	onChange      : PT.func,
-	readOnly      : PT.bool,
-	required      : PT.bool,
-	style         : stylePT,
-	tabIndex      : PT.number,
-	value         : PT.string,
-	// Hint Text Props
-	hint       : PT.string,
 }

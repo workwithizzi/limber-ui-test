@@ -19,7 +19,7 @@
 //
 //- -----------------------------------------------------------------
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
 import { Debug } from '../'
@@ -40,7 +40,6 @@ export function Checkbox({
 	// Set the state for the `Checkbox`, based on the `checked` value, i.e. `checked` in this case is the `INITIAL_STATE`
 	const [isChecked, setIsChecked] = useState(checked)
 
-	// TODO: Make sure useState, checked/defaultCheck, and _handleChange are correct
 	function _handleChange() {
 		setIsChecked(!isChecked)
 		// If `onChange` prop is passed execute the `onChange` function.
@@ -100,9 +99,11 @@ Checkbox.propTypes = {
 	// Input Props
 	checked       : PT.bool,
 	className     : PT.string,
+	debug         : PT.bool,
 	disabled      : PT.bool,
 	form          : PT.string,
 	id            : PT.string,
+	hint          : PT.string,
 	label         : PT.string.isRequired,
 	name          : PT.string,
 	onBlur        : PT.func,
@@ -112,5 +113,4 @@ Checkbox.propTypes = {
 	style         : stylePT,
 	tabIndex      : PT.number,
 	value         : PT.string,
-	// value         : PT.string.isRequired,
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
 import { Debug } from '../'
@@ -73,4 +74,6 @@ Textfield.propTypes = {
 	title       : PT.string,
 	// Hint Text Props
 	hint        : PT.string,
+	// Debug Prop
+	debug       : PT.bool,
 }

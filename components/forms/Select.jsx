@@ -5,7 +5,7 @@
 // TODO: Test actually saving data from this
 // TODO: See if there's a way to use list array in addition to regular object array
 
-
+import React from 'react'
 import PT from 'prop-types'
 import stylePT from 'react-style-proptype'
 import { Debug } from '../'
@@ -73,6 +73,7 @@ export function Select({
 Select.propTypes = {
 	// Input Props
 	checked       : PT.bool,
+	children      : PT.node,
 	disabled      : PT.bool,
 	form          : PT.string,
 	id            : PT.string,
@@ -80,13 +81,14 @@ Select.propTypes = {
 	name          : PT.string,
 	onBlur        : PT.func,
 	onChange      : PT.func,
-	// onChange      : PT.func.isRequired,
+	options       : PT.oneOfType([PT.node, PT.arrayOf(PT.object)]),
 	readOnly      : PT.bool,
 	required      : PT.bool,
 	style         : stylePT,
 	tabIndex      : PT.number,
 	value         : PT.string,
-	// value         : PT.string.isRequired,
 	// Hint Text Props
 	hint          : PT.string,
+	// Debug Prop
+	debug         : PT.bool,
 }

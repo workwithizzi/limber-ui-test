@@ -12,6 +12,10 @@
         "exports": "always-multiline",
         "functions": "never"
       }
-    ]
+    ],
+    // Display `warn` if component has `props` but they are not defined via the `prop-types`
+    "react/prop-types": 1,
+    // Make sure to `import React from 'react'` for each `.jsx` file, as Next.js doesn't require us to import React into each component by default, but we should do it anyway
+    "react/react-in-jsx-scope": 1
   }
 }
