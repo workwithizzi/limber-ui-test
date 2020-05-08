@@ -110,6 +110,22 @@ export default function ArticlesPage({ allContentTypes, allContentTypesErrors })
 							content && matter(content)
 						)
 
+						// ADD `path` property to the markdown content `articleContents`
+						formattedMarkdownFilesContent.forEach((item, index) => {
+							item.path = markdownFilesListFormatted[index].path
+						})
+
+						// ADD `name` property inside the `data` object
+						formattedMarkdownFilesContent.forEach((item, index) => {
+							// Delete the extension
+							let fileName = markdownFilesListFormatted[index].name.split(`.`)
+							// Delete the last item in an array (extension)
+							fileName.pop()
+							// Concatenate all the rest items in an array
+							fileName = fileName.join()
+							// Create a `name` property at the `data`
+							item.data.name = fileName
+						})
 
 						// Check if the `id` from the ContentType yaml file matches the `content_type` in the md file
 						const articleContents = []
@@ -121,23 +137,6 @@ export default function ArticlesPage({ allContentTypes, allContentTypesErrors })
 							})
 						})
 
-
-						// ADD `path` property to the markdown content `articleContents`
-						articleContents.forEach((item, index) => {
-							item.path = markdownFilesListFormatted[index].path
-						})
-
-						// ADD `name` property inside the `data` object
-						articleContents.forEach((item, index) => {
-							// Delete the extension
-							let fileName = markdownFilesListFormatted[index].name.split(`.`)
-							// Delete the last item in an array (extension)
-							fileName.pop()
-							// Concatenate all the rest items in an array
-							fileName = fileName.join()
-							// Create a `name` property at the `data`
-							item.data.name = fileName
-						})
 						setMarkdownContent(articleContents)
 					})
 					.catch(error => {
