@@ -3,7 +3,7 @@
 function groupNames(allCTDataArray) {
 	const result = []
 
-	allCTDataArray.map(i => {
+	allCTDataArray.forEach(i => {
 		if (i.group && !result.includes(i.group)) {
 			return result.push(i.group)
 		}
@@ -16,7 +16,7 @@ function groupNames(allCTDataArray) {
 function soloTypesNames(allCTDataArray) {
 	const result = []
 
-	allCTDataArray.map(i => {
+	allCTDataArray.forEach(i => {
 		if (!i.group && !result.includes(i.label)) {
 			return result.push(i.label)
 		}

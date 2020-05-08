@@ -1,13 +1,18 @@
 // Creates a list of articles for a CT or Group of CTs
 // Used on `articles.jsx`
 
+import React from 'react'
+import moment from 'moment'
+import PT from 'prop-types'
+
 import '../styles/ArticlesList.scss'
 
-export function ArticlesList({data}) {
+export function ArticlesList({ data }) {
 	let key = Math.random(100) + 1
+
 	return (
 		<>
-			{(data.articles) ? (
+			{data ? (
 				<>
 					<div className="pure-g article-grid-header">
 						<span className="pure-u-2-5">Page Title</span>
@@ -17,15 +22,20 @@ export function ArticlesList({data}) {
 					</div>
 
 					<ul className="article-grid">
-						{data.articles.map(i => {
+						{data.map(i => {
 							key++
 							return (
 								<li key={key} className="article-card">
-									<a className="pure-g" href={i.path}>
-										<span className="card-title pure-u-2-5">{i.title}</span>
-										<span className="card-meta pure-u-1-5">{i.content_type}</span>
-										<span className="card-meta pure-u-1-5">{i.status}</span>
-										<span className="card-meta pure-u-1-5">{i.date}</span>
+									{/*
+										TODO: add `path` to `data` prop,
+										as we have to do a request based on the path and handle further navigation to the needed individual CT.
+										Currently, the href is set to `#` for everything.
+									*/}
+									<a className="pure-g" href={`#`}>
+										<span className="card-title pure-u-2-5">{i.data.title ? i.data.title : i.data.name}</span>
+										<span className="card-meta pure-u-1-5">{i.data.content_type ? i.data.content_type : `Not set`}</span>
+										<span className="card-meta pure-u-1-5">{i.data.status ? i.data.status : `Not set`}</span>
+										<span className="card-meta pure-u-1-5">{i.data.date ? moment(i.data.date).format(`LL`) : `No date set`}</span>
 									</a>
 								</li>
 							)
@@ -37,4 +47,8 @@ export function ArticlesList({data}) {
 			)}
 		</>
 	)
+}
+
+ArticlesList.propTypes = {
+	data: PT.arrayOf(PT.object).isRequired,
 }

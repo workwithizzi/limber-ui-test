@@ -3,16 +3,37 @@
 // Notes:
 // - Does not accept children
 
-import React from "react"
-import PT from "prop-types"
-import stylePT from "react-style-proptype"
-
-import { debug, string } from "../../utils"
+import React from 'react'
+import PT from 'prop-types'
+import stylePT from 'react-style-proptype'
+import { Debug } from '../'
+import { string } from '../../utils'
 
 
 export class Toggle extends React.Component {
 	static defaultProps = {
 		checked: false,
+	}
+
+	static propTypes = {
+		// Input Props
+		checked       : PT.bool,
+		className     : PT.string,
+		disabled      : PT.bool,
+		form          : PT.string,
+		id            : PT.string,
+		label         : PT.string.isRequired,
+		name          : PT.string,
+		onChange      : PT.func,
+		readOnly      : PT.bool,
+		required      : PT.bool,
+		style         : stylePT,
+		tabIndex      : PT.number,
+		value         : PT.string,
+		// Hint Text Props
+		hint          : PT.string,
+		// Debug Prop
+		debug         : PT.bool,
 	}
 
 	state = {
@@ -33,19 +54,19 @@ export class Toggle extends React.Component {
 		return (
 			<>
 				<label
-					className = "toggle__label"
+					className = 'toggle__label'
 					form      = {form}
 					htmlFor   = {id || string.camelCase(label)}
 				>
 					<div className={this.state.checked ? `toggle isOn` : `toggle`}>
 						<input
 							defaultChecked = {this.state.checked}
-							className = "toggle__control"
+							className = 'toggle__control'
 							form      = {form}
 							id        = {id || string.camelCase(label)}
 							name      = {name}
 							onChange  = {this._handleChange}
-							type      = "checkbox"
+							type      = 'checkbox'
 							value     = {this.state.checked}
 							{...props}
 						/>
@@ -97,31 +118,30 @@ export class Toggle extends React.Component {
 						}
 					`}</style>
 				</label>
-				{/* Debugger */}
-				{debug && debug(this)}
 
-				{hint && <span className="pure-form-message">{hint}</span>}
+				{hint && <span className='pure-form-message'>{hint}</span>}
+
+
+				{debug && (
+					<Debug
+						debug          = {debug}
+						info           = '<CheckBox> Component - State & Props'
+						label          = {label}
+						// default-state = {checked ? `checked`: `not checked`}
+						_default-state = {this.props.checked ? `checked`: `not checked`}
+						// isChecked     = {isChecked}
+						isChecked      = {this.state.checked}
+						onChange       = 'toggle state between checked/un-checked'
+						checked        = {checked}
+						form           = {form || `not provided`}
+						id             = {id || string.camelCase(label)}
+						name           = {name || `not provided`}
+						type           = 'checkbox'
+						{...props}
+					/>
+				)}
+
 			</>
 		)
 	}
-}
-
-
-Toggle.propTypes = {
-	// Input Props
-	checked       : PT.bool,
-	className     : PT.string,
-	disabled      : PT.bool,
-	form          : PT.string,
-	id            : PT.string,
-	label         : PT.string.isRequired,
-	name          : PT.string,
-	onChange      : PT.func,
-	readOnly      : PT.bool,
-	required      : PT.bool,
-	style         : stylePT,
-	tabIndex      : PT.number,
-	value         : PT.string,
-	// Hint Text Props
-	hint       : PT.string,
 }

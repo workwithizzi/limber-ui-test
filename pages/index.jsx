@@ -1,12 +1,10 @@
 // App Dashboard Page
 
+import React from 'react'
 import { Header } from '../components'
-// import { SimpleDebug, getRepoData, string} from '../utils'
 
 
-export default function DashboardPage(props) {
-	// const { repoSettings, allContentTypes } = props
-
+export default function DashboardPage() {
 	return (
 		<>
 

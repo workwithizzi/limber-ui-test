@@ -1,13 +1,14 @@
-// Numberfield (<input type="number">) component
+// Numberfield (<input type='number'>) component
 // HTML attributes: https://tinyurl.com/y6e5nykx
 // Notes:
 // - Does not accept children
 // - Currently only set up for full-width text inputs
 
-import PT from "prop-types"
-import stylePT from "react-style-proptype"
-
-import { debug, string } from "../../utils"
+import React from 'react'
+import PT from 'prop-types'
+import stylePT from 'react-style-proptype'
+import { Debug } from '../'
+import { string } from '../../utils'
 
 
 // Disabling this temporarily
@@ -32,15 +33,28 @@ export function Numberfield({
 					form = {form}
 					id   = {id || string.camelCase(label)}
 					name = {name || string.camelCase(label)}
-					type = "number"
+					type = 'number'
 					{...props}
 				/>
 
-				{/* Debugger */}
-				{debug && debug(this)}
+
 			</label>
 
-			{hint && <span className="pure-form-message">{hint}</span>}
+			{hint && <span className='pure-form-message'>{hint}</span>}
+
+
+			{debug && (
+				<Debug
+					debug = {debug}
+					info  = '<Numberfield> Component - Props'
+					label = {label}
+					form  = {form || `not provided`}
+					id    = {id || string.camelCase(label)}
+					name  = {name || `not provided`}
+					{...props}
+				/>
+			)}
+
 		</>
 	)
 }
@@ -49,6 +63,7 @@ export function Numberfield({
 Numberfield.propTypes = {
 	// Input Props
 	className   : PT.string,
+	debug       : PT.bool,
 	defaultValue: PT.string,
 	disabled    : PT.bool,
 	form        : PT.string,

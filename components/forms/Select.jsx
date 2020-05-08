@@ -5,11 +5,11 @@
 // TODO: Test actually saving data from this
 // TODO: See if there's a way to use list array in addition to regular object array
 
-
-import PT from "prop-types"
-import stylePT from "react-style-proptype"
-
-import { string } from "../../utils"
+import React from 'react'
+import PT from 'prop-types'
+import stylePT from 'react-style-proptype'
+import { Debug } from '../'
+import { string } from '../../utils'
 
 
 export function Select({
@@ -20,6 +20,7 @@ export function Select({
 	options,
 	children,
 	hint,
+	debug,
 	...props
 }) {
 
@@ -35,7 +36,7 @@ export function Select({
 					form  = {form}
 					id    = {id || string.camelCase(label)}
 					name  = {name}
-					type  = "radio"
+					type  = 'radio'
 					{...props}
 				>
 					{children}
@@ -51,7 +52,20 @@ export function Select({
 
 			</label>
 
-			{hint && <span className="pure-form-message">{hint}</span>}
+			{hint && <span className='pure-form-message'>{hint}</span>}
+
+			{debug && (
+				<Debug
+					debug   = {debug}
+					info    = '<Select> Component - Props'
+					label   = {label}
+					form    = {form || `not provided`}
+					id      = {id || string.camelCase(label)}
+					name    = {name || `not provided`}
+					options = {options || `not provided`}
+					{...props}
+				/>
+			)}
 		</>
 	)
 }
@@ -59,6 +73,7 @@ export function Select({
 Select.propTypes = {
 	// Input Props
 	checked       : PT.bool,
+	children      : PT.node,
 	disabled      : PT.bool,
 	form          : PT.string,
 	id            : PT.string,
@@ -66,13 +81,14 @@ Select.propTypes = {
 	name          : PT.string,
 	onBlur        : PT.func,
 	onChange      : PT.func,
-	// onChange      : PT.func.isRequired,
+	options       : PT.oneOfType([PT.node, PT.arrayOf(PT.object)]),
 	readOnly      : PT.bool,
 	required      : PT.bool,
 	style         : stylePT,
 	tabIndex      : PT.number,
 	value         : PT.string,
-	// value         : PT.string.isRequired,
 	// Hint Text Props
 	hint          : PT.string,
+	// Debug Prop
+	debug         : PT.bool,
 }

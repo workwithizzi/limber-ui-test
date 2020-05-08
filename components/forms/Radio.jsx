@@ -4,10 +4,11 @@
 //   Does not accept children
 //   For Checkbox groups, use the same prop.name
 
-import PT from "prop-types"
-import stylePT from "react-style-proptype"
-
-import { string } from "../../utils"
+import React from 'react'
+import PT from 'prop-types'
+import stylePT from 'react-style-proptype'
+import { Debug } from '../'
+import { string } from '../../utils'
 
 
 export function Radio({
@@ -15,16 +16,16 @@ export function Radio({
 	form,
 	id,
 	name,
-	className,
 	style,
 	hint,
+	debug,
 	...props
 }) {
 
 	return (
 		<>
 			<label
-				className = "pure-radio"
+				className = 'pure-radio'
 				form      = {form}
 				htmlFor   = {id || string.camelCase(label)}
 			>
@@ -33,13 +34,27 @@ export function Radio({
 					id    = {id || string.camelCase(label)}
 					name  = {name}
 					style = {style || {marginRight:`10px`} }
-					type  = "radio"
+					type  = 'radio'
 					{...props}
 				/>
 				{label}
 			</label>
 
-			{hint && <span className="pure-form-message">{hint}</span>}
+			{hint && <span className='pure-form-message'>{hint}</span>}
+
+			{debug && (
+				<Debug
+					debug = {debug}
+					info  = '<Radio> Component - Props'
+					label = {label}
+					form  = {form || `not provided`}
+					id    = {id || string.camelCase(label)}
+					name  = {name || `not provided`}
+					type  = 'radio'
+					{...props}
+				/>
+			)}
+
 		</>
 	)
 }
@@ -54,13 +69,13 @@ Radio.propTypes = {
 	name          : PT.string,
 	onBlur        : PT.func,
 	onChange      : PT.func,
-	// onChange      : PT.func.isRequired,
 	readOnly      : PT.bool,
 	required      : PT.bool,
 	style         : stylePT,
 	tabIndex      : PT.number,
 	value         : PT.string,
-	// value         : PT.string.isRequired,
 	// Hint Text Props
 	hint          : PT.string,
+	// Debug Prop
+	debug         : PT.string,
 }

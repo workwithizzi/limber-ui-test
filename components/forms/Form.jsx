@@ -7,18 +7,24 @@
 //   props - all other props are passed as attributes into <form>
 //- -----------------------------------------------------------------
 
+import React from 'react'
+import PT from 'prop-types'
+
 
 export function Form({
 	title,
 	children,
 	...props
 }) {
-	return (
-		<form className="pure-form pure-form-stacked" {...props}>
-			<fieldset>
-				{title && <legend>{title}</legend>}
-				{children}
-			</fieldset>
-		</form>
-	)
+	return <form className='pure-form pure-form-stacked' {...props}>
+		<fieldset>
+			{title && <legend>{title}</legend>}
+			{children}
+		</fieldset>
+	</form>
+}
+
+Form.propTypes = {
+	children: PT.node.isRequired,
+	title:    PT.string,
 }

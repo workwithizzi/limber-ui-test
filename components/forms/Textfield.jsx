@@ -1,7 +1,8 @@
-import PT from "prop-types"
-import stylePT from "react-style-proptype"
-
-import { string } from "../../utils"
+import React from 'react'
+import PT from 'prop-types'
+import stylePT from 'react-style-proptype'
+import { Debug } from '../'
+import { string } from '../../utils'
 
 
 export function Textfield({
@@ -10,6 +11,7 @@ export function Textfield({
 	id,
 	name,
 	hint,
+	debug,
 	...props
 }) {
 	return (
@@ -20,16 +22,30 @@ export function Textfield({
 			>
 				{label}
 				<input
-					className = "pure-input-1"
+					className = 'pure-input-1'
 					form      = {form}
 					id        = {id || string.camelCase(label)}
 					name      = {name || string.camelCase(label)}
-					type      = "text"
+					type      = 'text'
 					{...props}
 				/>
 			</label>
 
-			{hint && <span className="pure-form-message">{hint}</span>}
+			{hint && <span className='pure-form-message'>{hint}</span>}
+
+			{debug && (
+				<Debug
+					debug = {debug}
+					info  = '<Textfield> Component - Props'
+					label = {label}
+					form  = {form || `not provided`}
+					id    = {id || string.camelCase(label)}
+					name  = {name || string.camelCase(label)}
+					type  = 'text'
+					{...props}
+				/>
+			)}
+
 		</>
 	)
 }
@@ -58,4 +74,6 @@ Textfield.propTypes = {
 	title       : PT.string,
 	// Hint Text Props
 	hint        : PT.string,
+	// Debug Prop
+	debug       : PT.bool,
 }

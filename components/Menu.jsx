@@ -2,13 +2,52 @@
 // The dynamic menu-items are created based on Groups/Labels from
 // the CT config files
 
+import React from 'react'
 import Link from "next/link"
-import { getCT } from '../utils'
+import { ContentTypes as CT } from '../utils'
+import PT from "prop-types"
 
-export function Menu({repoSettings, allContentTypes}) {
-	// These are for the key value when looping through items
-	let groupKey = 1
-	let typesKey = 1
+export function Menu({ allContentTypes }) {
+
+	// Define a Class Object with the passed in data
+	const ContentTypes = new CT(allContentTypes)
+
+	function _renderFromGroups() {
+		let key = 1
+		// Use a class ContentTypes to return an array of non-duplicated group names
+		return ContentTypes.getGroupNames().map(i => {
+			let liClass=`pure-menu-item`
+			if (key === 1) {
+				liClass=`pure-menu-item menu-item-divided`
+			}
+			key++
+			return (
+				<li className={liClass} key={key}>
+					<Link href={`/articles?group=${i}`}>
+						<a className="pure-menu-link">{i}</a>
+					</Link>
+				</li>
+			)
+		})
+	}
+
+	function _renderFromSoloTypes() {
+		let key = 1
+		return ContentTypes.getSoloTypesNames().map(i => {
+			let liClass=`pure-menu-item`
+			if (key === 1) {
+				liClass=`pure-menu-item menu-item-divided`
+			}
+			key++
+			return (
+				<li className={liClass} key={key}>
+					<Link href={`/articles?type=${i}`}>
+						<a className="pure-menu-link">{i}</a>
+					</Link>
+				</li>
+			)
+		})
+	}
 
 	return (
 		<>
@@ -39,42 +78,17 @@ export function Menu({repoSettings, allContentTypes}) {
 						</li>
 
 						{/* --- Dynamic Menu Items --- */}
+						{_renderFromGroups()}
 
-						{/* From groups array */}
-						{getCT.groupNames(allContentTypes).map(i => {
-							let liClass=`pure-menu-item`
-							if (groupKey === 1) {
-								liClass=`pure-menu-item menu-item-divided`
-							}
-							groupKey++
-							return (
-								<li className={liClass} key={groupKey}>
-									<Link href={`/articles?group=${i}`}>
-										<a className="pure-menu-link">{i}</a>
-									</Link>
-								</li>
-							)
-						})}
-
-						{/* From "solo" content-types array --CT's that aren't in a Group */}
-						{getCT.soloTypesNames(allContentTypes).map(i => {
-							let liClass=`pure-menu-item`
-							if (typesKey === 1) {
-								liClass=`pure-menu-item menu-item-divided`
-							}
-							typesKey++
-							return (
-								<li className={liClass} key={typesKey}>
-									<Link href={`/articles?type=${i}`}>
-										<a className="pure-menu-link">{i}</a>
-									</Link>
-								</li>
-							)
-						})}
-
+						{_renderFromSoloTypes()}
+						
 					</ul>
 				</div>
 			</div>
 		</>
 	)
+}
+
+Menu.propTypes = {
+	allContentTypes: PT.arrayOf(PT.object).isRequired,
 }
